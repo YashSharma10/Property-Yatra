@@ -1,9 +1,6 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import PropertyCarousel from "../components/PropertyCarousel";
-import Searchbox from "../components/Searchbox";
-import Footer from "../components/Footer";
 import HorizontalCardSlider from "../components/HorizontalCardSlider";
+import Searchbox from "../components/Searchbox";
 const HomePage = () => {
   return (
     <div className="min-h-full">
