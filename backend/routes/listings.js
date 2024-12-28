@@ -1,76 +1,136 @@
 const express = require("express");
 const router = express.Router();
-const Listing = require("../models/listing");
+const Property = require("../models/PropertySchema"); // Ensure the correct path to your model
 
-// Add a new listing
-router.post("/listings", async (req, res) => {
+// -----------------------------
+// 🚀 CREATE a new Property
+// -----------------------------
+router.post("/properties", async (req, res) => {
   try {
-    let newListing = new Listing({
-      title: req.body.title,
-      description: req.body.description,
+    let newProperty = new Property({
+      name: req.body.name,
+      type: req.body.type,
       price: req.body.price,
-      location: req.body.location,
-      country: req.body.country,
-      image: {
-        filename: req.body.image.filename,
-        url: req.body.image.url,
+      configuration: req.body.configuration,
+      propertyType: req.body.propertyType,
+      utilities: {
+        water: req.body.utilities?.water || false,
+        electricity: req.body.utilities?.electricity || false,
+        gas: req.body.utilities?.gas || false,
       },
+      area: req.body.area,
+      address: {
+        street: req.body.address.street,
+        city: req.body.address.city,
+        state: req.body.address.state,
+        country: req.body.address.country,
+        pincode: req.body.address.pincode,
+      },
+      propertyAge: req.body.propertyAge,
+      transactionType: req.body.transactionType,
+      features: {
+        parking: req.body.features?.parking || false,
+        lift: req.body.features?.lift || false,
+        swimmingPool: req.body.features?.swimmingPool || false,
+        modularKitchen: req.body.features?.modularKitchen || false,
+        balcony: req.body.features?.balcony || false,
+        park: req.body.features?.park || false,
+      },
+      description: req.body.description,
+      images: req.body.images || [],
+      userEmail: req.body.userEmail,
     });
 
-    await newListing.save();
-    res.status(201).send("Listing created");
+    await newProperty.save();
+    res.status(201).send("Property created successfully");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error creating listing");
+    res.status(500).send("Error creating property");
   }
 });
 
-// Get all listings
-router.get("/getListings", async (req, res) => {
+// -----------------------------
+// 📚 READ all Properties
+// -----------------------------
+router.get("/properties", async (req, res) => {
   try {
-    let listings = await Listing.find({});
-    res.json(listings);
+    let properties = await Property.find({});
+    res.json(properties);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error fetching listings");
+    res.status(500).send("Error fetching properties");
   }
 });
 
-// Get a single listing by ID
-router.get("/listings/:id", async (req, res) => {
+// -----------------------------
+// 🔍 READ a single Property by ID
+// -----------------------------
+router.get("/properties/:id", async (req, res) => {
   try {
-    let listing = await Listing.findById(req.params.id);
-    if (!listing) return res.status(404).send("Listing not found");
-    res.json(listing);
+    let property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).send("Property not found");
+    res.json(property);
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error fetching listing");
+    res.status(500).send("Error fetching property");
   }
 });
 
-// Delete a listing by ID
-router.delete("/listings/:id", async (req, res) => {
+// -----------------------------
+// 📝 UPDATE a Property by ID
+// -----------------------------
+router.put("/properties/:id", async (req, res) => {
   try {
-    await Listing.findByIdAndDelete(req.params.id);
-    res.send("Listing deleted");
+    let property = await Property.findById(req.params.id);
+    if (!property) return res.status(404).send("Property not found");
+
+    // Update fields if provided in the request body
+    property.name = req.body.name || property.name;
+    property.type = req.body.type || property.type;
+    property.price = req.body.price || property.price;
+    property.configuration = req.body.configuration || property.configuration;
+    property.propertyType = req.body.propertyType || property.propertyType;
+    property.utilities = req.body.utilities || property.utilities;
+    property.area = req.body.area || property.area;
+    property.address = req.body.address || property.address;
+    property.propertyAge = req.body.propertyAge || property.propertyAge;
+    property.transactionType = req.body.transactionType || property.transactionType;
+    property.features = req.body.features || property.features;
+    property.description = req.body.description || property.description;
+    property.images = req.body.images || property.images;
+    property.userEmail = req.body.userEmail || property.userEmail;
+
+    await property.save();
+    res.send("Property updated successfully");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error deleting listing");
+    res.status(500).send("Error updating property");
   }
 });
 
-// Update a listing by ID
-router.put("/listings/:id", async (req, res) => {
+// -----------------------------
+// 🗑️ DELETE a Property by ID
+// -----------------------------
+router.delete("/properties/:id", async (req, res) => {
   try {
-    let listing = await Listing.findById(req.params.id);
-    if (!listing) return res.status(404).send("Listing not found");
-
-    listing.title = req.body.title || listing.title;
-    await listing.save();
-    res.send("Listing updated");
+    await Property.findByIdAndDelete(req.params.id);
+    res.send("Property deleted successfully");
   } catch (error) {
     console.error(error);
-    res.status(500).send("Error updating listing");
+    res.status(500).send("Error deleting property");
+  }
+});
+
+// -----------------------------
+// 🔎 SEARCH Properties by City
+// -----------------------------
+router.get("/properties/search/:city", async (req, res) => {
+  try {
+    let properties = await Property.find({ "address.city": req.params.city });
+    res.json(properties);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error searching properties by city");
   }
 });
 

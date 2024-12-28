@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const initData = require("./data.js");
-const Listing = require("../models/listing.js");
+const Property = require("../models/PropertySchema.js");
 
 const MONGO_URL = "mongodb+srv://yash22csu295:8076107814@cluster0.orkbg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
@@ -17,8 +17,8 @@ async function main() {
 }
 
 const initDB = async () => {
-  await Listing.deleteMany({});
-  await Listing.insertMany(initData.data);
+  await Property.deleteMany({});
+  await Property.insertMany(initData.data);
   console.log("data was initialized");
 };
 
