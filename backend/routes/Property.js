@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require('mongoose');
 const Property = require("../models/PropertySchema"); // Ensure the correct path to your model
 
 // -----------------------------
@@ -66,13 +67,19 @@ router.get("/properties", async (req, res) => {
 // 🔍 READ a single Property by ID
 // -----------------------------
 router.get("/properties/:id", async (req, res) => {
+  const propertyId = req.params.id;
+  if (!mongoose.Types.ObjectId.isValid(propertyId)) {
+    return res.status(400).json({ error: "Invalid ObjectId" });
+  }
+
   try {
-    let property = await Property.findById(req.params.id);
-    if (!property) return res.status(404).send("Property not found");
+    const property = await Property.findById(propertyId);
+    if (!property) {
+      return res.status(404).json({ error: "Property not found" });
+    }
     res.json(property);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Error fetching property");
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 

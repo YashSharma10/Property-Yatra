@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
-import "../pages/PropertyListings.css";
+import "../pages/PropertyListings.css"; // Make sure your CSS file exists and is styled appropriately
 
 const PropertyListing = () => {
   const [properties, setProperties] = useState([]);
@@ -148,34 +149,36 @@ const PropertyListing = () => {
         <h2>Property Listings</h2>
         {filteredProperties.length > 0 ? (
           filteredProperties.map((property) => (
-            <div key={property._id} className="property-card">
-              <img
-                src={
-                  property.images[0]?.url ||
-                  "https://via.placeholder.com/200x150"
-                }
-                alt={property.name}
-                className="property-image"
-              />
-              <div className="property-details">
-                <h4>{property.name}</h4>
-                <p>
-                  <strong>Type:</strong> {property.type}
-                </p>
-                <p>
-                  <strong>Price:</strong> ₹{property.price}
-                </p>
-                <p>
-                  <strong>City:</strong> {property.address.city}
-                </p>
-                <p>
-                  <strong>Property Type:</strong> {property.propertyType}
-                </p>
-                <p>
-                  <strong>Configuration:</strong> {property.configuration}
-                </p>
+            <Link to={`/property/${property._id}`} key={property._id}>
+              <div className="property-card">
+                <img
+                  src={
+                    property.images[0]?.url ||
+                    "https://via.placeholder.com/200x150"
+                  }
+                  alt={property.name}
+                  className="property-image"
+                />
+                <div className="property-details">
+                  <h4>{property.name}</h4>
+                  <p>
+                    <strong>Type:</strong> {property.type}
+                  </p>
+                  <p>
+                    <strong>Price:</strong> ₹{property.price}
+                  </p>
+                  <p>
+                    <strong>City:</strong> {property.address.city}
+                  </p>
+                  <p>
+                    <strong>Property Type:</strong> {property.propertyType}
+                  </p>
+                  <p>
+                    <strong>Configuration:</strong> {property.configuration}
+                  </p>
+                </div>
               </div>
-            </div>
+            </Link>
           ))
         ) : (
           <p>No properties match your filters.</p>

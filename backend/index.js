@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const { connectDb } = require("./db/connection");
-const listingsRoutes = require("./routes/listings");
+const listingsRoutes = require("./routes/Property");
 
 app.use(cors());
 app.use(express.json());

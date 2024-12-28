@@ -3,7 +3,9 @@
 // import Searchbox from "./components/Searchbox";
 // import HomePage from "./pages/HomePage";
 // import Footer from "./components/Footer";
+// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import PropertyListing from "./pages/PropertyListings";
+// import PropertyDetail from "./pages/PropertyDetail";
 
 const App = () => {
   return (
@@ -11,7 +13,7 @@ const App = () => {
       {/* <Navbar />
       <HomePage />
       <Footer /> */}
-      <PropertyListing/>
+      <PropertyListing />
     </div>
   );
 };
