@@ -80,6 +80,6 @@ const PropertySchema = new mongoose.Schema({
   }
 });
 
-const Property = mongoose.model('Property', PropertySchema);
+const Property = mongoose.model('Property2', PropertySchema);
 
 module.exports = Property;

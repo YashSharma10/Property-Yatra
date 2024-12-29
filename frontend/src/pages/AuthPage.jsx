@@ -43,7 +43,7 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-500 to-purple-600">
+    <div className="min-h-screen flex items-center justify-center ">
       <motion.div
         className="w-full max-w-md bg-white shadow-md rounded px-8 py-10"
         variants={containerVariants}

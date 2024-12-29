@@ -12,7 +12,5 @@ async function connectDb() {
     process.exit(1);
   }
 }
-
 export default connectDb;
 
-// module.exports = { connectDb };
