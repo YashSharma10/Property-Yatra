@@ -43,8 +43,8 @@ export const addProperty = async (req, res) => {
     });
 
     const p = await newProperty.save();
-    console.log("New P",p);
-    
+    console.log("New P", p);
+
     res
       .status(200)
       .json({ message: "Property added successfully", property: newProperty });
@@ -53,8 +53,6 @@ export const addProperty = async (req, res) => {
     res.status(500).json({ message: "Error adding property" });
   }
 };
-
-
 
 export const listProperties = async (req, res) => {
   try {
@@ -74,20 +72,20 @@ export const listProperties = async (req, res) => {
     const orFilters = [];
 
     // Add individual filters to the `$or` array if provided
-    if (name) orFilters.push({ name: { $regex: name, $options: 'i' } });
+    if (name) orFilters.push({ name: { $regex: name, $options: "i" } });
     if (type) orFilters.push({ type });
     if (price) orFilters.push({ price: { $lte: Number(price) } });
     if (propertyType) orFilters.push({ propertyType });
-    if (area) orFilters.push({ area: { $regex: area, $options: 'i' } });
+    if (area) orFilters.push({ area: { $regex: area, $options: "i" } });
     if (transactionType) orFilters.push({ transactionType });
 
     if (features) {
-      const featureArray = features.split(',');
+      const featureArray = features.split(",");
       orFilters.push({ features: { $in: featureArray } });
     }
 
     if (utilities) {
-      const utilityArray = utilities.split(',');
+      const utilityArray = utilities.split(",");
       orFilters.push({ utilities: { $in: utilityArray } });
     }
 
@@ -103,18 +101,32 @@ export const listProperties = async (req, res) => {
 
     res.status(200).json({ properties, total });
   } catch (error) {
-    res.status(500).json({ message: 'Failed to fetch properties', error });
+    res.status(500).json({ message: "Failed to fetch properties", error });
   }
 };
 
 export const getPropertyById = async (req, res) => {
   try {
-  
     const property = await Property.findById(req.params.id);
     if (!property) {
       return res.status(404).json({ message: "Property not found" });
     }
     res.json(property);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const latestProperties = async (req, res) => {
+  try {
+    const properties = await Property.find().sort({ createdAt: -1 }).limit(5);
+
+    if (properties.length === 0) {
+      return res.status(404).json({ message: "No properties found" });
+    }
+
+    res.json(properties);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

@@ -19,14 +19,14 @@ const App = () => {
     <div className=" bg-base-100 min-h-screen">
       <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/landing-page" element={<LandingPage />} />
+        <Route path="/" element={<LandingPage />} />
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/auth" element={<AuthPage />} />
         <Route path="/property/:id" element={<PropertyDetailPage />} />
         <Route path="/add-property" element={<AddPropertyPage />} />
         <Route path="/property-listing" element={<PropertyListingPage />} />
       </Routes>
+        {/* <Route path="/" element={<HomePage />} /> */}
       {/* <Footer /> */}
       {/* <PropertyListing /> */}
     </div>
