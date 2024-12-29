@@ -1,7 +1,17 @@
-import { CircleUserRound, LogOut, MessageSquareHeart, UserPen } from "lucide-react";
+import axios from "axios";
+import {
+  CircleUserRound,
+  LogOut,
+  MessageSquareHeart,
+  UserPen,
+} from "lucide-react";
 import React from "react";
 
 const Profile = () => {
+  async function handleLogout() {
+    await axios.get("http://localhost:3000/api/logout");
+    localStorage.removeItem("authToken")
+  }
   return (
     <div className="dropdown dropdown-bottom dropdown-end">
       <div tabIndex={0} role="button" className=" m-1">
@@ -27,10 +37,10 @@ const Profile = () => {
           </a>
         </li>
         <li>
-          <a>
+          <button onClick={handleLogout}>
             <LogOut />
             Logout
-          </a>
+          </button>
         </li>
       </ul>
     </div>
