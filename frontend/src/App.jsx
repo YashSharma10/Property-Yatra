@@ -1,18 +1,14 @@
 import Navbar from "./components/Navbar";
 // import Searchbox from "./components/Searchbox";
 // import HomePage from "./pages/HomePage";
-import Footer from "./components/Footer";
 // import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Route, Routes } from "react-router-dom";
-import AuthPage from "./pages/AuthPage";
-import PropertyListing from "./pages/PropertyListings";
-import HomePage from "./pages/HomePage";
-import LandingPage from "./pages/LandingPage";
 import AddPropertyPage from "./pages/AddPropertyPage";
-import PropertyListingPage from "./pages/PropertyListingPage";
-import PropertyDetailPage from "./pages/PropertyDetailPage";
+import AuthPage from "./pages/AuthPage";
+import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
-// import PropertyDetail from "./pages/PropertyDetail";
+import PropertyDetailPage from "./pages/PropertyDetailPage";
+import PropertyListingPage from "./pages/PropertyListingPage";
 
 const App = () => {
   return (
@@ -26,9 +22,6 @@ const App = () => {
         <Route path="/add-property" element={<AddPropertyPage />} />
         <Route path="/property-listing" element={<PropertyListingPage />} />
       </Routes>
-        {/* <Route path="/" element={<HomePage />} /> */}
-      {/* <Footer /> */}
-      {/* <PropertyListing /> */}
     </div>
   );
 };

@@ -1,7 +1,4 @@
-import React from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/swiper-bundle.css"; // Correct import for Swiper's styles
-import { Search } from "lucide-react";  // Importing the search icon from lucide-react
+import { Search } from "lucide-react"; // Importing the search icon from lucide-react
 import PropertyCarousel from "../components/PropertySlider";
 
 const LandingPage = () => {
@@ -35,84 +32,6 @@ const LandingPage = () => {
         <div className="container mx-auto text-center">
           {/* Swiper Carousel */}
           <PropertyCarousel/>
-          <Swiper
-            spaceBetween={30}
-            slidesPerView={1}
-            loop={true}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-            breakpoints={{
-              640: {
-                slidesPerView: 2,
-              },
-              768: {
-                slidesPerView: 3,
-              },
-              1024: {
-                slidesPerView: 4,
-              },
-            }}
-            className="mySwiper"
-          >
-            {/* Example Property Slides */}
-            <SwiperSlide>
-              <div className="relative bg-gray-100 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
-                <img
-                  src="https://via.placeholder.com/500"
-                  alt="Property 1"
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute inset-0 bg-black opacity-40"></div> {/* Dark overlay */}
-                <div className="absolute inset-0 flex items-center justify-center text-center text-white p-6">
-                  <div>
-                    <h4 className="text-2xl font-semibold mb-2">Luxury Villa</h4>
-                    <p className="text-lg mb-2">4 Beds, 3 Baths</p>
-                    <p className="text-xl font-bold">$1,200,000</p>
-                    <p className="mt-2 text-sm">Located in the heart of the city, this villa offers modern amenities and expansive views.</p>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative bg-gray-100 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
-                <img
-                  src="https://via.placeholder.com/500"
-                  alt="Property 2"
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute inset-0 bg-black opacity-40"></div> {/* Dark overlay */}
-                <div className="absolute inset-0 flex items-center justify-center text-center text-white p-6">
-                  <div>
-                    <h4 className="text-2xl font-semibold mb-2">Modern Apartment</h4>
-                    <p className="text-lg mb-2">2 Beds, 2 Baths</p>
-                    <p className="text-xl font-bold">$850,000</p>
-                    <p className="mt-2 text-sm">A beautifully designed apartment with cutting-edge design and prime location.</p>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            <SwiperSlide>
-              <div className="relative bg-gray-100 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105">
-                <img
-                  src="https://via.placeholder.com/500"
-                  alt="Property 3"
-                  className="w-full h-64 object-cover"
-                />
-                <div className="absolute inset-0 bg-black opacity-40"></div> {/* Dark overlay */}
-                <div className="absolute inset-0 flex items-center justify-center text-center text-white p-6">
-                  <div>
-                    <h4 className="text-2xl font-semibold mb-2">Beachfront House</h4>
-                    <p className="text-lg mb-2">5 Beds, 4 Baths</p>
-                    <p className="text-xl font-bold">$3,000,000</p>
-                    <p className="mt-2 text-sm">Experience luxury living on the beach with stunning views and top-tier features.</p>
-                  </div>
-                </div>
-              </div>
-            </SwiperSlide>
-            {/* More Property Slides */}
-          </Swiper>
         </div>
       </section>
 
