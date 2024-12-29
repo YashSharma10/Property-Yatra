@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
 
 const AuthPage = () => {
+  const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
   const [name, setName] = useState(""); // For signup
   const [email, setEmail] = useState("");
@@ -23,13 +26,22 @@ const AuthPage = () => {
     setError("");
     setLoading(true);
 
-    const endpoint = isSignup ? "http://localhost:3000/api/signup" : "http://localhost:3000/api/login";
+    const endpoint = isSignup
+      ? "http://localhost:3000/api/signup"
+      : "http://localhost:3000/api/login";
     const payload = isSignup ? { name, email, password } : { email, password };
 
     try {
       const response = await axios.post(endpoint, payload);
       setLoading(false);
-      alert(`${isSignup ? "Signup" : "Login"} successful!`);
+      if (response.data) {
+        console.log("Hello",response.data.token);
+        localStorage.setItem("authToken", response.data.token);
+        toast.success(response.data.message, {
+          position: "top-right",
+        });
+        navigate("/")
+      }
     } catch (err) {
       setLoading(false);
       setError(err.response?.data?.message || "An error occurred");
@@ -89,7 +101,7 @@ const AuthPage = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm p-2"
-                placeholder="John Doe"
+                placeholder="Your name"
                 required
               />
             </motion.div>
@@ -154,9 +166,7 @@ const AuthPage = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
         >
-          {isSignup
-            ? "Already have an account?"
-            : "Don’t have an account?"}{" "}
+          {isSignup ? "Already have an account?" : "Don’t have an account?"}{" "}
           <button
             onClick={toggleMode}
             className="text-blue-600 hover:underline focus:outline-none"

@@ -56,15 +56,15 @@ const PropertyDetails = () => {
   const pincode = property.address?.pincode || 'Pincode not available';
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 mt-16">
       <h1 className="text-3xl font-bold text-center mb-6">{name}</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid  gap-6">
         {/* Property Images */}
         <div className="flex justify-center">
           <img
             src={property.images[0] || '/default-image.jpg'}
             alt={name}
-            className="w-full max-w-md rounded-lg shadow-lg"
+            className="w-full  rounded-lg shadow-lg"
           />
         </div>
 

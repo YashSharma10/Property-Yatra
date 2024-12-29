@@ -3,8 +3,6 @@ import User from "../models/user.model.js";
 
 // Add a new property
 export const addProperty = async (req, res) => {
-  console.log(req.body);
-
   try {
     const {
       name,
@@ -22,9 +20,7 @@ export const addProperty = async (req, res) => {
       userEmail,
     } = req.body;
 
-    // File paths will be added after Multer processes the images
     const images = req.files ? req.files.map((file) => file.path) : [];
-
     const newProperty = new Property({
       name,
       type,
@@ -71,7 +67,6 @@ export const listProperties = async (req, res) => {
 
     const orFilters = [];
 
-    // Add individual filters to the `$or` array if provided
     if (name) orFilters.push({ name: { $regex: name, $options: "i" } });
     if (type) orFilters.push({ type });
     if (price) orFilters.push({ price: { $lte: Number(price) } });
@@ -134,15 +129,12 @@ export const latestProperties = async (req, res) => {
 };
 
 export const getUserProfileAndProperties = async (req, res) => {
-  const userId = req.userId; // Get userId from token (this will be set in a middleware)
-
+  const userId = req.userId; 
   try {
     const user = await User.findById(userId).select("-password");
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
-    // Fetch properties added by the user
     const properties = await Property.find({ userId: userId });
 
     res.json({ user, properties });

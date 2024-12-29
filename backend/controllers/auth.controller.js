@@ -1,15 +1,14 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-
 // Helper to set JWT in cookie
-const setTokenCookie = (res, token) => {
-  res.cookie("authToken", token, {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-    maxAge: 3600000, // 1 hour
-  });
-};
+// const setTokenCookie = (res, token) => {
+//   res.cookie("authToken", token, {
+//     httpOnly: true,
+//     secure: process.env.NODE_ENV === "production",
+//     sameSite: "strict",
+//     maxAge: 3600000, // 1 hour
+//   });
+// };
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -26,13 +25,22 @@ export const signup = async (req, res) => {
     const user = new User({ name, email, password });
     await user.save();
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-    setTokenCookie(res, token);
-
-    res.status(201).json({
-      message: "User created successfully",
-      user: { id: user._id, name: user.name, email: user.email },
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
     });
+    // setTokenCookie(res, token);
+
+    res
+      .status(201)
+      .cookie("token", token, {
+        maxage: 24 * 60 * 60 * 1000,
+        httpsOnly: true,
+        sameSite: "strict",
+      })
+      .json({
+        message: "User created successfully",
+        token,
+      });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -50,13 +58,22 @@ export const login = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
-    setTokenCookie(res, token);
-
-    res.status(200).json({
-      message: "Login successful",
-      user: { id: user._id, name: user.name, email: user.email },
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
     });
+    // setTokenCookie(res, token);
+
+    res
+      .status(200)
+      .cookie("token", token, {
+        maxage: 24 * 60 * 60 * 1000,
+        httpsOnly: true,
+        sameSite: "strict",
+      })
+      .json({
+        message: "Login successful",
+        token,
+      });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }

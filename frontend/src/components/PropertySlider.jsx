@@ -56,7 +56,7 @@ const PropertyCarousel = () => {
                 <img
                   src={property.images[0] || "https://via.placeholder.com/600"}
                   alt={property.name}
-                  className="w-full h-96 object-cover rounded-lg" // Increase image size here
+                  className="w-full h-56 sm:h-96 object-cover rounded-lg" // Increase image size here
                 />
                 {/* Image Overlay with Property Details */}
                 <div className="absolute top-1  rounded-lg flex flex-col justify-start p-4">

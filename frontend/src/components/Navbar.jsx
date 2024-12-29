@@ -3,10 +3,11 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { brandName } from "../constants/brand";
 import Profile from "./Profile";
+import { authStatus } from "../utils/checkAuthenication";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const user = false;
+  const user = authStatus.isAuthenticated;
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const navigate = useNavigate();
   return (
@@ -39,9 +40,6 @@ function Navbar() {
               <Link to="/">Home</Link>
             </li>
             <li className="transition duration-300 ease-in-out hover:scale-110 hover:text-blue-500">
-              <Link to="/services">Services</Link>
-            </li>
-            <li className="transition duration-300 ease-in-out hover:scale-110 hover:text-blue-500">
               <Link to="/about">About Us</Link>
             </li>
             <li className="transition duration-300 ease-in-out hover:scale-110 hover:text-blue-500">
@@ -66,9 +64,6 @@ function Navbar() {
           <ul className="space-y-4 text-center font-medium">
             <li className="transition duration-300 ease-in-out hover:scale-110 hover:text-blue-500">
               <Link to="/">Home</Link>
-            </li>
-            <li className="transition duration-300 ease-in-out hover:scale-110 hover:text-blue-500">
-              <Link to="/services">Services</Link>
             </li>
             <li className="transition duration-300 ease-in-out hover:scale-110 hover:text-blue-500">
               <Link to="/about">About Us</Link>

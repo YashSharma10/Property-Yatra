@@ -1,34 +1,23 @@
-import multer from 'multer';
-import path from 'path';
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import dotenv from "dotenv";
+dotenv.config();
 
-// Set storage engine
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/');  // Save uploaded files to the 'uploads' folder
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "properties", 
+    allowed_formats: ["jpg", "jpeg", "png"], 
   },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));  // Append timestamp to file name
-  }
 });
 
-// File filter to accept only image files
-const fileFilter = (req, file, cb) => {
-  const filetypes = /jpeg|jpg|png|gif/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (mimetype && extname) {
-    return cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed!'), false);
-  }
-};
-
-// Initialize upload
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 },  // Max file size 5MB
-  fileFilter: fileFilter
-});
-
+const upload = multer({ storage });
 export default upload;

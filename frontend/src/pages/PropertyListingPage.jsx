@@ -2,24 +2,29 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const PropertyListing = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [filters, setFilters] = useState({
     type: "",
     price: "",
     features: [],
     utilities: [],
+    furnished: "",
+    parking: "",
+    petsAllowed: "",
+    bedrooms: "",
+    bathrooms: "",
+    ownership: "",
+    builtYear: "",
   });
   const [page, setPage] = useState(1);
   const [totalProperties, setTotalProperties] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedProperty, setSelectedProperty] = useState(null);
 
   const fetchProperties = async () => {
-    setIsLoading(true); // Start loading
+    setIsLoading(true);
     const queryParams = new URLSearchParams({
-      type: filters.type,
-      price: filters.price,
+      ...filters,
       features: filters.features.join(","),
       utilities: filters.utilities.join(","),
       page,
@@ -35,7 +40,7 @@ const PropertyListing = () => {
     } catch (error) {
       console.error("Failed to fetch properties", error);
     } finally {
-      setIsLoading(false); // Stop loading
+      setIsLoading(false);
     }
   };
 
@@ -67,13 +72,13 @@ const PropertyListing = () => {
   }, [filters, page]);
 
   return (
-    <div className="flex flex-col sm:flex-row">
+    <div className="flex flex-col lg:flex-row mt-20">
       {/* Sidebar for Filters */}
-      <div className="w-full sm:w-1/4 p-4 bg-gray-100">
-        <h2 className="text-lg font-bold mb-4">Filters</h2>
+      <div className="w-full lg:w-1/4 p-6 bg-gray-100 border-r">
+        <h2 className="text-lg font-semibold mb-6">Filters</h2>
 
         {/* Property Type Dropdown */}
-        <div className="mb-4">
+        <div className="mb-6">
           <label className="block text-sm font-medium">Property Type</label>
           <select
             name="type"
@@ -87,8 +92,8 @@ const PropertyListing = () => {
           </select>
         </div>
 
-        {/* Price Range Dropdown */}
-        <div className="mb-4">
+        {/* Price Range */}
+        <div className="mb-6">
           <label className="block text-sm font-medium">Max Price</label>
           <input
             type="number"
@@ -98,9 +103,9 @@ const PropertyListing = () => {
           />
         </div>
 
-        {/* Features Checkboxes */}
-        <div className="mb-4">
-          <h3 className="text-sm font-medium">Features</h3>
+        {/* Features */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium mb-2">Features</h3>
           {["parking", "lift", "swimming pool"].map((feature) => (
             <label key={feature} className="block">
               <input
@@ -115,9 +120,9 @@ const PropertyListing = () => {
           ))}
         </div>
 
-        {/* Utilities Checkboxes */}
-        <div>
-          <h3 className="text-sm font-medium">Utilities</h3>
+        {/* Utilities */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium mb-2">Utilities</h3>
           {["water", "electricity", "gas"].map((utility) => (
             <label key={utility} className="block">
               <input
@@ -131,33 +136,104 @@ const PropertyListing = () => {
             </label>
           ))}
         </div>
+
+        {/* Additional Filters */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium">Furnished</label>
+          <select
+            name="furnished"
+            onChange={handleDropdownChange}
+            className="w-full mt-2 border rounded p-2"
+          >
+            <option value="">All</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
+
+        {/* Other Filters */}
+        {/* Bedrooms, Bathrooms, Ownership, Built Year */}
+        <div className="mb-6">
+          <label className="block text-sm font-medium">Bedrooms</label>
+          <select
+            name="bedrooms"
+            onChange={handleDropdownChange}
+            className="w-full mt-2 border rounded p-2"
+          >
+            <option value="">All</option>
+            {[1, 2, 3, 4, 5].map((num) => (
+              <option key={num} value={num}>
+                {num}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium">Ownership</label>
+          <select
+            name="ownership"
+            onChange={handleDropdownChange}
+            className="w-full mt-2 border rounded p-2"
+          >
+            <option value="">All</option>
+            <option value="Lease">Lease</option>
+            <option value="Freehold">Freehold</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium">Built Year</label>
+          <select
+            name="builtYear"
+            onChange={handleDropdownChange}
+            className="w-full mt-2 border rounded p-2"
+          >
+            <option value="">All</option>
+            {Array.from({ length: 50 }, (_, i) => 2023 - i).map((year) => (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Property Listings */}
-      <div className="w-full sm:w-3/4 p-4">
-        <h2 className="text-lg font-bold mb-4">Properties</h2>
+      <div className="w-full lg:w-3/4 p-6">
+        <h2 className="text-lg font-semibold mb-4">Properties</h2>
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
           </div>
-        ) : (
-          <>
-            {properties.length > 0 ? (
-              properties.map((property) => (
+        ) : properties.length > 0 ? (
+          <div>
+            <div className="grid sm:grid-cols-2 min-h-[75vh]">
+              {properties.map((property) => (
                 <div
                   key={property._id}
-                  className="mb-4 p-4 border rounded shadow-sm cursor-pointer"
+                  className="mb-4 p-4 border rounded shadow-sm cursor-pointer flex relative"
                   onClick={() => handlePropertyClick(property._id)}
                 >
-                  <h3 className="font-semibold">{property.name}</h3>
-                  <p>{property.description}</p>
+                  <img
+                    src={property.images[0]}
+                    alt={property.name}
+                    className="w-full  object-cover mr-4"
+                  />
+                  <div className="absolute bottom-5 text-black font-bold backdrop-blur-md rounded-md px-3">
+                    <h3 className="font-semibold">{property.name}</h3>
+                    <p>{property.description}</p>
+                    <p>
+                      <strong>Price:</strong> ₹{property.price}
+                    </p>
+                    <p>
+                      <strong>Type:</strong> {property.type}
+                    </p>
+                  </div>
                 </div>
-              ))
-            ) : (
-              <p>No properties found.</p>
-            )}
-
+              ))}
+            </div>
             {/* Pagination */}
             <div className="flex justify-between mt-4">
               <button
@@ -175,41 +251,11 @@ const PropertyListing = () => {
                 Next
               </button>
             </div>
-          </>
+          </div>
+        ) : (
+          <p>No properties found.</p>
         )}
       </div>
-
-      {/* Property Details Modal */}
-      {selectedProperty && (
-        <div className="fixed inset-0 flex justify-center items-center bg-gray-600 bg-opacity-50">
-          <div className="bg-white p-8 rounded shadow-lg w-1/2">
-            <h2 className="text-2xl font-bold mb-4">{selectedProperty.name}</h2>
-            <p>{selectedProperty.description}</p>
-            <ul>
-              <li>
-                <strong>Type:</strong> {selectedProperty.type}
-              </li>
-              <li>
-                <strong>Price:</strong> {selectedProperty.price}
-              </li>
-              <li>
-                <strong>Features:</strong>{" "}
-                {selectedProperty.features.join(", ")}
-              </li>
-              <li>
-                <strong>Utilities:</strong>{" "}
-                {selectedProperty.utilities.join(", ")}
-              </li>
-            </ul>
-            <button
-              onClick={handleCloseModal}
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

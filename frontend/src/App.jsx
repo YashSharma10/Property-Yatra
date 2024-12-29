@@ -9,6 +9,8 @@ import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertyListingPage from "./pages/PropertyListingPage";
+import ContactPage from "./pages/ContactPage";
+import AboutPage from "./pages/AboutPage";
 
 const App = () => {
   return (
@@ -21,6 +23,8 @@ const App = () => {
         <Route path="/property/:id" element={<PropertyDetailPage />} />
         <Route path="/add-property" element={<AddPropertyPage />} />
         <Route path="/property-listing" element={<PropertyListingPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </div>
   );

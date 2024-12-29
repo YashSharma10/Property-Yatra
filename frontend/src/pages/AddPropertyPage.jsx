@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const AddPropertyPage = () => {
   const navigate = useNavigate();
@@ -26,6 +27,10 @@ const AddPropertyPage = () => {
     images: [],
     userEmail: "",
   });
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const handleChange = (e) => {
     const { name, value, type, checked, files } = e.target;
@@ -62,15 +67,20 @@ const AddPropertyPage = () => {
         body: formData,
       });
       const result = await response.json();
-      if (response.ok) navigate("/property-listing");
-      else console.error(result.message);
+      if (response.ok) {
+        toast.success("My first toast", {
+          position: "top-right",
+        });
+
+        navigate("/property-listing");
+      } else console.error(result.message);
     } catch (err) {
       console.error(err.message);
     }
   };
 
   return (
-    <div className="container mx-auto py-16 px-4">
+    <div className="container mx-auto py-24 px-4">
       <h2 className="text-3xl font-semibold text-center mb-8">
         Add Property Details
       </h2>
