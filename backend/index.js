@@ -19,8 +19,14 @@ connectDb();
 // Routes
 import authRoutes from "./routes/auth.route.js";
 import propertyRoutes from "./routes/property.route.js";
+import plotRoutes from "./routes/plot.route.js";
+import commercialRoutes from "./routes/commercial.route.js";
+import pgRoutes from "./routes/pg.route.js";
 app.use("/api", authRoutes);
 app.use("/api/properties", propertyRoutes);
+app.use("/api/plots", plotRoutes);
+app.use("/api/commercial", commercialRoutes);
+app.use("/api/pg", pgRoutes);
 
 const PORT = process.env.PORT || 5000;
 
