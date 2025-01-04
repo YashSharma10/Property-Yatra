@@ -1,14 +1,7 @@
-import { Button } from "@/components/ui/button"; // Shadcn Button
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Shadcn Card
-import { Checkbox } from "@/components/ui/checkbox"; // Shadcn Checkbox
-import { Select, SelectContent, SelectItem } from "@/components/ui/select"; // Shadcn Select
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
-const PropertyListingPage = () => {
-  const { search } = useParams();
-  console.log(search);
-
+const PropertyListing = () => {
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
   const [filters, setFilters] = useState({
@@ -85,26 +78,22 @@ const PropertyListingPage = () => {
         <h2 className="text-lg font-semibold mb-6">Filters</h2>
 
         {/* Property Type Dropdown */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <label className="block text-sm font-medium">Property Type</label>
-          <Select
+          <select
             name="type"
             onChange={handleDropdownChange}
-            value={filters.type}
+            className="w-full mt-2 border rounded p-2"
           >
-            <SelectContent>
-              <SelectItem value="">All</SelectItem>
-              <SelectItem value="Apartment">Apartment</SelectItem>
-              <SelectItem value="Villa">Villa</SelectItem>
-              <SelectItem value="Independent House">
-                Independent House
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div> */}
+            <option value="">All</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Villa">Villa</option>
+            <option value="Independent House">Independent House</option>
+          </select>
+        </div>
 
         {/* Price Range */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <label className="block text-sm font-medium">Max Price</label>
           <input
             type="number"
@@ -112,105 +101,102 @@ const PropertyListingPage = () => {
             onChange={handleDropdownChange}
             className="w-full mt-2 border rounded p-2"
           />
-        </div> */}
+        </div>
 
         {/* Features */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Features</h3>
           {["parking", "lift", "swimming pool"].map((feature) => (
             <label key={feature} className="block">
-              <Checkbox
+              <input
+                type="checkbox"
                 name={feature}
                 checked={filters.features.includes(feature)}
                 onChange={(e) => handleCheckboxChange(e, "features")}
+                className="mr-2"
               />
               {feature.charAt(0).toUpperCase() + feature.slice(1)}
             </label>
           ))}
-        </div> */}
+        </div>
 
         {/* Utilities */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Utilities</h3>
           {["water", "electricity", "gas"].map((utility) => (
             <label key={utility} className="block">
-              <Checkbox
+              <input
+                type="checkbox"
                 name={utility}
                 checked={filters.utilities.includes(utility)}
                 onChange={(e) => handleCheckboxChange(e, "utilities")}
+                className="mr-2"
               />
               {utility.charAt(0).toUpperCase() + utility.slice(1)}
             </label>
           ))}
-        </div> */}
+        </div>
 
         {/* Additional Filters */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <label className="block text-sm font-medium">Furnished</label>
-          <Select
+          <select
             name="furnished"
             onChange={handleDropdownChange}
-            value={filters.furnished}
+            className="w-full mt-2 border rounded p-2"
           >
-            <SelectContent>
-              <SelectItem value="">All</SelectItem>
-              <SelectItem value="Yes">Yes</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-            </SelectContent>
-          </Select>
-        </div> */}
+            <option value="">All</option>
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+          </select>
+        </div>
 
         {/* Other Filters */}
-        {/* <div className="mb-6">
+        {/* Bedrooms, Bathrooms, Ownership, Built Year */}
+        <div className="mb-6">
           <label className="block text-sm font-medium">Bedrooms</label>
-          <Select
+          <select
             name="bedrooms"
             onChange={handleDropdownChange}
-            value={filters.bedrooms}
+            className="w-full mt-2 border rounded p-2"
           >
-           <SelectContent>
-           <SelectItem value="">All</SelectItem>
+            <option value="">All</option>
             {[1, 2, 3, 4, 5].map((num) => (
-              <SelectItem key={num} value={num}>
+              <option key={num} value={num}>
                 {num}
-              </SelectItem>
+              </option>
             ))}
-           </SelectContent>
-          </Select>
-        </div> */}
+          </select>
+        </div>
 
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <label className="block text-sm font-medium">Ownership</label>
-          <Select
+          <select
             name="ownership"
             onChange={handleDropdownChange}
-            value={filters.ownership}
+            className="w-full mt-2 border rounded p-2"
           >
-           <SelectContent>
-           <SelectItem value="">All</SelectItem>
-            <SelectItem value="Lease">Lease</SelectItem>
-            <SelectItem value="Freehold">Freehold</SelectItem>
-           </SelectContent>
-          </Select>
-        </div> */}
+            <option value="">All</option>
+            <option value="Lease">Lease</option>
+            <option value="Freehold">Freehold</option>
+          </select>
+        </div>
 
-        {/* <div>
+        <div>
           <label className="block text-sm font-medium">Built Year</label>
-          <Select
+          <select
             name="builtYear"
             onChange={handleDropdownChange}
-            value={filters.builtYear}
+            className="w-full mt-2 border rounded p-2"
           >
-           <SelectContent>
-           <SelectItem value="">All</SelectItem>
+            <option value="">All</option>
             {Array.from({ length: 50 }, (_, i) => 2023 - i).map((year) => (
-              <SelectItem key={year} value={year}>
+              <option key={year} value={year}>
                 {year}
-              </SelectItem>
+              </option>
             ))}
-           </SelectContent>
-          </Select>
-        </div> */}
+          </select>
+        </div>
       </div>
 
       {/* Property Listings */}
@@ -219,57 +205,59 @@ const PropertyListingPage = () => {
 
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
-            {/* <Loader /> */}
+            <div className="animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-blue-500"></div>
           </div>
         ) : properties.length > 0 ? (
-          <div className="grid grid-cols-1 min-h-[75vh]">
-            {properties.map((property) => (
-              <Card
-                key={property._id}
-                className="mb-4 border rounded shadow-sm cursor-pointer  relative"
-                onClick={() => handlePropertyClick(property._id)}
-              >
-                <CardContent>
+          <div>
+            <div className="grid sm:grid-cols-2 min-h-[75vh]">
+              {properties.map((property) => (
+                <div
+                  key={property._id}
+                  className="mb-4 p-4 border rounded shadow-sm cursor-pointer flex relative"
+                  onClick={() => handlePropertyClick(property._id)}
+                >
                   <img
                     src={property.images[0]}
                     alt={property.name}
-                    className="w-1/3 object-cover rounded-tl-lg rounded-bl-lg"
+                    className="w-full  object-cover mr-4"
                   />
-                  <p>{property.description}</p>
-                  <p>
-                    <strong>Price:</strong> ₹{property.price}
-                  </p>
-                  <p>
-                    <strong>Type:</strong> {property.type}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+                  <div className="absolute bottom-5 text-black font-bold backdrop-blur-md rounded-md px-3">
+                    <h3 className="font-semibold">{property.name}</h3>
+                    <p>{property.description}</p>
+                    <p>
+                      <strong>Price:</strong> ₹{property.price}
+                    </p>
+                    <p>
+                      <strong>Type:</strong> {property.type}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            {/* Pagination */}
+            <div className="flex justify-between mt-4">
+              <button
+                onClick={() => handlePageChange(page - 1)}
+                disabled={page === 1}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Previous
+              </button>
+              <button
+                onClick={() => handlePageChange(page + 1)}
+                disabled={page * 5 >= totalProperties}
+                className="px-4 py-2 bg-gray-300 rounded"
+              >
+                Next
+              </button>
+            </div>
           </div>
         ) : (
           <p>No properties found.</p>
         )}
-
-        {/* Pagination */}
-        <div className="flex justify-between mt-4">
-          <Button
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 1}
-            variant="outline"
-          >
-            Previous
-          </Button>
-          <Button
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page * 5 >= totalProperties}
-            variant="outline"
-          >
-            Next
-          </Button>
-        </div>
       </div>
     </div>
   );
 };
 
-export default PropertyListingPage;
+export default PropertyListing;
