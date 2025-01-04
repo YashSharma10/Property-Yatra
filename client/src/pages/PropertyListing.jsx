@@ -10,10 +10,8 @@ const PropertyListing = () => {
     features: [],
     utilities: [],
     furnished: "",
-    parking: "",
     petsAllowed: "",
     bedrooms: "",
-    bathrooms: "",
     ownership: "",
     builtYear: "",
   });
@@ -58,6 +56,7 @@ const PropertyListing = () => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
+  console.log(filters);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);

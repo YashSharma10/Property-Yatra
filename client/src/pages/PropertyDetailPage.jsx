@@ -62,7 +62,7 @@ const PropertyDetails = () => {
   const pincode = property.address?.pincode || "Pincode not available";
 
   return (
-    <div className="container mx-auto p-6 mt-16">
+    <div className="container mx-auto p-6 mt-10">
       <h1 className="text-3xl font-bold text-center mb-6">{name}</h1>
       <div className="grid gap-6">
         <div className="flex justify-center">

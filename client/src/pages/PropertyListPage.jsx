@@ -1,7 +1,15 @@
 import { Button } from "@/components/ui/button"; // Shadcn Button
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"; // Shadcn Card
-import { Checkbox } from "@/components/ui/checkbox"; // Shadcn Checkbox
-import { Select, SelectContent, SelectItem } from "@/components/ui/select"; // Shadcn Select
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Heart, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -60,11 +68,30 @@ const PropertyListingPage = () => {
       return { ...prev, [category]: updatedCategory };
     });
   };
+  const handleFilterChange = (type, value) => {
+    setFilters((prev) => ({ ...prev, [type]: value }));
+  };
+
+  const handleRadioChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: value, // Update the furnished property or any other radio field
+    }));
+  };
+  const handleRangeChange = (e) => {
+    const { name, value } = e.target;
+    setFilters((prevFilters) => ({
+      ...prevFilters,
+      [name]: Number(value), // Update the minPrice or maxPrice value
+    }));
+  };
 
   const handleDropdownChange = (e) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
+  console.log(filters);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -79,175 +106,201 @@ const PropertyListingPage = () => {
   }, [filters, page]);
 
   return (
-    <div className="flex flex-col lg:flex-row mt-20">
-      {/* Sidebar for Filters */}
-      <div className="w-full lg:w-1/4 p-6 bg-gray-100 border-r">
-        <h2 className="text-lg font-semibold mb-6">Filters</h2>
+    <div className="flex mt-14 max-w-5xl mx-auto gap-10">
 
-        {/* Property Type Dropdown */}
-        {/* <div className="mb-6">
+      {/* Filter Section */}
+      <div className="p-3 my-10 h-fit sticky bg-white rounded-md shadow-lg border-r-2">
+
+        {/* Select Property Type */}
+        <div className="mb-6">
           <label className="block text-sm font-medium">Property Type</label>
-          <Select
+          <select
             name="type"
             onChange={handleDropdownChange}
-            value={filters.type}
+            className="w-full mt-2 border rounded p-2"
           >
-            <SelectContent>
-              <SelectItem value="">All</SelectItem>
-              <SelectItem value="Apartment">Apartment</SelectItem>
-              <SelectItem value="Villa">Villa</SelectItem>
-              <SelectItem value="Independent House">
-                Independent House
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div> */}
+            <option value="">All</option>
+            <option value="Apartment">Apartment</option>
+            <option value="Villa">Villa</option>
+            <option value="Independent House">Independent House</option>
+          </select>
+        </div>
 
         {/* Price Range */}
-        {/* <div className="mb-6">
-          <label className="block text-sm font-medium">Max Price</label>
+        <div className="mb-6">
+          <label className="block text-sm font-medium">Price Range</label>
+          <div className="flex justify-between text-sm mt-2">
+            <span>₹{filters.minPrice}</span>
+            <span>₹{filters.maxPrice}</span>
+          </div>
           <input
-            type="number"
-            name="price"
-            onChange={handleDropdownChange}
-            className="w-full mt-2 border rounded p-2"
+            type="range"
+            name="minPrice"
+            min="0"
+            max="10000000"
+            step="100000"
+            value={filters.minPrice}
+            onChange={handleRangeChange}
+            className="w-full mt-2"
           />
-        </div> */}
+          {/* <input
+          type="range"
+          name="maxPrice"
+          min="0"
+          max="10000000"
+          step="100000"
+          value={filters.maxPrice}
+          onChange={handleRangeChange}
+          className="w-full mt-2"
+        /> */}
+        </div>
 
         {/* Features */}
-        {/* <div className="mb-6">
+        <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Features</h3>
-          {["parking", "lift", "swimming pool"].map((feature) => (
+          {["parking", "lift", "swimming pool","water", "electricity", "gas"].map((feature) => (
             <label key={feature} className="block">
-              <Checkbox
+              <input
+                type="checkbox"
                 name={feature}
                 checked={filters.features.includes(feature)}
                 onChange={(e) => handleCheckboxChange(e, "features")}
+                className="mr-2"
               />
               {feature.charAt(0).toUpperCase() + feature.slice(1)}
             </label>
           ))}
-        </div> */}
+        </div>
 
-        {/* Utilities */}
-        {/* <div className="mb-6">
-          <h3 className="text-sm font-medium mb-2">Utilities</h3>
-          {["water", "electricity", "gas"].map((utility) => (
-            <label key={utility} className="block">
-              <Checkbox
-                name={utility}
-                checked={filters.utilities.includes(utility)}
-                onChange={(e) => handleCheckboxChange(e, "utilities")}
+        {/* Furnished (Radio Buttons) */}
+        <div className="mb-6">
+          <h3 className="text-sm font-medium mb-2">Furnished</h3>
+         <div className="flex gap-4">
+         {["Yes", "No"].map((option) => (
+            <label key={option} className="block">
+              <input
+                type="radio"
+                name="furnished"
+                value={option}
+                checked={filters.furnished === option}
+                onChange={handleRadioChange}
+                className="mr-2"
               />
-              {utility.charAt(0).toUpperCase() + utility.slice(1)}
+              {option}
             </label>
           ))}
-        </div> */}
+         </div>
+        </div>
 
-        {/* Additional Filters */}
-        {/* <div className="mb-6">
-          <label className="block text-sm font-medium">Furnished</label>
-          <Select
-            name="furnished"
-            onChange={handleDropdownChange}
-            value={filters.furnished}
-          >
-            <SelectContent>
-              <SelectItem value="">All</SelectItem>
-              <SelectItem value="Yes">Yes</SelectItem>
-              <SelectItem value="No">No</SelectItem>
-            </SelectContent>
-          </Select>
-        </div> */}
-
-        {/* Other Filters */}
-        {/* <div className="mb-6">
+        {/* Room Number*/}
+        <div className="mb-6">
           <label className="block text-sm font-medium">Bedrooms</label>
-          <Select
+          <select
             name="bedrooms"
             onChange={handleDropdownChange}
-            value={filters.bedrooms}
+            className="w-full mt-2 border rounded p-2"
           >
-           <SelectContent>
-           <SelectItem value="">All</SelectItem>
+            <option value="">All</option>
             {[1, 2, 3, 4, 5].map((num) => (
-              <SelectItem key={num} value={num}>
+              <option key={num} value={num}>
                 {num}
-              </SelectItem>
+              </option>
             ))}
-           </SelectContent>
-          </Select>
-        </div> */}
+          </select>
+        </div>
 
-        {/* <div className="mb-6">
+        {/* OwnerShip type */}
+        <div className="mb-6">
           <label className="block text-sm font-medium">Ownership</label>
-          <Select
+          <select
             name="ownership"
             onChange={handleDropdownChange}
-            value={filters.ownership}
+            className="w-full mt-2 border rounded p-2"
           >
-           <SelectContent>
-           <SelectItem value="">All</SelectItem>
-            <SelectItem value="Lease">Lease</SelectItem>
-            <SelectItem value="Freehold">Freehold</SelectItem>
-           </SelectContent>
-          </Select>
-        </div> */}
+            <option value="">All</option>
+            <option value="Lease">Lease</option>
+            <option value="Freehold">Freehold</option>
+          </select>
+        </div>
 
-        {/* <div>
+        {/* Year Built */}
+        <div>
           <label className="block text-sm font-medium">Built Year</label>
-          <Select
+          <select
             name="builtYear"
             onChange={handleDropdownChange}
-            value={filters.builtYear}
+            className="w-full mt-2 border rounded p-2"
           >
-           <SelectContent>
-           <SelectItem value="">All</SelectItem>
+            <option value="">All</option>
             {Array.from({ length: 50 }, (_, i) => 2023 - i).map((year) => (
-              <SelectItem key={year} value={year}>
+              <option key={year} value={year}>
                 {year}
-              </SelectItem>
+              </option>
             ))}
-           </SelectContent>
-          </Select>
-        </div> */}
+          </select>
+        </div>
+
       </div>
 
       {/* Property Listings */}
-      <div className="w-full lg:w-3/4 p-6">
+      <div className="">
         <h2 className="text-lg font-semibold mb-4">Properties</h2>
-
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
+            {/* Placeholder for loader */}
             {/* <Loader /> */}
           </div>
         ) : properties.length > 0 ? (
-          <div className="grid grid-cols-1 min-h-[75vh]">
+          <div className="grid grid-cols-1 gap-4 min-h-[75vh]">
             {properties.map((property) => (
-              <Card
+              <div
                 key={property._id}
-                className="mb-4 border rounded shadow-sm cursor-pointer  relative"
+                className="flex rounded-lg shadow-sm cursor-pointer border transition hover:shadow-lg"
                 onClick={() => handlePropertyClick(property._id)}
               >
-                <CardContent>
+                {/* Property Image and Heart Icon */}
+                <div className="relative flex-shrink-0">
                   <img
                     src={property.images[0]}
                     alt={property.name}
-                    className="w-1/3 object-cover rounded-tl-lg rounded-bl-lg"
+                    className="h-72 w-96 object-cover rounded-tl-lg rounded-bl-lg"
                   />
-                  <p>{property.description}</p>
-                  <p>
-                    <strong>Price:</strong> ₹{property.price}
+                  <Heart className="absolute top-2 right-2 text-red-500" />
+                </div>
+
+                {/* Property Details */}
+                <div className="flex-grow p-4">
+                  <p className="text-xl font-semibold">{property.name}</p>
+                  <p className="text-gray-600 text-sm truncate">
+                    {property.description}
                   </p>
-                  <p>
-                    <strong>Type:</strong> {property.type}
+                  <div className="flex gap-3 text-sm py-2">
+                    <p className="after:content-['|'] after:ml-0.5 after:text-gray-400 block">
+                      ₹{property.price}
+                    </p>
+                    <p className="after:content-['|'] after:ml-0.5 after:text-gray-400 block">
+                      {property.area} sqft
+                    </p>
+                    <p>{property.configuration}</p>
+                  </div>
+                  <p className="text-sm text-gray-500">
+                    Highlights: {property.type}
                   </p>
-                </CardContent>
-              </Card>
+
+                  {/* Action Buttons */}
+                  <div className="mt-24 flex items-center gap-3">
+                    <Button variant="outline">View Number</Button>
+                    <Button>
+                      <Phone />
+                      Contact
+                    </Button>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
         ) : (
-          <p>No properties found.</p>
+          <p className="text-center text-gray-500">No properties found.</p>
         )}
 
         {/* Pagination */}

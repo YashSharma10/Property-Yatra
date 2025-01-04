@@ -25,7 +25,8 @@ const App = () => {
             </ProtectedRoute>
           }
         />
-        <Route path="/property-listing" element={<PropertyListing />} />
+        <Route path="/property-listing" element={<PropertyListingPage />} />
+        <Route path="/property-listing2" element={<PropertyListing />} />
         <Route path="/property/:id" element={<PropertyDetailPage />} />
         <Route path="/add-property" element={<AddPropertyPage />} />
       </Routes>
