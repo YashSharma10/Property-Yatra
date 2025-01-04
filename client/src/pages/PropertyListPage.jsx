@@ -1,21 +1,10 @@
 import { Button } from "@/components/ui/button"; // Shadcn Button
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Slider } from "@/components/ui/slider";
 import { Heart, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const PropertyListingPage = () => {
   const { search } = useParams();
-  console.log(search);
 
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]);
@@ -23,12 +12,8 @@ const PropertyListingPage = () => {
     type: "",
     price: "",
     features: [],
-    utilities: [],
     furnished: "",
-    parking: "",
-    petsAllowed: "",
     bedrooms: "",
-    bathrooms: "",
     ownership: "",
     builtYear: "",
   });
@@ -41,7 +26,6 @@ const PropertyListingPage = () => {
     const queryParams = new URLSearchParams({
       ...filters,
       features: filters.features.join(","),
-      utilities: filters.utilities.join(","),
       page,
     });
 
@@ -68,22 +52,21 @@ const PropertyListingPage = () => {
       return { ...prev, [category]: updatedCategory };
     });
   };
-  const handleFilterChange = (type, value) => {
-    setFilters((prev) => ({ ...prev, [type]: value }));
-  };
+
+
 
   const handleRadioChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: value, // Update the furnished property or any other radio field
+      [name]: value, 
     }));
   };
   const handleRangeChange = (e) => {
     const { name, value } = e.target;
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: Number(value), // Update the minPrice or maxPrice value
+      [name]: Number(value), 
     }));
   };
 
@@ -106,10 +89,10 @@ const PropertyListingPage = () => {
   }, [filters, page]);
 
   return (
-    <div className="flex mt-14 max-w-5xl mx-auto gap-10">
+    <div className="flex mt-14 max-w-5xl mx-auto gap-10 relative">
 
       {/* Filter Section */}
-      <div className="p-3 my-10 h-fit sticky bg-white rounded-md shadow-lg border-r-2">
+      <div className="p-3 my-10 h-fit sticky top-16 bg-white rounded-md shadow-lg border-r-2">
 
         {/* Select Property Type */}
         <div className="mb-6">
@@ -135,7 +118,7 @@ const PropertyListingPage = () => {
           </div>
           <input
             type="range"
-            name="minPrice"
+            name="price"
             min="0"
             max="10000000"
             step="100000"
@@ -143,16 +126,6 @@ const PropertyListingPage = () => {
             onChange={handleRangeChange}
             className="w-full mt-2"
           />
-          {/* <input
-          type="range"
-          name="maxPrice"
-          min="0"
-          max="10000000"
-          step="100000"
-          value={filters.maxPrice}
-          onChange={handleRangeChange}
-          className="w-full mt-2"
-        /> */}
         </div>
 
         {/* Features */}
