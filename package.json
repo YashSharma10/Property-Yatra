@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "frontend": "cd frontend && npm start",
+    "frontend": "cd client && npm run dev",
     "backend": "cd backend && npm run server",
     "dev": "concurrently --prefix-colors \"bgBlue.bold,bgGreen.bold\" \"npm run frontend\" \"npm run backend\""
   },
