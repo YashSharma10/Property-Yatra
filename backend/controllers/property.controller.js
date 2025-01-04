@@ -51,6 +51,12 @@ export const addProperty = async (req, res) => {
 };
 
 export const listProperties = async (req, res) => {
+  console.log(req.query);
+  // try {
+  //   // const {propertyType}
+  // } catch (error) {
+    
+  // }
   try {
     const {
       name,
@@ -129,7 +135,7 @@ export const latestProperties = async (req, res) => {
 };
 
 export const getUserProfileAndProperties = async (req, res) => {
-  const userId = req.userId; 
+  const userId = req.userId;
   try {
     const user = await User.findById(userId).select("-password");
     if (!user) {

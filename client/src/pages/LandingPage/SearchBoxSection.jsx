@@ -1,17 +1,28 @@
 import { Button } from "@/components/ui/button";
+import { BACKEND_URL } from "@/constants";
 import { Search } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchBoxSection = ({ visible }) => {
   const [activeTab, setActiveTab] = useState("Buy");
   const [underlineStyle, setUnderlineStyle] = useState({});
   const navRef = useRef(null);
-
+  const navigate = useNavigate()
   const handleTabClick = (tab, index) => {
     setActiveTab(tab);
+    console.log(activeTab);
     updateUnderlinePosition(index);
   };
 
+  const handleSearch = async () =>{
+    navigate("/property-listing")
+    // try {
+    //   await axios.get(`${BACKEND_URL}/api/properties/list`)
+    // } catch (error) {
+      
+    // }
+  }
   const updateUnderlinePosition = (index) => {
     if (navRef.current) {
       const buttons = navRef.current.querySelectorAll("button");
@@ -71,7 +82,7 @@ const SearchBoxSection = ({ visible }) => {
             type="text"
             placeholder="Enter Locality / Project / Society / Landmark"
           />
-          <button type="submit" className="p-1">
+          <button type="submit" className="p-1" onClick={handleSearch}>
             <Search className="text-brand" />
           </button>
         </div>

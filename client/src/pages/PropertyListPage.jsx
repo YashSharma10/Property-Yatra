@@ -222,21 +222,18 @@ const PropertyListingPage = () => {
             {/* <Loader /> */}
           </div>
         ) : properties.length > 0 ? (
-          <div className="grid sm:grid-cols-2 min-h-[75vh]">
+          <div className="grid grid-cols-1 min-h-[75vh]">
             {properties.map((property) => (
               <Card
                 key={property._id}
-                className="mb-4 p-4 border rounded shadow-sm cursor-pointer flex relative"
+                className="mb-4 border rounded shadow-sm cursor-pointer  relative"
                 onClick={() => handlePropertyClick(property._id)}
               >
-                <CardHeader>
-                  <CardTitle>{property.name}</CardTitle>
-                </CardHeader>
                 <CardContent>
                   <img
                     src={property.images[0]}
                     alt={property.name}
-                    className="w-full object-cover mr-4"
+                    className="w-1/3 object-cover mr-4 rounded-tl-lg rounded-bl-lg"
                   />
                   <p>{property.description}</p>
                   <p>
