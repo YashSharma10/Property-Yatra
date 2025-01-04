@@ -1,6 +1,8 @@
 import { Button } from "@/components/ui/button";
 import helping from "../../assets/helping.jpg";
+import { useNavigate } from "react-router-dom";
 const PostPropertySection = () => {
+  const navigate = useNavigate()
   return (
     <div className="bg-white py-3 shadow-md px-5 flex gap-4 justify-between rounded-md my-7 flex-col-reverse sm:flex-row">
       <div>
@@ -32,7 +34,7 @@ const PostPropertySection = () => {
             </div>
           </div>
         </div>
-        <Button className="my-5 ">Post your property for Free</Button>
+        <Button className="my-5" onClick={() => navigate("/add-property")}>Post your property for Free</Button>
       </div>
       <div>
         <img src={helping} alt="helping" className="max-w-md"/>

@@ -31,7 +31,7 @@ const Navbar = () => {
         {isVisible && <InputSearch />}
       </div>
       <div className="flex items-center gap-2">
-        <Button>
+        <Button onClick={() => navigate("/add-property")}>
           Post property
           <span className="bg-green-500 text-white text-sm px-1 rounded-md">
             Free

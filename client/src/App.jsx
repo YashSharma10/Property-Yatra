@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import PropertyListingPage from "./pages/PropertyListPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
+import AddPropertyPage from "./pages/AddPropertyPage";
 
 const App = () => {
   return (
@@ -25,6 +26,7 @@ const App = () => {
         />
         <Route path="/property-listing" element={<PropertyListingPage />} />
         <Route path="/property/:id" element={<PropertyDetailPage />} />
+        <Route path="/add-property" element={<AddPropertyPage />} />
       </Routes>
       <Footer />
     </div>

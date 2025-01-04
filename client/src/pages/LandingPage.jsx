@@ -12,8 +12,7 @@ const LandingPage = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     const handleScroll = () => {
-      console.log("Scroll Y Position:", window.scrollY);
-      if (window.scrollY > 360) {
+      if (window.scrollY > 300) {
         dispatch(setIsVisible(true));
       } else {
         dispatch(setIsVisible(false));
