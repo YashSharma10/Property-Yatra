@@ -17,7 +17,6 @@ const PropertyTypeSection = () => {
     navigate("/property-listing");
     dispatch(setFilters({ type: target }));
   };
-  console.log(filters,isVisible);
   
   return (
     <section className="py-4">

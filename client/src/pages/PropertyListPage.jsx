@@ -74,7 +74,6 @@ const PropertyListingPage = () => {
   useEffect(() => {
     fetchProperties();
   }, [filters, page]);
-  console.log(filters);
 
   return (
     <div className="flex mt-14 max-w-5xl mx-auto gap-10 relative">

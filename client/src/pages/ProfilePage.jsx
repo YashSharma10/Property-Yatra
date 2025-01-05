@@ -47,7 +47,6 @@ export default function UserProfile() {
         { withCredentials: true }
       );
       setProperties(properties.data);
-      console.log(properties.data);
     } catch (error) {
       console.log(error);
     }

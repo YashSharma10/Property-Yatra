@@ -56,7 +56,6 @@ const PropertyListing = () => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
-  console.log(filters);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -150,7 +149,6 @@ const PropertyListing = () => {
           </select>
         </div>
 
-        {/* Other Filters */}
         {/* Bedrooms, Bathrooms, Ownership, Built Year */}
         <div className="mb-6">
           <label className="block text-sm font-medium">Bedrooms</label>
