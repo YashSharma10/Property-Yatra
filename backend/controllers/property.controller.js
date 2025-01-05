@@ -21,6 +21,7 @@ export const addProperty = async (req, res) => {
     } = req.body;
 
     const images = req.files ? req.files.map((file) => file.path) : [];
+    const userID = req.user;
     const newProperty = new Property({
       name,
       type,
@@ -36,11 +37,16 @@ export const addProperty = async (req, res) => {
       description,
       userEmail,
       images,
+      postedBy: userID,
     });
 
+    // console.log("New P", newProperty);
     const p = await newProperty.save();
-    console.log("New P", p);
+    const user = await User.findOne(userID);
+    console.log(user);
 
+    user.postedProperties.push(newProperty._id);
+    await user.save();
     res
       .status(200)
       .json({ message: "Property added successfully", property: newProperty });
@@ -77,10 +83,9 @@ export const listProperties = async (req, res) => {
       orFilters.push({ features: { $in: featureArray } });
     }
 
-
     const filters = orFilters.length > 0 ? { $or: orFilters } : {};
     console.log(filters);
-    
+
     const skip = (Number(page) - 1) * Number(limit);
 
     const properties = await Property.find(filters)
@@ -104,7 +109,7 @@ export const getPropertyById = async (req, res) => {
     res.json(property);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error id" });
   }
 };
 
@@ -124,16 +129,15 @@ export const latestProperties = async (req, res) => {
 };
 
 export const getUserProfileAndProperties = async (req, res) => {
-  const userId = req.userId;
   try {
-    const user = await User.findById(userId).select("-password");
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    const properties = await Property.find({ userId: userId });
+    const userID = req.user;
+    console.log("UserId", userID);
+    const postedProperties = await User.findById(userID)
+      .select("-password")
+      .populate({ path: "postedProperties" });
 
-    res.json({ user, properties });
+    res.status(200).json(postedProperties);
   } catch (error) {
-    res.status(500).json({ message: "Server error" });
+    res.status(500).json({ message: "Server error profil" });
   }
 };

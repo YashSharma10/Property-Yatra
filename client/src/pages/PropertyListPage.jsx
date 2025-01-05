@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"; // Shadcn Button
+import { BACKEND_URL } from "@/constants";
 import { setFilters } from "@/redux/slices/globalEvent";
 import { Heart, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -26,7 +27,7 @@ const PropertyListingPage = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/properties/list?${queryParams}`
+        `${BACKEND_URL}/api/properties/list?${queryParams}`
       );
       const data = await response.json();
       setProperties(data.properties);

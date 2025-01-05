@@ -39,7 +39,7 @@ const AuthPage = () => {
     const payload = isSignup ? { name, email, password } : { email, password };
 
     try {
-      const response = await axios.post(endpoint, payload);
+      const response = await axios.post(endpoint, payload,{withCredentials:true});
       dispatch(setLoading(false));
       if (response.data) {
         localStorage.setItem("authToken", response.data.token);

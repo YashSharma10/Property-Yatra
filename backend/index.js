@@ -8,7 +8,12 @@ dotenv.config();
 
 // const listingsRoutes = require("./routes/Property");
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());

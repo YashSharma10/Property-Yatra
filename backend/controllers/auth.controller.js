@@ -83,3 +83,9 @@ export const logout = (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 };
+
+export const likedPropert = async (req, res) => {
+  try {
+    const user = await User.findOne(req._id);
+  } catch (error) {}
+};
