@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button"; // Shadcn Button
+import { Skeleton } from "@/components/ui/skeleton";
 import { BACKEND_URL } from "@/constants";
 import { setFilters } from "@/redux/slices/globalEvent";
 import { Heart, Phone } from "lucide-react";
@@ -69,6 +70,14 @@ const PropertyListingPage = () => {
 
   const handlePropertyClick = (id) => {
     navigate(`/property/${id}`);
+  };
+
+  const handleLikedProperty = async (id) => {
+    try {
+      await axios.post(`${BACKEND_URL}/api/profil`)
+    } catch (error) {
+      
+    }
   };
 
   useEffect(() => {
@@ -212,9 +221,18 @@ const PropertyListingPage = () => {
           {totalProperties} results |
         </h2>
         {isLoading ? (
-          <div className="flex justify-center items-center h-64">
+          <div className="flex flex-col justify-center items-center mt-20 gap-12">
             {/* Placeholder for loader */}
             {/* <Loader /> */}
+            {[1, 2, 3].map((item) => (
+              <div className="flex flex-col space-y-3" key={item}>
+                <Skeleton className="h-[125px] w-[250px] rounded-xl" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-[250px]" />
+                  <Skeleton className="h-4 w-[200px]" />
+                </div>
+              </div>
+            ))}
           </div>
         ) : properties.length > 0 ? (
           <div className="grid grid-cols-1 gap-4 min-h-[75vh]">
@@ -230,7 +248,10 @@ const PropertyListingPage = () => {
                     alt={property.name}
                     className="h-72 w-96 object-cover rounded-tl-lg rounded-bl-lg"
                   />
-                  <Heart className="absolute top-2 right-2 text-red-500" />
+                  <Heart
+                    className="absolute top-2 right-2 text-red-500"
+                    onClick={() => handleLikedProperty(property._id)}
+                  />
                 </div>
 
                 {/* Property Details */}

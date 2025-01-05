@@ -1,5 +1,11 @@
 import express from "express";
-import { signup, login, logout } from "../controllers/auth.controller.js";
+import {
+  addlikedProperty,
+  getAllLikedProperty,
+  login,
+  logout,
+  signup,
+} from "../controllers/auth.controller.js";
 import { authCheck } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
@@ -7,17 +13,7 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.get("/logout", logout);
-
-// Protected route to get current user details
-router.get("/me", authCheck, (req, res) => {
-  res.status(200).json({
-    message: "User details fetched successfully",
-    user: {
-      id: req.user._id,
-      name: req.user.name,
-      email: req.user.email,
-    },
-  });
-});
+router.get("/all-liked-properties", authCheck, getAllLikedProperty);
+router.post("/liked-property", authCheck, addlikedProperty);
 
 export default router;

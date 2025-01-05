@@ -84,8 +84,35 @@ export const logout = (req, res) => {
   res.status(200).json({ message: "Logged out successfully" });
 };
 
-export const likedPropert = async (req, res) => {
+export const addlikedProperty = async (req, res) => {
+  const { propertyType, propertyId } = req.body;
   try {
-    const user = await User.findOne(req._id);
-  } catch (error) {}
+    const likedPropertiesData = await User.findByIdAndUpdate(
+      req.user,
+      {
+        $push: {
+          likedProperties: { propertyType, propertyId },
+        },
+      },
+      { new: true, runValidators: true }
+    );
+    return res.status(200).json({ likedPropertiesData });
+  } catch (error) {
+    return res.status(500).json({ message: error });
+  }
+};
+
+export const getAllLikedProperty = async (req, res) => {
+  try {
+    const likedPropertyData = await User.findById(req.user)
+      .populate({
+        path: "likedProperties",
+      })
+      .select("-password -name -email -postedProperties -_id");
+    return res
+      .status(200)
+      .json({ message: "Liked properties", likedPropertyData });
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
 };
