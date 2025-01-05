@@ -1,28 +1,23 @@
 import { Button } from "@/components/ui/button"; // Shadcn Button
+import { setFilters } from "@/redux/slices/globalEvent";
 import { Heart, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
 const PropertyListingPage = () => {
-  const { search } = useParams();
-
+  const { filters } = useSelector((store) => store.globalEvent);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [properties, setProperties] = useState([]);
-  const [filters, setFilters] = useState({
-    type: "",
-    price: "",
-    features: [],
-    furnished: "",
-    bedrooms: "",
-    ownership: "",
-    builtYear: "",
-  });
   const [page, setPage] = useState(1);
   const [totalProperties, setTotalProperties] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
 
   const fetchProperties = async () => {
     setIsLoading(true);
+
     const queryParams = new URLSearchParams({
       ...filters,
       features: filters.features.join(","),
@@ -45,36 +40,27 @@ const PropertyListingPage = () => {
 
   const handleCheckboxChange = (e, category) => {
     const { name, checked } = e.target;
-    setFilters((prev) => {
-      const updatedCategory = checked
-        ? [...prev[category], name]
-        : prev[category].filter((item) => item !== name);
-      return { ...prev, [category]: updatedCategory };
-    });
+    const updatedCategory = checked
+      ? [...filters[category], name]
+      : filters[category].filter((item) => item !== name);
+
+    dispatch(setFilters({ [category]: updatedCategory }));
   };
-
-
 
   const handleRadioChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: value, 
-    }));
+    dispatch(setFilters({ [name]: value }));
   };
+
   const handleRangeChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      [name]: Number(value), 
-    }));
+    dispatch(setFilters({ [name]: Number(value) }));
   };
 
   const handleDropdownChange = (e) => {
     const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
+    dispatch(setFilters({ [name]: value }));
   };
-  console.log(filters);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
@@ -87,13 +73,12 @@ const PropertyListingPage = () => {
   useEffect(() => {
     fetchProperties();
   }, [filters, page]);
+  console.log(filters);
 
   return (
     <div className="flex mt-14 max-w-5xl mx-auto gap-10 relative">
-
       {/* Filter Section */}
       <div className="p-3 my-10 h-fit sticky top-16 bg-white rounded-md shadow-lg border-r-2">
-
         {/* Select Property Type */}
         <div className="mb-6">
           <label className="block text-sm font-medium">Property Type</label>
@@ -106,6 +91,7 @@ const PropertyListingPage = () => {
             <option value="Apartment">Apartment</option>
             <option value="Villa">Villa</option>
             <option value="Independent House">Independent House</option>
+            <option value="Penthouse">Penthouse</option>
           </select>
         </div>
 
@@ -113,8 +99,7 @@ const PropertyListingPage = () => {
         <div className="mb-6">
           <label className="block text-sm font-medium">Price Range</label>
           <div className="flex justify-between text-sm mt-2">
-            <span>₹{filters.minPrice}</span>
-            <span>₹{filters.maxPrice}</span>
+            <span>₹{filters.price}</span>
           </div>
           <input
             type="range"
@@ -122,7 +107,7 @@ const PropertyListingPage = () => {
             min="0"
             max="10000000"
             step="100000"
-            value={filters.minPrice}
+            value={filters.price}
             onChange={handleRangeChange}
             className="w-full mt-2"
           />
@@ -131,7 +116,14 @@ const PropertyListingPage = () => {
         {/* Features */}
         <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Features</h3>
-          {["parking", "lift", "swimming pool","water", "electricity", "gas"].map((feature) => (
+          {[
+            "parking",
+            "lift",
+            "swimming pool",
+            "water",
+            "electricity",
+            "gas",
+          ].map((feature) => (
             <label key={feature} className="block">
               <input
                 type="checkbox"
@@ -148,21 +140,21 @@ const PropertyListingPage = () => {
         {/* Furnished (Radio Buttons) */}
         <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Furnished</h3>
-         <div className="flex gap-4">
-         {["Yes", "No"].map((option) => (
-            <label key={option} className="block">
-              <input
-                type="radio"
-                name="furnished"
-                value={option}
-                checked={filters.furnished === option}
-                onChange={handleRadioChange}
-                className="mr-2"
-              />
-              {option}
-            </label>
-          ))}
-         </div>
+          <div className="flex gap-4">
+            {["Yes", "No"].map((option) => (
+              <label key={option} className="block">
+                <input
+                  type="radio"
+                  name="furnished"
+                  value={option}
+                  checked={filters.furnished === option}
+                  onChange={handleRadioChange}
+                  className="mr-2"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
         </div>
 
         {/* Room Number*/}
@@ -212,12 +204,13 @@ const PropertyListingPage = () => {
             ))}
           </select>
         </div>
-
       </div>
 
       {/* Property Listings */}
       <div className="">
-        <h2 className="text-lg font-semibold mb-4">Properties</h2>
+        <h2 className="text-lg font-semibold mb-4">
+          {totalProperties} results |
+        </h2>
         {isLoading ? (
           <div className="flex justify-center items-center h-64">
             {/* Placeholder for loader */}
@@ -229,7 +222,6 @@ const PropertyListingPage = () => {
               <div
                 key={property._id}
                 className="flex rounded-lg shadow-sm cursor-pointer border transition hover:shadow-lg"
-                onClick={() => handlePropertyClick(property._id)}
               >
                 {/* Property Image and Heart Icon */}
                 <div className="relative flex-shrink-0">
@@ -242,7 +234,10 @@ const PropertyListingPage = () => {
                 </div>
 
                 {/* Property Details */}
-                <div className="flex-grow p-4">
+                <div
+                  className="flex-grow p-4"
+                  onClick={() => handlePropertyClick(property._id)}
+                >
                   <p className="text-xl font-semibold">{property.name}</p>
                   <p className="text-gray-600 text-sm truncate">
                     {property.description}
@@ -277,22 +272,24 @@ const PropertyListingPage = () => {
         )}
 
         {/* Pagination */}
-        <div className="flex justify-between mt-4">
-          <Button
-            onClick={() => handlePageChange(page - 1)}
-            disabled={page === 1}
-            variant="outline"
-          >
-            Previous
-          </Button>
-          <Button
-            onClick={() => handlePageChange(page + 1)}
-            disabled={page * 5 >= totalProperties}
-            variant="outline"
-          >
-            Next
-          </Button>
-        </div>
+        {properties.length > 0 && (
+          <div className="flex justify-between mt-4">
+            <Button
+              onClick={() => handlePageChange(page - 1)}
+              disabled={page === 1}
+              variant="outline"
+            >
+              Previous
+            </Button>
+            <Button
+              onClick={() => handlePageChange(page + 1)}
+              disabled={page * 5 >= totalProperties}
+              variant="outline"
+            >
+              Next
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

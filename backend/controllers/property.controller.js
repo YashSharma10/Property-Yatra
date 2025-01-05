@@ -51,12 +51,6 @@ export const addProperty = async (req, res) => {
 };
 
 export const listProperties = async (req, res) => {
-  console.log(req.query);
-  // try {
-  //   // const {propertyType}
-  // } catch (error) {
-    
-  // }
   try {
     const {
       name,
@@ -75,23 +69,18 @@ export const listProperties = async (req, res) => {
 
     if (name) orFilters.push({ name: { $regex: name, $options: "i" } });
     if (type) orFilters.push({ type });
-    if (price) orFilters.push({ price: { $lte: Number(price) } });
+    if (price) orFilters.push({ price: { $gte: Number(price) } });
     if (propertyType) orFilters.push({ propertyType });
-    if (area) orFilters.push({ area: { $regex: area, $options: "i" } });
-    if (transactionType) orFilters.push({ transactionType });
 
     if (features) {
       const featureArray = features.split(",");
       orFilters.push({ features: { $in: featureArray } });
     }
 
-    if (utilities) {
-      const utilityArray = utilities.split(",");
-      orFilters.push({ utilities: { $in: utilityArray } });
-    }
 
     const filters = orFilters.length > 0 ? { $or: orFilters } : {};
-
+    console.log(filters);
+    
     const skip = (Number(page) - 1) * Number(limit);
 
     const properties = await Property.find(filters)

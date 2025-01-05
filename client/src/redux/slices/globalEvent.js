@@ -4,16 +4,24 @@ const globalEventSlice = createSlice({
   name: "globalEvent",
   initialState: {
     isVisible: false,
-    searchValue: "",
+    filters: {
+      type: "",
+      price: '',
+      features: [],
+      furnished: "",
+      bedrooms: "",
+      ownership: "",
+      builtYear: "",
+    },
   },
   reducers: {
     setIsVisible: (state, action) => {
       state.isVisible = action.payload;
     },
-    setSearchValue: (state, action) => {
-      state.searchValue = action.payload;
+    setFilters: (state, action) => {
+      state.filters = {...state.filters, ...action.payload};
     },
   },
 });
-export const { setIsVisible, setSearchValue } = globalEventSlice.actions;
+export const { setIsVisible, setFilters } = globalEventSlice.actions;
 export default globalEventSlice.reducer;

@@ -100,14 +100,11 @@ const NewLaunchPropertiesSection = () => {
       </div>
 
       <div className="w-full">
-        <Carousel >
+        <Carousel>
           <CarouselContent>
             {properties.map((property) => (
-              <CarouselItem className="w-60  basis-1/3">
-                <Card
-                  key={property.id}
-                  className="bg-white shadow-lg rounded-lg overflow-hidden"
-                >
+              <CarouselItem className="w-60  basis-1/3" key={property.id}>
+                <Card className="bg-white shadow-lg rounded-lg overflow-hidden">
                   <CardHeader className="relative">
                     <Badge className="absolute top-2 left-2 bg-red-500 rounded-md text-sm font-semibold">
                       New Arrival
