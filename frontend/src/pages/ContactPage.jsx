@@ -18,7 +18,6 @@ const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Logic to handle form submission (e.g., sending data to an API)
     setIsSubmitted(true);
     setFormData({
       name: "",

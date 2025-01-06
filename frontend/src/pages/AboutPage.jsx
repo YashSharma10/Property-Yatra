@@ -5,7 +5,6 @@ const AboutPage = () => {
   return (
     <section className="py-36 bg-gray-50">
       <div className="container mx-auto text-center px-6">
-        {/* Heading */}
         <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-6">
           About Us
         </h2>
@@ -14,7 +13,6 @@ const AboutPage = () => {
           property.
         </p>
 
-        {/* Mission Section */}
         <div className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-lg">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             Our Mission
@@ -27,7 +25,6 @@ const AboutPage = () => {
           </p>
         </div>
 
-        {/* Values Section */}
         <div className="max-w-4xl mx-auto mt-12 p-8">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             Our Values
@@ -52,13 +49,11 @@ const AboutPage = () => {
           </ul>
         </div>
 
-        {/* Team Section */}
         <div className="mt-12">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             Meet Our Team
           </h3>
           <div className="flex flex-wrap justify-center gap-8">
-            {/* Team Member 1 */}
             <div className="w-64 bg-white p-6 rounded-lg shadow-lg text-center">
               <img
                 src="https://via.placeholder.com/150"
@@ -68,7 +63,6 @@ const AboutPage = () => {
               <h4 className="text-xl font-semibold text-gray-800">John Doe</h4>
               <p className="text-gray-600">CEO & Founder</p>
             </div>
-            {/* Team Member 2 */}
             <div className="w-64 bg-white p-6 rounded-lg shadow-lg text-center">
               <img
                 src="https://via.placeholder.com/150"
@@ -80,7 +74,6 @@ const AboutPage = () => {
               </h4>
               <p className="text-gray-600">Marketing Director</p>
             </div>
-            {/* Team Member 3 */}
             <div className="w-64 bg-white p-6 rounded-lg shadow-lg text-center">
               <img
                 src="https://via.placeholder.com/150"
@@ -95,7 +88,6 @@ const AboutPage = () => {
           </div>
         </div>
 
-        {/* Contact Call-to-Action */}
         <div className="mt-12">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
             Want to know more? Contact Us!

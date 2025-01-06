@@ -8,6 +8,9 @@ import ProfilePage from "./pages/ProfilePage";
 import PropertyDetailPage from "./pages/PropertyDetailPage";
 import PropertyListingPage from "./pages/PropertyListPage";
 import ProtectedRoute from "./utils/ProtectedRoute";
+import AddProperty from "./pages/AddProperty";
+import ContactPage from "./pages/ContactPage";
+import AboutPage from "./pages/AboutUsPage";
 
 const App = () => {
   return (
@@ -16,6 +19,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/add" element={<AddProperty />} />
         <Route
           path="/profile"
           element={
@@ -27,6 +31,8 @@ const App = () => {
         <Route path="/property-listing" element={<PropertyListingPage />} />
         <Route path="/property/:id" element={<PropertyDetailPage />} />
         <Route path="/add-property" element={<AddPropertyPage />} />
+        <Route path="/contact" element={<ContactPage />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
       <Footer />
     </div>

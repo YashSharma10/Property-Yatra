@@ -13,15 +13,19 @@ const globalEventSlice = createSlice({
       ownership: "",
       builtYear: "",
     },
+    roadmapVisible:true,
   },
   reducers: {
     setIsVisible: (state, action) => {
       state.isVisible = action.payload;
     },
+    setRoadmapVisible:(state, action) => {
+      state.roadmapVisible = action.payload;
+    }, 
     setFilters: (state, action) => {
       state.filters = {...state.filters, ...action.payload};
     },
   },
 });
-export const { setIsVisible, setFilters } = globalEventSlice.actions;
+export const { setIsVisible, setFilters ,setRoadmapVisible} = globalEventSlice.actions;
 export default globalEventSlice.reducer;
