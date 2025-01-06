@@ -76,7 +76,7 @@ const PropertyForm = () => {
 
   const { roadmapVisible } = useSelector((store) => store.globalEvent);
   return (
-    <section className={`${roadmapVisible?"hidden":"mt-14 mx-auto"}`}>
+    <section className={`${roadmapVisible?"hidden":"mt-14 mx-auto max-w-md py-5 h-full"}`}>
       <Tabs value={activeTab}>
         <TabsList className="mb-6 w-full mx-auto">
           <TabsTrigger value="tab1" onClick={() => setActiveTab("tab1")}>

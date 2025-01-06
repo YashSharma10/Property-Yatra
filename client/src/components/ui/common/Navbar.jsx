@@ -19,7 +19,7 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   return (
-    <header className="w-full shadow-lg py-2 px-8 flex justify-around bg-white fixed z-20 top-0">
+    <header className="w-full shadow-lg py-2 px-8 flex justify-around bg-white fixed z-20 top-0 h-[6vh]">
       <Button
         variant="ghost"
         onClick={() => navigate("/")}

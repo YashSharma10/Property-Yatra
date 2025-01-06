@@ -34,7 +34,7 @@ const PostPropertySection = () => {
             </div>
           </div>
         </div>
-        <Button className="my-5" onClick={() => navigate("/add-property")}>Post your property for Free</Button>
+        <Button className="my-5" onClick={() => navigate("/add")}>Post your property for Free</Button>
       </div>
       <div>
         <img src={helping} alt="helping" className="max-w-md"/>

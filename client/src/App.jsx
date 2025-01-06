@@ -14,7 +14,7 @@ import AboutPage from "./pages/AboutUsPage";
 
 const App = () => {
   return (
-    <div className="bg-muted/10">
+    <div className="bg-muted/10 relative">
       <Navbar />
       <Routes>
         <Route path="/" element={<LandingPage />} />

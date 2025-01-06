@@ -57,9 +57,10 @@ const Roadmap = () => {
   // useEffect(() => {}, [isVisible]);
   return (
     <section
-      className={`py-16 transition-opacity duration-200${
-        roadmapVisible ? "opacity-100" : "opacity-0 hidden"
+      className={`py-24  ${
+        roadmapVisible ? "" : " hidden"
       }`}
+      style={{height: "calc(100vh - 32vh"}}
     >
       <div className="container mx-auto text-center max-w-2xl">
         <h2 className="text-xl sm:text-4xl font-semibold mb-10 text-gray-900 ">
