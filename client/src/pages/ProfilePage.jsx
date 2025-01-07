@@ -48,10 +48,14 @@ export default function UserProfile() {
       );
       setProperties(properties.data);
     } catch (error) {
-      console.log(error);
+      if (error.response.status==401){
+        navigate("/auth")
+        toast.error("Session expired !");
+      } 
+        console.log(error.response.status);
     }
   };
-  const time = ("2024-12-29T06:26:00.393+00:00");
+  const time = "2024-12-29T06:26:00.393+00:00";
   return (
     <div className="min-h-screen bg-gray-100 py-10 px-4 mt-10">
       <div className="max-w-6xl mx-auto space-y-8">
@@ -122,7 +126,11 @@ export default function UserProfile() {
                         </p>
                       </CardContent>
                       <CardFooter className="flex justify-center">
-                        <Button variant="outline"><Link to={`/property/${property._id}`}>View Details</Link></Button>
+                        <Button variant="outline">
+                          <Link to={`/property/${property._id}`}>
+                            View Details
+                          </Link>
+                        </Button>
                       </CardFooter>
                     </Card>
                   ))}

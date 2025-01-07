@@ -23,20 +23,19 @@ const userSchema = new mongoose.Schema(
         ref: "Property",
       },
     ],
-    likedProperties: [
-      {
-        propertyType: {
-          type: String,
-          enum: ["CommercialProperty", "PG", "Plot", "Property"],
-          // required: true,
-        },
-        propertyId: {
-          type: mongoose.Schema.Types.ObjectId,
-          refPath: "likedProperties.propertyType",
-          // required: true,
-        },
-      },
-    ],
+    
+    // likedProperties: [
+    //   {
+    //     propertyType: {
+    //       type: String,
+    //       enum: ["CommercialProperty", "PG", "Plot", "Property"],
+    //     },
+    //     propertyId: {
+    //       type: mongoose.Schema.Types.ObjectId,
+    //       refPath: "likedProperties.propertyType",
+    //     },
+    //   },
+    // ],
   },
   { timestamps: true }
 );
