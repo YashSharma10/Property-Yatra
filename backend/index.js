@@ -6,7 +6,6 @@ import cors from "cors";
 import dotenv from "dotenv";
 dotenv.config();
 
-// const listingsRoutes = require("./routes/Property");
 const app = express();
 app.use(
   cors({
@@ -32,8 +31,6 @@ app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
 
-// app.get("/", (req, res) => {
-//   res.send("Hello World");
-// });
-
-// app.use("/", listingsRoutes);
+app.get("/", (req, res) => {
+  res.send("Hello World");
+});

@@ -1,19 +1,14 @@
-import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-// Helper to set JWT in cookie
-// const setTokenCookie = (res, token) => {
-//   res.cookie("authToken", token, {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production",
-//     sameSite: "strict",
-//     maxAge: 3600000, // 1 hour
-//   });
-// };
 
+// 📝 **Signup Controller**
 export const signup = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
   if (!name || !email || !password) {
     return res.status(400).json({ message: "All fields are required" });
+  }
+
+  if (role && !["user", "admin", "agent"].includes(role)) {
+    return res.status(400).json({ message: "Invalid role specified" });
   }
 
   try {
@@ -22,7 +17,7 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, password, role });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -43,9 +38,11 @@ export const signup = async (req, res) => {
       });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
+    console.log(error);
   }
 };
 
+// 📝 **Login Controller**
 export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -79,11 +76,23 @@ export const login = async (req, res) => {
   }
 };
 
+// 📝 **Logout Controller**
 export const logout = (req, res) => {
   res.clearCookie("token");
   res.status(200).json({ message: "Logged out successfully" });
 };
 
+// 🛡️ **Role Middleware**
+export const authorizeRoles = (roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Access denied" });
+    }
+    next();
+  };
+};
+
+// 📝 **Add Liked Property**
 export const addlikedProperty = async (req, res) => {
   const { propertyType, propertyId } = req.body;
   try {
@@ -102,6 +111,7 @@ export const addlikedProperty = async (req, res) => {
   }
 };
 
+// 📝 **Get All Liked Properties (User only)**
 export const getAllLikedProperty = async (req, res) => {
   try {
     const likedPropertyData = await User.findById(req.user)
@@ -114,5 +124,25 @@ export const getAllLikedProperty = async (req, res) => {
       .json({ message: "Liked properties", likedPropertyData });
   } catch (error) {
     res.status(500).json({ message: error });
+  }
+};
+
+// 📝 **Admin: Get All Users (Admin only)**
+export const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find().select("-password");
+    res.status(200).json({ users });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// 📝 **Agent: Get Assigned Properties (Agent only)**
+export const getAgentProperties = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("postedProperties");
+    res.status(200).json({ postedProperties: user.postedProperties });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
   }
 };

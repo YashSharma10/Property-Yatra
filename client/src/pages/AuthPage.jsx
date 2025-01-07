@@ -18,6 +18,7 @@ const AuthPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("user"); // Default role is 'user'
   const [error, setError] = useState("");
 
   const toggleMode = () => {
@@ -26,6 +27,7 @@ const AuthPage = () => {
     setName("");
     setEmail("");
     setPassword("");
+    setRole("user"); // Reset role to 'user' when toggling mode
   };
 
   const handleSubmit = async (e) => {
@@ -36,16 +38,18 @@ const AuthPage = () => {
     const endpoint = isSignup
       ? `${BACKEND_URL}/api/signup`
       : `${BACKEND_URL}/api/login`;
-    const payload = isSignup ? { name, email, password } : { email, password };
+    const payload = isSignup
+      ? { name, email, password, role }
+      : { email, password };
 
     try {
-      const response = await axios.post(endpoint, payload,{withCredentials:true});
+      const response = await axios.post(endpoint, payload, { withCredentials: true });
       dispatch(setLoading(false));
       if (response.data) {
         localStorage.setItem("authToken", response.data.token);
         dispatch(setUser(response.data.token));
         toast.success(response.data.message);
-        navigate("/");
+        navigate("/"); // Redirect to homepage after successful login/signup
       }
     } catch (err) {
       dispatch(setLoading(false));
@@ -103,6 +107,21 @@ const AuthPage = () => {
                 required
               />
             </div>
+            {isSignup && (
+              <div>
+                <Label htmlFor="role">Role</Label>
+                <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                  <option value="agent">Agent</option>
+                </select>
+              </div>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading
                 ? `${isSignup ? "Signing Up..." : "Logging In..."}`
