@@ -7,6 +7,7 @@ import {
   getAllLikedProperty,
   getAllUsers,
   getAgentProperties,
+  getUserPostedProperties,
 } from "../controllers/auth.controller.js";
 import { authCheck } from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../controllers/auth.controller.js"; // Import role-based authorization
@@ -32,5 +33,8 @@ router.get(
   authorizeRoles(["agent"]),
   getAgentProperties
 ); // Agent can get all their properties
+
+/* 🔒 User Routes (Requires User Role) */
+router.get("/user/properties", authCheck, getUserPostedProperties); // User can get all their properties
 
 export default router;
