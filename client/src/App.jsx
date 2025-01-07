@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Footer from "./components/ui/common/Footer";
 import Navbar from "./components/ui/common/Navbar";
-import AddPropertyPage from "./pages/AddPropertyPage";
 import AuthPage from "./pages/AuthPage";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -30,7 +29,6 @@ const App = () => {
         />
         <Route path="/property-listing" element={<PropertyListingPage />} />
         <Route path="/property/:id" element={<PropertyDetailPage />} />
-        <Route path="/add-property" element={<AddPropertyPage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/about" element={<AboutPage />} />
       </Routes>
