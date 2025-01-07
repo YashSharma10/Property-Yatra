@@ -6,7 +6,11 @@ const propertySchema = new mongoose.Schema(
     type: String,
     price: Number,
     configuration: String,
-    propertyType: String,
+    propertyType: {
+      type: String,
+      enum: ["Residential", "Commercial", "PG", "Plot"],
+      required: true,
+    },
     utilities: {
       water: Boolean,
       electricity: Boolean,
@@ -31,12 +35,32 @@ const propertySchema = new mongoose.Schema(
       park: Boolean,
     },
     description: String,
-    images: [String], // Store file paths of images
+    images: [String],
     userEmail: String,
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+
+    commercialDetails: {
+      businessType: String,
+      floorNumber: Number,
+      furnished: Boolean,
+      meetingRooms: Number,
+    },
+
+    pgDetails: {
+      foodIncluded: Boolean,
+      acAvailable: Boolean,
+      wifiAvailable: Boolean,
+      sharingType: String,
+    },
+
+    plotDetails: {
+      plotFacing: String,
+      boundaryWall: Boolean,
+      landApproved: Boolean,
     },
   },
   { timestamps: true }
