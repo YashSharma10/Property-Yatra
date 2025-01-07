@@ -7,7 +7,6 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 
-
 const PropertyForm = () => {
   const [activeTab, setActiveTab] = useState("tab1");
   const [formData, setFormData] = useState({
@@ -76,7 +75,12 @@ const PropertyForm = () => {
 
   const { roadmapVisible } = useSelector((store) => store.globalEvent);
   return (
-    <section className={`${roadmapVisible?"hidden":"mt-14 mx-auto max-w-md py-5 h-full"}`} style={{height: "calc(100vh - 32vh"}}>
+    <section
+      className={`${
+        roadmapVisible ? "hidden" : ""
+      } mt-14 mx-auto max-w-md py-5 flex flex-col min-h-screen`}
+      style={{ height: "calc(100vh - 32vh)" }}
+    >
       <Tabs value={activeTab}>
         <TabsList className="mb-6 w-full mx-auto">
           <TabsTrigger value="tab1" onClick={() => setActiveTab("tab1")}>
@@ -218,7 +222,7 @@ const PropertyForm = () => {
         </TabsContent>
       </Tabs>
 
-      <div className="flex justify-between mt-6">
+      <div className="flex justify-between mt-6 pb-6">
         <Button
           onClick={handlePrevious}
           disabled={activeTab === "tab1"}

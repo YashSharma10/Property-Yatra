@@ -76,7 +76,7 @@ const AuthPage = () => {
         console.log(response.data.newUser);
 
         toast.success(response.data.message);
-        navigate("/");
+        navigate("/"); // Redirect to homepage after successful login/signup
       }
     } catch (err) {
       dispatch(setLoading(false));
@@ -147,6 +147,21 @@ const AuthPage = () => {
                 required
               />
             </div>
+            {isSignup && (
+              <div>
+                <Label htmlFor="role">Role</Label>
+                <select
+                  id="role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full p-2 border rounded"
+                >
+                  <option value="user">User</option>
+                  <option value="admin">Admin</option>
+                  <option value="agent">Agent</option>
+                </select>
+              </div>
+            )}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading
                 ? `${isSignup ? "Signing Up..." : "Logging In..."}`

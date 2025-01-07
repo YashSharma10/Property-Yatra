@@ -1,7 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import Footer from "./components/ui/common/Footer";
 import Navbar from "./components/ui/common/Navbar";
-import AddPropertyPage from "./pages/AddPropertyPage";
 import AuthPage from "./pages/AuthPage";
 import LandingPage from "./pages/LandingPage";
 import ProfilePage from "./pages/ProfilePage";

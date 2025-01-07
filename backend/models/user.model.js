@@ -23,25 +23,23 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      enum: ["user", "admin", "agent"],
+      default: "user",
+    },
     postedProperties: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Property",
       },
     ],
-    
-    // likedProperties: [
-    //   {
-    //     propertyType: {
-    //       type: String,
-    //       enum: ["CommercialProperty", "PG", "Plot", "Property"],
-    //     },
-    //     propertyId: {
-    //       type: mongoose.Schema.Types.ObjectId,
-    //       refPath: "likedProperties.propertyType",
-    //     },
-    //   },
-    // ],
+    likedProperties: [
+      {
+        propertyId: mongoose.Schema.Types.ObjectId,
+        propertyType: String,
+      },
+    ],
   },
   { timestamps: true }
 );
