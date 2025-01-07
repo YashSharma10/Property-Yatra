@@ -37,7 +37,7 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+        {/* <div>
           <h3 className="text-lg font-semibold mb-4">Newsletter</h3>
           <p className="text-gray-400 mb-4">
             Subscribe to our newsletter to get the latest updates.
@@ -50,7 +50,7 @@ export default function Footer() {
             />
             <Button className="ml-2">Subscribe</Button>
           </div>
-        </div>
+        </div> */}
 
         <div>
           <h3 className="text-lg font-semibold mb-4">Follow Us</h3>

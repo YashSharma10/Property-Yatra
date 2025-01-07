@@ -11,29 +11,33 @@ import ProtectedRoute from "./utils/ProtectedRoute";
 import AddProperty from "./pages/AddProperty";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutUsPage";
+import NotFound from "./components/ui/common/NotFound";
 
 const App = () => {
   return (
-    <div className="bg-muted/10 relative">
+    <div className="bg-gray-50 flex flex-col min-h-screen">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/add" element={<AddProperty />} />
-        <Route
-          path="/profile"
-          element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          }
-        />
-        <Route path="/property-listing" element={<PropertyListingPage />} />
-        <Route path="/property/:id" element={<PropertyDetailPage />} />
-        <Route path="/add-property" element={<AddPropertyPage />} />
-        <Route path="/contact" element={<ContactPage />} />
-        <Route path="/about" element={<AboutPage />} />
-      </Routes>
+      <main className="flex-grow max-w-7xl mx-auto">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/add" element={<AddProperty />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/property-listing" element={<PropertyListingPage />} />
+          <Route path="/property/:id" element={<PropertyDetailPage />} />
+          <Route path="/add-property" element={<AddPropertyPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </main>
       <Footer />
     </div>
   );

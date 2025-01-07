@@ -8,7 +8,7 @@ const HeaderSection = () => {
 
   return (
     <section
-      className={`fixed top-0 right-0 left-0 z-[-100] transition-opacity duration-500 ${
+      className={`fixed top-10 right-0 left-0 transition-opacity duration-500 ${
         !isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >

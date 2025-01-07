@@ -19,11 +19,11 @@ const Navbar = () => {
   const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
   return (
-    <header className="w-full shadow-lg py-2 px-8 flex justify-around bg-white fixed z-20 top-0 h-[6vh]">
+    <header className="sticky top-0 w-full z-50 shadow-lg py-2 flex justify-around bg-white">
       <Button
         variant="ghost"
         onClick={() => navigate("/")}
-        className=" text-3xl font-bold text-brand"
+        className=" text-3xl font-bold text-brand hover:bg-transparent"
       >
         {brandName}
       </Button>

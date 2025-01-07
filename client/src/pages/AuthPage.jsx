@@ -4,7 +4,13 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useDispatch, useSelector } from "react-redux";
 import { setLoading, setUser } from "@/redux/slices/auth";
@@ -15,18 +21,29 @@ const AuthPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [number, setNumber] = useState(0);
-  const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [userDetails, setUserDetails] = useState({
+    name: "",
+    email: "",
+    number: "",
+    password: "",
+  });
 
+  const handleFormData = (data) => {
+    setUserDetails((prevData) => ({
+      ...prevData,
+      [data.target.id]: data.target.value,
+    }));
+  };
   const toggleMode = () => {
     setIsSignup(!isSignup);
     setError("");
-    setName("");
-    setEmail("");
-    setPassword("");
+    setUserDetails({
+      name: "",
+      email: "",
+      number: "",
+      password: "",
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -37,7 +54,17 @@ const AuthPage = () => {
     const endpoint = isSignup
       ? `${BACKEND_URL}/api/signup`
       : `${BACKEND_URL}/api/login`;
-    const payload = isSignup ? { name, email, password } : { email, password };
+    const payload = isSignup
+      ? {
+          name: userDetails.name,
+          email: userDetails.email,
+          password: userDetails.password,
+          number: userDetails.number,
+        }
+      : {
+          email: userDetails.email,
+          password: userDetails.password,
+        };
 
     try {
       const response = await axios.post(endpoint, payload, {
@@ -45,8 +72,9 @@ const AuthPage = () => {
       });
       dispatch(setLoading(false));
       if (response.data) {
-        // localStorage.setItem("authToken", response.data.token);
-        dispatch(setUser(response.data.token));
+        dispatch(setUser(response.data.newUser));
+        console.log(response.data.newUser);
+
         toast.success(response.data.message);
         navigate("/");
       }
@@ -57,8 +85,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Card className="w-full max-w-md shadow-lg">
+    <div className="flex items-center justify-center my-10">
+      <Card className="shadow-lg ">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-semibold">
             {isSignup ? "Sign Up" : "Login"}
@@ -72,16 +100,29 @@ const AuthPage = () => {
           )}
           <form className="space-y-4" onSubmit={handleSubmit}>
             {isSignup && (
-              <div>
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Your name"
-                  required
-                />
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="name">Name</Label>
+                  <Input
+                    id="name"
+                    type="text"
+                    value={userDetails.name}
+                    onChange={handleFormData}
+                    placeholder="Your name"
+                    required
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="email">Phone</Label>
+                  <Input
+                    id="number"
+                    type="number"
+                    value={userDetails.number}
+                    onChange={handleFormData}
+                    placeholder="798765XXXXX"
+                    required
+                  />
+                </div>
               </div>
             )}
             <div>
@@ -89,20 +130,9 @@ const AuthPage = () => {
               <Input
                 id="email"
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userDetails.email}
+                onChange={handleFormData}
                 placeholder="you@example.com"
-                required
-              />
-            </div>
-            <div>
-              <Label htmlFor="email">Phone</Label>
-              <Input
-                id="number"
-                type="email"
-                value={email}
-                onChange={(e) => setNumber(e.target.value)}
-                placeholder="798765XXXXX"
                 required
               />
             </div>
@@ -111,8 +141,8 @@ const AuthPage = () => {
               <Input
                 id="password"
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={userDetails.password}
+                onChange={handleFormData}
                 placeholder="••••••••"
                 required
               />
@@ -133,6 +163,14 @@ const AuthPage = () => {
               {isSignup ? "Login" : "Sign Up"}
             </button>
           </p>
+            <Button className="w-full mt-5">
+              <img
+                src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
+                alt="Google logo"
+                className="w-6 h-6"
+              />
+              <span className="text-xs">Login with Google</span>
+            </Button>
         </CardContent>
       </Card>
     </div>

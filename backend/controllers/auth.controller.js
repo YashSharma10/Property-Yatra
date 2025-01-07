@@ -1,18 +1,10 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-// Helper to set JWT in cookie
-// const setTokenCookie = (res, token) => {
-//   res.cookie("authToken", token, {
-//     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production",
-//     sameSite: "strict",
-//     maxAge: 3600000, // 1 hour
-//   });
-// };
 
 export const signup = async (req, res) => {
-  const { name, email, password } = req.body;
-  if (!name || !email || !password) {
+
+  const { name, email, password, number } = req.body;
+  if (!name || !email || !password || !number) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -22,25 +14,30 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const user = new User({ name, email, password });
+    const user = new User({ name, email, password, number });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    // setTokenCookie(res, token);
+
+    const newUser = {
+      name: user.name,
+      email: user.email,
+    };
 
     res
       .status(201)
       .cookie("token", token, {
-        maxage: 24 * 60 * 60 * 1000,
+        // maxage: 24 * 60 * 60 * 1000,
         httpsOnly: true,
         sameSite: "strict",
       })
       .json({
         message: "User created successfully",
-        token,
+        newUser,
       });
+
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -61,18 +58,21 @@ export const login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    // setTokenCookie(res, token);
+    const newUser = {
+      name: user.name,
+      email: user.email,
+    };
 
     res
       .status(200)
       .cookie("token", token, {
-        maxage: 24 * 60 * 60 * 1000,
+        // maxage: 24 * 60 * 60 * 1000,
         httpsOnly: true,
         sameSite: "strict",
       })
       .json({
         message: "Login successful",
-        token,
+        newUser,
       });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
