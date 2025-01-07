@@ -17,6 +17,7 @@ const AuthPage = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [number, setNumber] = useState(0);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -39,10 +40,12 @@ const AuthPage = () => {
     const payload = isSignup ? { name, email, password } : { email, password };
 
     try {
-      const response = await axios.post(endpoint, payload,{withCredentials:true});
+      const response = await axios.post(endpoint, payload, {
+        withCredentials: true,
+      });
       dispatch(setLoading(false));
       if (response.data) {
-        localStorage.setItem("authToken", response.data.token);
+        // localStorage.setItem("authToken", response.data.token);
         dispatch(setUser(response.data.token));
         toast.success(response.data.message);
         navigate("/");
@@ -89,6 +92,17 @@ const AuthPage = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="you@example.com"
+                required
+              />
+            </div>
+            <div>
+              <Label htmlFor="email">Phone</Label>
+              <Input
+                id="number"
+                type="email"
+                value={email}
+                onChange={(e) => setNumber(e.target.value)}
+                placeholder="798765XXXXX"
                 required
               />
             </div>
