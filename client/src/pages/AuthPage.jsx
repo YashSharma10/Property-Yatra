@@ -17,7 +17,7 @@ import { setLoading, setUser } from "@/redux/slices/auth";
 import { BACKEND_URL } from "@/constants";
 
 const AuthPage = () => {
-  const { user, loading } = useSelector((store) => store.auth);
+  const { loading } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isSignup, setIsSignup] = useState(false);
@@ -85,8 +85,8 @@ const AuthPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center my-10">
-      <Card className="shadow-lg ">
+    <div className="width">
+      <Card className="shadow-lg max-w-sm mx-auto">
         <CardHeader>
           <CardTitle className="text-center text-2xl font-semibold">
             {isSignup ? "Sign Up" : "Login"}
@@ -163,14 +163,14 @@ const AuthPage = () => {
               {isSignup ? "Login" : "Sign Up"}
             </button>
           </p>
-            <Button className="w-full mt-5">
-              <img
-                src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
-                alt="Google logo"
-                className="w-6 h-6"
-              />
-              <span className="text-xs">Login with Google</span>
-            </Button>
+          <Button className="w-full mt-5">
+            <img
+              src="https://lh3.googleusercontent.com/COxitqgJr1sJnIDe8-jiKhxDx1FrYbtRHKJ9z_hELisAlapwE9LUPh6fcXIfb5vwpbMl4xl9H9TRFPc5NOO8Sb3VSgIBrfRYvW6cUA"
+              alt="Google logo"
+              className="w-6 h-6"
+            />
+            <span className="text-xs">Login with Google</span>
+          </Button>
         </CardContent>
       </Card>
     </div>

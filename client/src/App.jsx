@@ -17,7 +17,7 @@ const App = () => {
   return (
     <div className="bg-gray-50 flex flex-col min-h-screen">
       <Navbar />
-      <main className="flex-grow max-w-7xl mx-auto">
+      <main className="flex-grow">
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />

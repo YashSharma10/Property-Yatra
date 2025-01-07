@@ -39,7 +39,7 @@ const SearchBoxSection = ({ visible }) => {
   };
 
   useEffect(() => {
-    updateUnderlinePosition(0); // Initialize underline position for the first tab
+    updateUnderlinePosition(0); 
   }, []);
 
   const tabs = [
@@ -52,8 +52,8 @@ const SearchBoxSection = ({ visible }) => {
   ];
 
   return (
-    <section className={`my-5 bg-transparent mt-80`}>
-      <div className="flex justify-center flex-col items-center w-fit mx-auto p-4 shadow-md rounded-2xl bg-white">
+    <section className={``}>
+      <div className="flex justify-center flex-col items-center w-20 mx-auto p-4 shadow-md rounded-2xl bg-white">
         {/* Navigation Tabs */}
         <div ref={navRef} className="relative flex gap-6 text-lg sm:text-xl">
           {tabs.map((tab, index) => (

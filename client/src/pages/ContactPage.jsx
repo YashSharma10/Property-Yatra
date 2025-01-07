@@ -31,17 +31,17 @@ const ContactPage = () => {
   };
 
   return (
-    <section className="bg-gray-50 py-32 min-h-svh">
-      <div className="container mx-auto text-center px-6">
+    <section className="width">
+      <div className=" mx-auto text-center px-6">
         <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-6 ">
           Contact Us
         </h2>
-        <p className="text-lg text-gray-600 mb-8 w-80 mx-auto">
+        <p className="text-lg text-gray-600 mb-8">
           We would love to hear from you! Feel free to get in touch with any
           inquiries or feedback.
         </p>
 
-        <Card className="w-full max-w-md mx-auto bg-white p-8 rounded-lg shadow-lg">
+        <Card className=" max-w-md  bg-white rounded-lg shadow-lg">
           <CardHeader>
             <h3 className="text-xl font-semibold text-gray-800 mb-4 ">Get in Touch</h3>
             <hr />

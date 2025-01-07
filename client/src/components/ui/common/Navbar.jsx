@@ -30,8 +30,10 @@ const Navbar = () => {
       <div className="w-full lg:max-w-md max-w-xs">
         {isVisible && <InputSearch />}
       </div>
+      
       <div className="flex items-center gap-2">
-        <Button onClick={() => navigate("/add-property")}>
+      {/* Post Property button */}
+        <Button onClick={() => navigate("/add-property")} className="hidden sm:block">
           Post property
           <span className="bg-green-500 text-white text-sm px-1 rounded-md">
             Free
@@ -46,21 +48,24 @@ const Navbar = () => {
             Login / Register
           </Button>
         ) : (
-          <DropdownMenu>
-            <DropdownMenuTrigger>
-              <CircleUserRound size={30} className="text-brand" />
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-44 mt-4">
-              <DropdownMenuLabel>
-                <Link to={"/profile"}>My Activity</Link>
-              </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Recently Searched</DropdownMenuItem>
-              <DropdownMenuItem>Recently Viewed</DropdownMenuItem>
-              <DropdownMenuItem>Shortlisted</DropdownMenuItem>
-              <DropdownMenuItem>Contacted</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <CircleUserRound size={30} onClick={()=>navigate("/profile")} className="cursor-pointer"/>
+          //   Profile
+          // </Link>
+          // <DropdownMenu>
+          //   <DropdownMenuTrigger>
+          //     <CircleUserRound size={30} className="text-brand" />
+          //   </DropdownMenuTrigger>
+          //   <DropdownMenuContent className="w-44 mt-4">
+          //     <DropdownMenuLabel>
+          //       <Link to={"/profile"}>My Activity</Link>
+          //     </DropdownMenuLabel>
+          //     <DropdownMenuSeparator />
+          //     <DropdownMenuItem>Recently Searched</DropdownMenuItem>
+          //     <DropdownMenuItem>Recently Viewed</DropdownMenuItem>
+          //     <DropdownMenuItem>Shortlisted</DropdownMenuItem>
+          //     <DropdownMenuItem>Contacted</DropdownMenuItem>
+          //   </DropdownMenuContent>
+          // </DropdownMenu>
         )}
         <MenuSheet />
       </div>

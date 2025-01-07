@@ -57,10 +57,10 @@ export default function UserProfile() {
   };
   const time = "2024-12-29T06:26:00.393+00:00";
   return (
-    <div className="min-h-screen bg-gray-100 py-10 px-4 mt-10">
-      <div className="max-w-6xl mx-auto space-y-8">
+    <div className="width">
+      <div className=" space-y-8">
         <section>
-          <Card className="flex flex-col md:flex-row items-center md:items-start p-6 space-y-6 md:space-y-0 md:space-x-6">
+          <Card className="flex flex-col md:flex-row items-center md:items-start">
             <img
               src="https://via.placeholder.com/120"
               alt="Profile"

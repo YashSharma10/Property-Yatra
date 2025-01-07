@@ -19,13 +19,13 @@ const PropertyTypeSection = () => {
   };
   
   return (
-    <section className="py-4">
+    <section className="width mt-[420px]">
       <h1 className="px-3 text-2xl font-semibold">
         Apartments, Villas and more
       </h1>
       <h6 className="px-3 text-sm text-slate-600">in Delhi South West</h6>
       <div className="flex mt-3">
-        <Carousel className="max-w-7xl mx-auto">
+        <Carousel >
           <CarouselContent>
             {propertyTypeImg.map((prop) => (
               <CarouselItem

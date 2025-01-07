@@ -25,9 +25,9 @@ const LandingPage = () => {
   }, []);
 
   return (
-    <main className="max-w-5xl mx-auto scroll-smooth">
+    <main className="width">
       <HeaderSection />
-      <SearchBoxSection />
+      {/* <SearchBoxSection /> */}
       <PropertyTypeSection />
       <NewLaunchPropertiesSection />
       <ExclusiveSection />

@@ -1,13 +1,18 @@
 import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
 import { Avatar } from "@/components/ui/avatar";
 
 const AboutPage = () => {
   return (
-    <section className="py-36 bg-gray-50">
-      <div className="container mx-auto text-center px-6">
+    <section className="">
+      <div className="  text-center px-6">
         <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-6">
           About Us
         </h2>
@@ -32,7 +37,9 @@ const AboutPage = () => {
           </CardContent>
         </Card>
 
-        <Card className="max-w-4xl mx-auto mt-12 p-8">
+        {/* Value */}
+
+        {/* <Card className="max-w-4xl mx-auto mt-12 p-8">
           <CardHeader>
             <h3 className="text-2xl font-semibold underline text-gray-800 mb-4">
               Our Values
@@ -58,7 +65,7 @@ const AboutPage = () => {
               </li>
             </ul>
           </CardContent>
-        </Card>
+        </Card> */}
 
         <div className="mt-12">
           <h3 className="text-2xl font-semibold text-gray-800 mb-4">
@@ -97,9 +104,7 @@ const AboutPage = () => {
           </p>
           <div>
             <Link to="/contact">
-              <Button >
-                Get In Touch
-              </Button>
+              <Button>Get In Touch</Button>
             </Link>
           </div>
         </div>
