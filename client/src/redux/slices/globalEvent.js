@@ -16,7 +16,7 @@ const globalEventSlice = createSlice({
     roadmapVisible: true,
     propertyDetails: {
       listingType: "",
-      propertyType: " ",
+      propertyType: "",
     },
   },
   reducers: {

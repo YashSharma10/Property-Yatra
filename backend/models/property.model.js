@@ -2,85 +2,40 @@ import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema(
   {
-    name: String,
-    sellPrice: Number,
-    rentPrice: Number,
-    description: String,
-    images: [String],
-    userEmail: String,
-    propertyAge: Number,
-    area: Number,
-    // configuration: String,
-    listingType: {
-      type: String,
-      enum: ["sell", "rent"]
-    },
-    propertyType: {
-      type: String,
-      enum: ["Residential", "Commercial", "PG", "Plot", "Flat"],
-      required: true,
-    },
-  
-    // utilities: {
-    //   water: Boolean,
-    //   electricity: Boolean,
-    //   gas: Boolean,
-    // },
+    name: { type: String, required: true },
+    sellPrice: { type: Number, default: 0 },
+    rentPrice: { type: Number, default: 0 },
+    description: { type: String, required: true },
+    propertyAge: { type: Number, required: true },
+    area: { type: Number, required: true },
+    listingType: { type: String, enum: ["sell", "rent"], required: true },
+    propertyType: { type: String, required: true },
     address: {
-      house:String,
-      city: String,
-      pincode: String,
-      state: String,
-      // country: String,
+      house: { type: String, required: true },
+      city: { type: String, required: true },
+      state: { type: String, required: true },
+      pincode: { type: String, required: true },
     },
-    // transactionType: String,
     features: {
-      parking: Boolean,
-      lift: Boolean,
-      swimmingPool: Boolean,
-      modularKitchen: Boolean,
-      balcony: Boolean,
-      park: Boolean,
-      businessType: String,
-      floorNumber: Number,
-      furnished: Boolean,
-      meetingRooms: Number,
-      foodIncluded: Boolean,
-      acAvailable: Boolean,
-      wifiAvailable: Boolean,
-      sharingType: String,
-      plotFacing: String,
-      boundaryWall: Boolean,
-      landApproved: Boolean,
+      parking: { type: Boolean, default: false },
+      water: { type: Boolean, default: false },
+      lift: { type: Boolean, default: false },
+      electricity: { type: Boolean, default: false },
+      swimmingPool: { type: Boolean, default: false },
+      modularKitchen: { type: Boolean, default: false },
+      balcony: { type: Boolean, default: false },
+      park: { type: Boolean, default: false },
+      furnished: { type: Boolean, default: false },
+      meetingRoom: { type: Boolean, default: false },
+      meal: { type: Boolean, default: false },
+      ac: { type: Boolean, default: false },
+      wifi: { type: Boolean, default: false },
+      boundaryWall: { type: Boolean, default: false },
+      gym: { type: Boolean, default: false },
     },
- 
-    postedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-
-    // commercialDetails: {
-    //   businessType: String,
-    //   floorNumber: Number,
-    //   furnished: Boolean,
-    //   meetingRooms: Number,
-    // },
-
-    // pgDetails: {
-    //   foodIncluded: Boolean,
-    //   acAvailable: Boolean,
-    //   wifiAvailable: Boolean,
-    //   sharingType: String,
-    // },
-
-    // plotDetails: {
-    //   plotFacing: String,
-    //   boundaryWall: Boolean,
-    //   landApproved: Boolean,
-    // },
+    images: [{ type: String }], // To store image URLs
+    video: { type: String }, // URL of video if any
   },
   { timestamps: true }
 );
-
 export default mongoose.model("Property", propertySchema);

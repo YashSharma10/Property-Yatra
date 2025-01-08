@@ -57,7 +57,7 @@ const Roadmap = () => {
   const handleSubmit = () => {
     dispatch(
       setPropertyDetails({
-        listingType: selectListingType.v,
+        listingType: selectListingType.v || "Sell",
         propertyType: selectPropertyType.v,
       })
     );
