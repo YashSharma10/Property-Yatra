@@ -1,9 +1,10 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
+// ✅ SIGNUP
 export const signup = async (req, res) => {
-  const { name, email, password, number } = req.body;
-  if (!name || !email || !password || !number) {
+  const { name, email, password, number, role } = req.body;
+  if (!name || !email || !password || !number || !role) {
     return res.status(400).json({ message: "All fields are required" });
   }
 
@@ -13,7 +14,7 @@ export const signup = async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
-    const user = new User({ name, email, password, number });
+    const user = new User({ name, email, password, number, role });
     await user.save();
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -28,19 +29,22 @@ export const signup = async (req, res) => {
     res
       .status(201)
       .cookie("token", token, {
-        // maxage: 24 * 60 * 60 * 1000,
-        httpsOnly: true,
+        maxAge: 24 * 60 * 60 * 1000, // 24 hours
+        httpOnly: true,
         sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
       })
       .json({
         message: "User created successfully",
         newUser,
       });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Signup Error:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
+// ✅ LOGIN
 export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
@@ -56,6 +60,7 @@ export const login = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+
     const newUser = {
       name: user.name,
       email: user.email,
@@ -64,19 +69,22 @@ export const login = async (req, res) => {
     res
       .status(200)
       .cookie("token", token, {
-        // maxage: 24 * 60 * 60 * 1000,
-        httpsOnly: true,
+        maxAge: 24 * 60 * 60 * 1000,
+        httpOnly: true,
         sameSite: "strict",
+        secure: process.env.NODE_ENV === "production",
       })
       .json({
         message: "Login successful",
         newUser,
       });
   } catch (error) {
-    res.status(500).json({ message: "Server error", error });
+    console.error("Login Error:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 
+// ✅ LOGOUT
 export const logout = (req, res) => {
   return res
     .clearCookie("token")
@@ -84,48 +92,50 @@ export const logout = (req, res) => {
     .json({ message: "Logged out successfully" });
 };
 
+// ✅ ADD LIKED PROPERTY
 export const addlikedProperty = async (req, res) => {
-  const { id } = req.params;  
+  const { id } = req.params;
   try {
     const likedPropertiesData = await User.findByIdAndUpdate(
       req.user,
       {
-        $push: {
-          likedProperties: [ id ],
-        },
+        $addToSet: { likedProperties: id }, // Prevent duplicates
       },
       { new: true, runValidators: true }
     );
     return res.status(200).json({ likedPropertiesData });
   } catch (error) {
-    return res.status(500).json({ message: error });
+    console.error("Add Liked Property Error:", error.message);
+    return res.status(500).json({ message: error.message });
   }
 };
 
+// ✅ GET ALL POSTED PROPERTIES
 export const getAllPostedProperties = async (req, res) => {
-  console.log(req.user);
-
   try {
     const user = await User.findById(req.user)
-      .populate({ path: "postedProperties" })
-      .populate({ path: "likedProperties" });
-
+      .populate("postedProperties")
+      .populate("likedProperties");
 
     res.status(200).json({ user });
-  } catch (error) {}
+  } catch (error) {
+    console.error("Get Posted Properties Error:", error.message);
+    res.status(500).json({ message: error.message });
+  }
 };
 
+// ✅ GET ALL LIKED PROPERTIES
 export const getAllLikedProperty = async (req, res) => {
   try {
     const likedPropertyData = await User.findById(req.user)
-      .populate({
-        path: "likedProperties",
-      })
+      .populate("likedProperties")
       .select("-password -name -email -postedProperties -_id");
+
     return res
       .status(200)
       .json({ message: "Liked properties", likedPropertyData });
   } catch (error) {
-    res.status(500).json({ message: error });
+    console.error("Get Liked Properties Error:", error.message);
+    res.status(500).json({ message: error.message });
   }
 };
