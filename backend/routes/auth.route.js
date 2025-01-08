@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  addlikedProperty,
   getAllPostedProperties,
   login,
   logout,
@@ -12,11 +13,13 @@ const router = express.Router();
 router.post("/signup", signup);
 router.post("/login", login);
 router.get("/logout", logout);
+router.post("/liked/:id",authCheck, addlikedProperty);
+router.get("/auth/profile", authCheck, getAllPostedProperties);
+
+// Just for checking auth in frontend
 router.get("/auth/check", authCheck, (req, res) => {
   res.json({ message: "Allowed" });
 });
-router.get("/auth/profile", authCheck, getAllPostedProperties);
-
 // /* ❤️ Liked Properties Routes */
 // router.get("/properties/liked", authCheck, getAllLikedProperty); // Get all liked properties
 // router.post("/properties/like", authCheck, addlikedProperty); // Add a property to liked list

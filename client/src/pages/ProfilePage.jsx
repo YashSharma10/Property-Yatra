@@ -54,7 +54,7 @@ export default function UserProfile() {
         setUser(properties.data.user);
         setLoadingProperties(false);
         setProperties(properties.data.user.postedProperties);
-        // console.log(properties.data.user);
+        console.log(properties.data.user);
       }
     } catch (error) {
       console.log(error);

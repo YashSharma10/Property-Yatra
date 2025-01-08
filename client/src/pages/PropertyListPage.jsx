@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button"; // Shadcn Button
 import { Skeleton } from "@/components/ui/skeleton";
 import { BACKEND_URL } from "@/constants";
 import { setFilters } from "@/redux/slices/globalEvent";
+import axios from "axios";
 import { Heart, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -73,10 +74,15 @@ const PropertyListingPage = () => {
   };
 
   const handleLikedProperty = async (id) => {
+    console.log(id);
+
     try {
-      await axios.post(`${BACKEND_URL}/api/profil`)
+      const response = await axios.post(`${BACKEND_URL}/api/liked/${id}`, {}, {
+        withCredentials: true,
+      });
+      console.log(response);
     } catch (error) {
-      
+      console.log(error);
     }
   };
 

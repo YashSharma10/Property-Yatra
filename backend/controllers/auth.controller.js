@@ -85,13 +85,13 @@ export const logout = (req, res) => {
 };
 
 export const addlikedProperty = async (req, res) => {
-  const { propertyType, propertyId } = req.body;
+  const { id } = req.params;  
   try {
     const likedPropertiesData = await User.findByIdAndUpdate(
       req.user,
       {
         $push: {
-          likedProperties: { propertyType, propertyId },
+          likedProperties: [ id ],
         },
       },
       { new: true, runValidators: true }
