@@ -1,19 +1,28 @@
 import multer from "multer";
-import cloudinary from "../config/cloudinary.js"; // Import cloudinary
-import { CloudinaryStorage } from "multer-storage-cloudinary"; // Import multer-storage-cloudinary
+import cloudinary from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import dotenv from "dotenv";
+dotenv.config();
+// Cloudinary configuration
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,  // Replace with your Cloudinary cloud name
+  api_key: process.env.CLOUDINARY_API_KEY,  // Replace with your Cloudinary API key
+  api_secret: process.env.CLOUDINARY_API_SECRET,  // Replace with your Cloudinary API secret
+});
 
-// Configure multer to use Cloudinary storage
+// Multer configuration with Cloudinary storage
 const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
+  cloudinary: cloudinary.v2,
   params: {
-    folder: "properties", // Specify the folder where images will be stored in Cloudinary
-    allowed_formats: ["jpg", "jpeg", "png", "gif"], // Allowed file formats
+    folder: "property_images",  // Cloudinary folder where images will be stored
+    allowed_formats: ["jpg", "jpeg", "png", "gif"],  // Allowed image formats
   },
 });
 
-// Set up multer with the Cloudinary storage configuration
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // File size limit (5MB)
-});
-export const uploadFiles = upload.array("images"); // Allow multiple image uploads
+// Multer upload middleware
+const upload = multer({ storage: storage });
+
+// Middleware to handle file uploads (single image or multiple)
+const uploadFiles = upload.array("images", 5);  // Max 5 images per upload
+
+export { upload, uploadFiles };

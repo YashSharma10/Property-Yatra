@@ -21,12 +21,20 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />
-          <Route path="/add" element={<AddProperty />} />
+          {/* <Route path="/add" element={<AddProperty />} /> */}
           <Route
             path="/profile"
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/add"
+            element={
+              <ProtectedRoute>
+                <AddProperty />
               </ProtectedRoute>
             }
           />

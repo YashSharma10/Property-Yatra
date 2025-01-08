@@ -1,9 +1,11 @@
 import express from "express";
 import {
+  checkToken,
   login,
   logout,
   signup
 } from "../controllers/auth.controller.js";
+import { authCheck } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -11,6 +13,7 @@ const router = express.Router();
 router.post("/signup", signup); // User registration (role-based)
 router.post("/login", login); // User login (role-based)
 router.post("/logout", logout); // User logout
+router.get("/auth/check", authCheck,checkToken);
 
 // /* ❤️ Liked Properties Routes */
 // router.get("/properties/liked", authCheck, getAllLikedProperty); // Get all liked properties

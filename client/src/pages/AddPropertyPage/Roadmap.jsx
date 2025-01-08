@@ -58,7 +58,7 @@ const Roadmap = () => {
     dispatch(
       setPropertyDetails({
         listingType: selectListingType.v || "Sell",
-        propertyType: selectPropertyType.v,
+        propertyType: selectPropertyType.v || "Residential",
       })
     );
     dispatch(setRoadmapVisible(false));

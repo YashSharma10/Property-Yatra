@@ -6,14 +6,18 @@ import { Textarea } from "@/components/ui/textarea";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import { BACKEND_URL } from "@/constants";
+import { toast } from "sonner";
+import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 const PropertyForm = () => {
+  const navigate = useNavigate();
   const { propertyDetails, roadmapVisible } = useSelector(
     (store) => store.globalEvent
   );
-
   const [activeTab, setActiveTab] = useState("tab1");
-
+  const [loading, setLoading] = useState(false);
   const [propertyFormData, setPropertyFormData] = useState({
     name: "",
     sellPrice: 0,
@@ -49,7 +53,6 @@ const PropertyForm = () => {
       gym: false,
     },
   });
-  console.log(propertyFormData);
 
   const facilitiesList = () => {
     let facilities = [
@@ -139,33 +142,54 @@ const PropertyForm = () => {
   };
 
   const handleSubmit = async () => {
+    setPropertyFormData({
+      ...propertyFormData,
+      listingType: propertyDetails.listingType ,
+      propertyType: propertyDetails.propertyType ,
+    });
     const formData = new FormData();
-
     Object.entries(propertyFormData).forEach(([key, value]) => {
-      if (key === "features") {
-        const featuresInclue = {}
-        Object.entries(value).forEach(([key, value]) => {
-          if (value === true) {
-            featuresInclue[key] = value;
-          }
-        });
-        formData.append("features", featuresInclue);
-      }
       if (key === "address") {
         formData.append(key, JSON.stringify(value));
       } else if (key === "images") {
         value.forEach((file) => formData.append("images", file));
       } else {
-        formData.append(key, value);
+        if (key === "features") {
+          const featuresInclude = {};
+
+          Object.entries(value).forEach(([featureKey, featureValue]) => {
+            if (featureValue === true) {
+              featuresInclude[featureKey] = true;
+            }
+          });
+
+          formData.append("features", JSON.stringify(featuresInclude));
+        } else {
+          formData.append(key, value);
+        }
       }
     });
 
     console.log(propertyFormData);
     try {
-      const response = await axios.post("/api/properties", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-      console.log("Form submitted successfully", response.data);
+      setLoading(true);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/properties/new`,
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: true,
+        }
+      );
+      
+      if (response.status === 201) {
+        setPropertyFormData({});
+        setLoading(false);
+        toast.success(response.data.message);
+        navigate("/");
+      } else {
+        toast.success(response.data.message);
+      }
     } catch (error) {
       console.error("Error submitting form", error);
     }
@@ -347,7 +371,9 @@ const PropertyForm = () => {
         {activeTab !== "tab3" ? (
           <Button onClick={handleNext}>Next</Button>
         ) : (
-          <Button onClick={handleSubmit}>Submit</Button>
+          <Button onClick={handleSubmit} disabled={loading ? true : false}>
+            {loading ? <Loader2 className="animate-spin" /> : "Submit"}
+          </Button>
         )}
       </div>
     </section>

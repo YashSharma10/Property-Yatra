@@ -147,7 +147,7 @@ const AuthPage = () => {
                 required
               />
             </div>
-            {isSignup && (
+            {/* {isSignup && (
               <div>
                 <Label htmlFor="role">Role</Label>
                 <select
@@ -161,7 +161,7 @@ const AuthPage = () => {
                   <option value="agent">Agent</option>
                 </select>
               </div>
-            )}
+            )} */}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading
                 ? `${isSignup ? "Signing Up..." : "Logging In..."}`

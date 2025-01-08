@@ -13,8 +13,6 @@ export const authCheck = async (req, res, next) => {
 
     const user = await User.findById(decoded.id).select("-password");
     req.user = user._id;
-    // console.log(decoded);
-
     if (!req.user) {
       return res.status(401).json({ message: "Invalid token" });
     }

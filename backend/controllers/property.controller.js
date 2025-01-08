@@ -1,7 +1,6 @@
 import Property from "../models/property.model.js";
 import User from "../models/user.model.js";
-import { v2 as cloudinary } from "cloudinary";
-// Add a new property
+
 export const addProperty = async (req, res) => {
   try {
     const {
@@ -142,29 +141,9 @@ export const getUserProfileAndProperties = async (req, res) => {
   }
 };
 
-
 export const createProperty = async (req, res) => {
   try {
-    const { name, sellPrice, rentPrice, description, propertyAge, area, listingType, propertyType, address, features, images, video } = req.body;
-
-    // Upload images to cloudinary
-    const imageUrls = [];
-    if (images) {
-      for (let i = 0; i < images.length; i++) {
-        const result = await cloudinary.uploader.upload(images[i].path, { folder: "properties" });
-        imageUrls.push(result.secure_url);
-      }
-    }
-
-    // Upload video to cloudinary
-    let videoUrl = "";
-    if (video) {
-      const videoResult = await cloudinary.uploader.upload(video.path, { resource_type: "video", folder: "properties" });
-      videoUrl = videoResult.secure_url;
-    }
-
-    // Create a new property document
-    const newProperty = new Property({
+    const {
       name,
       sellPrice,
       rentPrice,
@@ -175,17 +154,44 @@ export const createProperty = async (req, res) => {
       propertyType,
       address,
       features,
+    } = req.body;
+    console.log("Name", req.body);
+
+    const imageUrls = req.files?.map((file) => file.path) || [];
+    const userID = req.user;
+    const newProperty = new Property({
+      name,
+      sellPrice,
+      rentPrice,
+      description,
+      propertyAge,
+      area,
+      listingType,
+      propertyType,
+      address: JSON.parse(address),
+      features: JSON.parse(features),
       images: imageUrls,
-      video: videoUrl,
+      postedBy: userID,
     });
 
-    // Save the property to the database
-    await newProperty.save();
-    return res.status(201).json({ message: "Property created successfully", data: newProperty });
-
+    const property = await newProperty.save();
+    const user = await User.findByIdAndUpdate(
+      userID,
+      {
+        $push: {
+          postedProperties: property._id,
+        },
+      },
+      { new: true, runValidators: true }
+    );
+    
+    return res
+      .status(201)
+      .json({ message: "Property created successfully", data: property });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ message: "Server error", error: error.message });
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
   }
 };
-

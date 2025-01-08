@@ -48,11 +48,6 @@ export default function UserProfile() {
       );
       setProperties(properties.data);
     } catch (error) {
-      if (error.response.status==401){
-        navigate("/auth")
-        toast.error("Session expired !");
-      } 
-        console.log(error.response.status);
     }
   };
   const time = "2024-12-29T06:26:00.393+00:00";

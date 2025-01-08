@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
 
 export const signup = async (req, res) => {
-
   const { name, email, password, number } = req.body;
   if (!name || !email || !password || !number) {
     return res.status(400).json({ message: "All fields are required" });
@@ -37,7 +36,6 @@ export const signup = async (req, res) => {
         message: "User created successfully",
         newUser,
       });
-
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
@@ -115,4 +113,8 @@ export const getAllLikedProperty = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error });
   }
+};
+
+export const checkToken = async (req, res) => {
+  return res.status({ message: "Loginh" });
 };
