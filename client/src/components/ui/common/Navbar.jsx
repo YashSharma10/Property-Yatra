@@ -34,7 +34,7 @@ const Navbar = () => {
       
       <div className="flex items-center gap-2">
       {/* Post Property button */}
-        <Button onClick={() => navigate("/add-property")} className="hidden sm:block">
+        <Button onClick={() => navigate("/add")} className="hidden sm:block">
           Post property
           <span className="bg-green-500 text-white text-sm px-1 rounded-md">
             Free

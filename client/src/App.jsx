@@ -11,7 +11,6 @@ import AddProperty from "./pages/AddProperty";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutUsPage";
 import NotFound from "./components/ui/common/NotFound";
-import AddPropertyPage from "./pages/AddPropertyPage";
 
 const App = () => {
   return (
@@ -40,7 +39,6 @@ const App = () => {
           />
           <Route path="/property-listing" element={<PropertyListingPage />} />
           <Route path="/property/:id" element={<PropertyDetailPage />} />
-          <Route path="/add-property" element={<AddPropertyPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />
