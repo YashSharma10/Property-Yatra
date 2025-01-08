@@ -11,6 +11,7 @@ import AddProperty from "./pages/AddProperty";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutUsPage";
 import NotFound from "./components/ui/common/NotFound";
+import AddPropertyPage from "./pages/AddPropertyPage";
 
 const App = () => {
   return (

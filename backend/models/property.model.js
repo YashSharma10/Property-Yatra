@@ -3,29 +3,37 @@ import mongoose from "mongoose";
 const propertySchema = new mongoose.Schema(
   {
     name: String,
-    type: String,
-    price: Number,
-    configuration: String,
+    sellPrice: Number,
+    rentPrice: Number,
+    description: String,
+    images: [String],
+    userEmail: String,
+    propertyAge: Number,
+    area: Number,
+    // configuration: String,
+    listingType: {
+      type: String,
+      enum: ["sell", "rent"]
+    },
     propertyType: {
       type: String,
-      enum: ["Residential", "Commercial", "PG", "Plot"],
+      enum: ["Residential", "Commercial", "PG", "Plot", "Flat"],
       required: true,
     },
-    utilities: {
-      water: Boolean,
-      electricity: Boolean,
-      gas: Boolean,
-    },
-    area: Number,
+  
+    // utilities: {
+    //   water: Boolean,
+    //   electricity: Boolean,
+    //   gas: Boolean,
+    // },
     address: {
-      street: String,
+      house:String,
       city: String,
-      state: String,
-      country: String,
       pincode: String,
+      state: String,
+      // country: String,
     },
-    propertyAge: Number,
-    transactionType: String,
+    // transactionType: String,
     features: {
       parking: Boolean,
       lift: Boolean,
@@ -33,35 +41,44 @@ const propertySchema = new mongoose.Schema(
       modularKitchen: Boolean,
       balcony: Boolean,
       park: Boolean,
+      businessType: String,
+      floorNumber: Number,
+      furnished: Boolean,
+      meetingRooms: Number,
+      foodIncluded: Boolean,
+      acAvailable: Boolean,
+      wifiAvailable: Boolean,
+      sharingType: String,
+      plotFacing: String,
+      boundaryWall: Boolean,
+      landApproved: Boolean,
     },
-    description: String,
-    images: [String],
-    userEmail: String,
+ 
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
 
-    commercialDetails: {
-      businessType: String,
-      floorNumber: Number,
-      furnished: Boolean,
-      meetingRooms: Number,
-    },
+    // commercialDetails: {
+    //   businessType: String,
+    //   floorNumber: Number,
+    //   furnished: Boolean,
+    //   meetingRooms: Number,
+    // },
 
-    pgDetails: {
-      foodIncluded: Boolean,
-      acAvailable: Boolean,
-      wifiAvailable: Boolean,
-      sharingType: String,
-    },
+    // pgDetails: {
+    //   foodIncluded: Boolean,
+    //   acAvailable: Boolean,
+    //   wifiAvailable: Boolean,
+    //   sharingType: String,
+    // },
 
-    plotDetails: {
-      plotFacing: String,
-      boundaryWall: Boolean,
-      landApproved: Boolean,
-    },
+    // plotDetails: {
+    //   plotFacing: String,
+    //   boundaryWall: Boolean,
+    //   landApproved: Boolean,
+    // },
   },
   { timestamps: true }
 );

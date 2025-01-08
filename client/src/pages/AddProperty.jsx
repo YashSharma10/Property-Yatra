@@ -1,4 +1,3 @@
-import PgSection from './AddPropertyPage/PgSection'
 import PropertyForm from './AddPropertyPage/PropertyForm'
 import Roadmap from './AddPropertyPage/Roadmap'
 

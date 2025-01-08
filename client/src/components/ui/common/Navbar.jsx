@@ -1,6 +1,7 @@
 import { brandName } from "@/constants";
 import { CircleUserRound } from "lucide-react";
 import { Button } from "../button";
+import logo from "@/assets/logo.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +26,7 @@ const Navbar = () => {
         onClick={() => navigate("/")}
         className=" text-3xl font-bold text-brand hover:bg-transparent"
       >
-        {brandName}
+       <img src={logo} alt="logo" className="h-11 w-fit"/> 
       </Button>
       <div className="w-full lg:max-w-md max-w-xs">
         {isVisible && <InputSearch />}

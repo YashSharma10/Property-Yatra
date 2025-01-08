@@ -10,14 +10,14 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogFooter,
 } from "@/components/ui/dialog";
 import { RadioGroup } from "@radix-ui/react-radio-group";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
 import { setRoadmapVisible } from "@/redux/slices/globalEvent";
-import { DialogFooter } from "@/components/ui/dialog"; // Add this line if it's missing
-
+import { Badge } from "@/components/ui/badge";
 
 const steps = [
   {
@@ -47,20 +47,22 @@ const Roadmap = () => {
   const [selectRadio, setSelectRadio] = useState("residential");
   const [selectType, setSelectType] = useState({ i: 0, v: "" });
   const [selectTypeSub, setSelectTypeSub] = useState({ i: 0, v: "" });
-  const [isVisible, setIsVisible] = useState(true);
 
+  const [propertyDetails, setPropertyDetails] = useState({
+    listingType: "",
+    propertyType: " ",
+  });
   const { roadmapVisible } = useSelector((store) => store.globalEvent);
   const dispatch = useDispatch();
+
   const handleSubmit = () => {
-    setIsVisible(false);
     dispatch(setRoadmapVisible(false));
   };
 
   return (
-    <section
-      className={`py-24 ${roadmapVisible ? "" : " hidden"}`}
-      style={{ height: "calc(100vh - 32vh)" }}
-    >
+    <section className={`width ${roadmapVisible ? "" : "hidden"}`}>
+
+      {/* Basic Rooadmap */}
       <div className="container mx-auto text-center max-w-2xl">
         <h2 className="text-xl sm:text-4xl font-semibold mb-10 text-gray-900">
           List your Property / Pg / Commercial Land/Plot Listing in simple 3
@@ -85,14 +87,15 @@ const Roadmap = () => {
             </Card>
           ))}
         </div>
+        
         {/* PropertySelector Dialog */}
         <Dialog>
-          <DialogTrigger>
+          <DialogTrigger asChild>
             <Button className="mt-10">Begin to Post your Property</Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="max-w-sm rounded-md">
             <DialogHeader>
-              <DialogTitle className={"font-semibold"}>
+              <DialogTitle className="font-semibold">
                 Start posting your property
               </DialogTitle>
               <DialogDescription>Add Basic Details</DialogDescription>
@@ -100,7 +103,7 @@ const Roadmap = () => {
             <div>
               <p className="mb-2 font-medium text-sm">You're looking to ..</p>
               {["Sell", "Rent / Lease", "Pg"].map((item, index) => (
-                <Button
+                <Badge
                   key={item}
                   variant="outline"
                   className={`rounded-full mx-1 font-thin ${
@@ -109,17 +112,36 @@ const Roadmap = () => {
                       : ""
                   }`}
                   onClick={() => setSelectType({ i: index, v: item })}
-                  aria-label={`Select ${item}`}
                 >
                   {item}
-                </Button>
+                </Badge>
               ))}
             </div>
             <div>
               <p className="mb-2 font-medium text-sm">And it's a..</p>
-              <RadioGroup
+              <div>
+                {["Residential", "Commercial", "Plot", "PG", "Flat"].map(
+                  (item, index) => (
+                    <Badge
+                      key={item}
+                      variant="outline"
+                      className={`rounded-full mx-1 font-thin ${
+                        selectTypeSub.i === index
+                          ? "border-black font-bold duration-200 transition-all"
+                          : ""
+                      }`}
+                      onClick={() => setSelectTypeSub({ i: index, v: item })}
+                    >
+                      {item}
+                    </Badge>
+                  )
+                )}
+              </div>
+
+              {/* Radio Button for selecting residential or commercial */}
+              {/* <RadioGroup
                 className="flex items-center gap-4 my-3"
-                defaultValue="residential"
+                value={selectRadio}
                 onValueChange={(value) => setSelectRadio(value)}
                 aria-label="Property Type"
               >
@@ -132,7 +154,6 @@ const Roadmap = () => {
                   <Label htmlFor="commercial">Commercial</Label>
                 </div>
               </RadioGroup>
-              {/* Residential  */}
               {selectRadio === "residential" ? (
                 <div>
                   {[
@@ -141,7 +162,7 @@ const Roadmap = () => {
                     "Flat / Apartment",
                     "Property",
                   ].map((item, index) => (
-                    <Button
+                    <Badge
                       key={item}
                       variant="outline"
                       className={`rounded-full mx-1 font-thin ${
@@ -150,17 +171,15 @@ const Roadmap = () => {
                           : ""
                       }`}
                       onClick={() => setSelectTypeSub({ i: index, v: item })}
-                      aria-label={`Select ${item}`}
                     >
                       {item}
-                    </Button>
+                    </Badge>
                   ))}
                 </div>
               ) : (
                 <div>
-                  {/* Commercial */}
                   {["Pg", "Commercial", "Plot", "Property"].map((item, index) => (
-                    <Button
+                    <Badge
                       key={item}
                       variant="outline"
                       className={`rounded-full mx-1 font-thin ${
@@ -169,13 +188,12 @@ const Roadmap = () => {
                           : ""
                       }`}
                       onClick={() => setSelectTypeSub({ i: index, v: item })}
-                      aria-label={`Select ${item}`}
                     >
                       {item}
-                    </Button>
+                    </Badge>
                   ))}
                 </div>
-              )}
+              )} */}
             </div>
             <DialogFooter>
               <DialogClose>
