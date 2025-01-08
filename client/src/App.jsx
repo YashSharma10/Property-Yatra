@@ -20,7 +20,6 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/auth" element={<AuthPage />} />
-          {/* <Route path="/add" element={<AddProperty />} /> */}
           <Route
             path="/profile"
             element={
