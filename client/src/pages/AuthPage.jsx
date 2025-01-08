@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import {
   Card,
   CardContent,
-  CardFooter,
+  // CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -27,6 +27,7 @@ const AuthPage = () => {
     email: "",
     number: "",
     password: "",
+    role: "user", // Default role
   });
 
   const handleFormData = (data) => {
@@ -35,6 +36,7 @@ const AuthPage = () => {
       [data.target.id]: data.target.value,
     }));
   };
+
   const toggleMode = () => {
     setIsSignup(!isSignup);
     setError("");
@@ -43,6 +45,7 @@ const AuthPage = () => {
       email: "",
       number: "",
       password: "",
+      role: "user",
     });
   };
 
@@ -60,6 +63,7 @@ const AuthPage = () => {
           email: userDetails.email,
           password: userDetails.password,
           number: userDetails.number,
+          role: userDetails.role, // Include role in signup
         }
       : {
           email: userDetails.email,
@@ -73,8 +77,6 @@ const AuthPage = () => {
       dispatch(setLoading(false));
       if (response.data) {
         dispatch(setUser(response.data.newUser));
-        console.log(response.data.newUser);
-
         toast.success(response.data.message);
         navigate("/");
       }
@@ -113,7 +115,7 @@ const AuthPage = () => {
                   />
                 </div>
                 <div>
-                  <Label htmlFor="email">Phone</Label>
+                  <Label htmlFor="number">Phone</Label>
                   <Input
                     id="number"
                     type="number"
@@ -122,6 +124,19 @@ const AuthPage = () => {
                     placeholder="798765XXXXX"
                     required
                   />
+                </div>
+                <div>
+                  <Label htmlFor="role">Role</Label>
+                  <select
+                    id="role"
+                    value={userDetails.role}
+                    onChange={handleFormData}
+                    className="w-full p-2 border rounded"
+                  >
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="agent">Agent</option>
+                  </select>
                 </div>
               </div>
             )}
@@ -147,21 +162,6 @@ const AuthPage = () => {
                 required
               />
             </div>
-            {/* {isSignup && (
-              <div>
-                <Label htmlFor="role">Role</Label>
-                <select
-                  id="role"
-                  value={role}
-                  onChange={(e) => setRole(e.target.value)}
-                  className="w-full p-2 border rounded"
-                >
-                  <option value="user">User</option>
-                  <option value="admin">Admin</option>
-                  <option value="agent">Agent</option>
-                </select>
-              </div>
-            )} */}
             <Button type="submit" className="w-full" disabled={loading}>
               {loading
                 ? `${isSignup ? "Signing Up..." : "Logging In..."}`

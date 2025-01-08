@@ -29,8 +29,7 @@ export default function UserProfile() {
   const handleLogout = async () => {
     dispatch(setLoading(true));
     try {
-      await axios.get(`${BACKEND_URL}/api/logout`,{withCredentials:true});
-      // dispatch(setUser(null));
+      await axios.get(`${BACKEND_URL}/api/logout`, { withCredentials: true });
       navigate("/");
       toast.success("Successfully logged out!");
     } catch (error) {
@@ -60,28 +59,29 @@ export default function UserProfile() {
       console.log(error);
     }
   };
-  const time = "2024-12-29T06:26:00.393+00:00";
+
   return (
     <div className="width">
-      <div className=" space-y-8">
+      <div className="space-y-8">
         <section>
-          <Card className="flex  items-center p-3">
+          <Card className="flex items-center p-3">
             <img
               src="https://via.placeholder.com/120"
               alt="Profile"
               className="w-32 h-32 rounded-full object-cover"
             />
-            <div>
+            <div className="ml-4">
               <CardHeader>
                 <CardTitle>{user?.name}</CardTitle>
-                <CardDescription>{user?.email}</CardDescription>
+                <CardDescription className="break-words max-w-full">
+                  {user?.email}
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-500 text-xs mt-2 mb-1">
-                  Joined Since : {user?.createdAt.split("T")[0]}
+                  Joined Since: {user?.createdAt.split("T")[0]}
                 </p>
-                <div >
-                  {/* <Button variant="outline">Edit Profile</Button> */}
+                <div>
                   <Button
                     variant="destructive"
                     onClick={handleLogout}
@@ -103,8 +103,8 @@ export default function UserProfile() {
         <section>
           <Card className="p-6">
             <CardHeader>
-              <CardTitle>Properties Posted by {properties.name}</CardTitle>
-              <CardDescription>
+              <CardTitle>Properties Posted by {user?.name}</CardTitle>
+              <CardDescription className="break-words max-w-full">
                 Manage your property listings below.
               </CardDescription>
             </CardHeader>
@@ -112,38 +112,34 @@ export default function UserProfile() {
               {properties.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {properties.map((property) => (
-                    <PropertyCard property={property} />
+                    <PropertyCard property={property} key={property.id} />
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-600">
-                  No properties available
-                </p>
+                <p className="text-center text-gray-600">No properties available</p>
               )}
             </CardContent>
           </Card>
         </section>
 
-        {/* liked properties */}
+        {/* Liked properties */}
         <section>
           <Card className="p-6">
             <CardHeader>
-              <CardTitle>Properties liked you {properties.name}</CardTitle>
-              <CardDescription>
-                Manage your property listings below.
+              <CardTitle>Properties Liked by {user?.name}</CardTitle>
+              <CardDescription className="break-words max-w-full">
+                Manage your liked properties below.
               </CardDescription>
             </CardHeader>
             <CardContent>
               {properties.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {properties.map((property) => (
-                    <PropertyCard property={property} />
+                    <PropertyCard property={property} key={property.id} />
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-600">
-                  No properties available
-                </p>
+                <p className="text-center text-gray-600">No properties available</p>
               )}
             </CardContent>
           </Card>
