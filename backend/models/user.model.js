@@ -36,8 +36,8 @@ const userSchema = new mongoose.Schema(
     ],
     likedProperties: [
       {
-        propertyId: mongoose.Schema.Types.ObjectId,
-        propertyType: String,
+        type: mongoose.Schema.Types.ObjectId,
+        red: "Property",
       },
     ],
   },

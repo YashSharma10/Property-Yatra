@@ -78,8 +78,10 @@ export const login = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logged out successfully" });
+  return res
+    .clearCookie("token")
+    .status(200)
+    .json({ message: "Logged out successfully" });
 };
 
 export const addlikedProperty = async (req, res) => {
@@ -101,13 +103,18 @@ export const addlikedProperty = async (req, res) => {
 };
 
 export const getAllPostedProperties = async (req, res) => {
+  console.log(req.user);
+
   try {
-    const user = await User.findById(req.user).populate({ path: "Property" });
-    console.log(user);
-    
+    const user = await User.findById(req.user)
+      .populate({ path: "postedProperties" })
+      .populate({ path: "likedProperties" });
+
+
     res.status(200).json({ user });
   } catch (error) {}
 };
+
 export const getAllLikedProperty = async (req, res) => {
   try {
     const likedPropertyData = await User.findById(req.user)
@@ -121,8 +128,4 @@ export const getAllLikedProperty = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error });
   }
-};
-
-export const checkToken = async (req, res) => {
-  return res.status({ message: "Loginh" });
 };

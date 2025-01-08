@@ -76,7 +76,7 @@ const AuthPage = () => {
         console.log(response.data.newUser);
 
         toast.success(response.data.message);
-        navigate("/"); // Redirect to homepage after successful login/signup
+        navigate("/");
       }
     } catch (err) {
       dispatch(setLoading(false));

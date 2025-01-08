@@ -11,9 +11,11 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        await axios.get(`${BACKEND_URL}/api/auth/check`, {
+        const data = await axios.get(`${BACKEND_URL}/api/auth/check`, {
           withCredentials: true,
         });
+        console.log(data.data);
+        
       } catch (error) {
         if (error.response.status === 401) {
           navigate("/auth");
