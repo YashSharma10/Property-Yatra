@@ -19,6 +19,7 @@ import { BACKEND_URL } from "@/constants";
 
 export default function UserProfile() {
   const { loading } = useSelector((store) => store.auth);
+  const [loadingProperties, setLoadingProperties] = useState(true);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [properties, setProperties] = useState("");
@@ -43,12 +44,16 @@ export default function UserProfile() {
   const handleProperties = async () => {
     try {
       const properties = await axios.get(
-        `${BACKEND_URL}/api/properties/profile`,
+        `${BACKEND_URL}/api//auth/profile`,
         { withCredentials: true }
       );
+      if (properties) {
+        setLoadingProperties(false);
+        console.log(properties);
+        
+      }
       setProperties(properties.data);
-    } catch (error) {
-    }
+    } catch (error) {}
   };
   const time = "2024-12-29T06:26:00.393+00:00";
   return (
@@ -100,7 +105,7 @@ export default function UserProfile() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {properties &&
+                {/* {properties &&
                   properties.postedProperties.map((property) => (
                     <Card
                       key={property._id}
@@ -128,7 +133,7 @@ export default function UserProfile() {
                         </Button>
                       </CardFooter>
                     </Card>
-                  ))}
+                  ))} */}
               </div>
             </CardContent>
           </Card>

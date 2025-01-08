@@ -100,6 +100,14 @@ export const addlikedProperty = async (req, res) => {
   }
 };
 
+export const getAllPostedProperties = async (req, res) => {
+  try {
+    const user = await User.findById(req.user).populate({ path: "Property" });
+    console.log(user);
+    
+    res.status(200).json({ user });
+  } catch (error) {}
+};
 export const getAllLikedProperty = async (req, res) => {
   try {
     const likedPropertyData = await User.findById(req.user)
