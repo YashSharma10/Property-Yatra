@@ -16,7 +16,10 @@ import { RadioGroup } from "@radix-ui/react-radio-group";
 import { RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { useDispatch, useSelector } from "react-redux";
-import { setRoadmapVisible } from "@/redux/slices/globalEvent";
+import {
+  setPropertyDetails,
+  setRoadmapVisible,
+} from "@/redux/slices/globalEvent";
 import { Badge } from "@/components/ui/badge";
 
 const steps = [
@@ -45,23 +48,24 @@ const steps = [
 
 const Roadmap = () => {
   const [selectRadio, setSelectRadio] = useState("residential");
-  const [selectType, setSelectType] = useState({ i: 0, v: "" });
-  const [selectTypeSub, setSelectTypeSub] = useState({ i: 0, v: "" });
+  const [selectListingType, setSelectListingType] = useState({ i: 0, v: "" });
+  const [selectPropertyType, setselectPropertyType] = useState({ i: 0, v: "" });
 
-  const [propertyDetails, setPropertyDetails] = useState({
-    listingType: "",
-    propertyType: " ",
-  });
   const { roadmapVisible } = useSelector((store) => store.globalEvent);
   const dispatch = useDispatch();
 
   const handleSubmit = () => {
+    dispatch(
+      setPropertyDetails({
+        listingType: selectListingType.v,
+        propertyType: selectPropertyType.v,
+      })
+    );
     dispatch(setRoadmapVisible(false));
   };
 
   return (
     <section className={`width ${roadmapVisible ? "" : "hidden"}`}>
-
       {/* Basic Rooadmap */}
       <div className="container mx-auto text-center max-w-2xl">
         <h2 className="text-xl sm:text-4xl font-semibold mb-10 text-gray-900">
@@ -87,7 +91,7 @@ const Roadmap = () => {
             </Card>
           ))}
         </div>
-        
+
         {/* PropertySelector Dialog */}
         <Dialog>
           <DialogTrigger asChild>
@@ -102,16 +106,16 @@ const Roadmap = () => {
             </DialogHeader>
             <div>
               <p className="mb-2 font-medium text-sm">You're looking to ..</p>
-              {["Sell", "Rent / Lease", "Pg"].map((item, index) => (
+              {["Sell", "Rent"].map((item, index) => (
                 <Badge
                   key={item}
                   variant="outline"
                   className={`rounded-full mx-1 font-thin ${
-                    selectType.i === index
+                    selectListingType.i === index
                       ? "border-black font-bold duration-200 transition-all"
                       : ""
                   }`}
-                  onClick={() => setSelectType({ i: index, v: item })}
+                  onClick={() => setSelectListingType({ i: index, v: item })}
                 >
                   {item}
                 </Badge>
@@ -126,11 +130,13 @@ const Roadmap = () => {
                       key={item}
                       variant="outline"
                       className={`rounded-full mx-1 font-thin ${
-                        selectTypeSub.i === index
+                        selectPropertyType.i === index
                           ? "border-black font-bold duration-200 transition-all"
                           : ""
                       }`}
-                      onClick={() => setSelectTypeSub({ i: index, v: item })}
+                      onClick={() =>
+                        setselectPropertyType({ i: index, v: item })
+                      }
                     >
                       {item}
                     </Badge>
@@ -166,11 +172,11 @@ const Roadmap = () => {
                       key={item}
                       variant="outline"
                       className={`rounded-full mx-1 font-thin ${
-                        selectTypeSub.i === index
+                        selectPropertyType.i === index
                           ? "border-black font-bold duration-200 transition-all"
                           : ""
                       }`}
-                      onClick={() => setSelectTypeSub({ i: index, v: item })}
+                      onClick={() => setselectPropertyType({ i: index, v: item })}
                     >
                       {item}
                     </Badge>
@@ -183,11 +189,11 @@ const Roadmap = () => {
                       key={item}
                       variant="outline"
                       className={`rounded-full mx-1 font-thin ${
-                        selectTypeSub.i === index
+                        selectPropertyType.i === index
                           ? "border-black font-bold duration-200 transition-all"
                           : ""
                       }`}
-                      onClick={() => setSelectTypeSub({ i: index, v: item })}
+                      onClick={() => setselectPropertyType({ i: index, v: item })}
                     >
                       {item}
                     </Badge>
