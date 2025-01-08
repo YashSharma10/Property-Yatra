@@ -17,6 +17,7 @@ const PropertyListingPage = () => {
   const [page, setPage] = useState(1);
   const [totalProperties, setTotalProperties] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+console.log(filters);
 
   const fetchProperties = async () => {
     setIsLoading(true);
@@ -75,7 +76,6 @@ const PropertyListingPage = () => {
 
   const handleLikedProperty = async (id) => {
     console.log(id);
-
     try {
       const response = await axios.post(`${BACKEND_URL}/api/liked/${id}`, {}, {
         withCredentials: true,

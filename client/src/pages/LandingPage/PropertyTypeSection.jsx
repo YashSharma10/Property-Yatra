@@ -10,22 +10,22 @@ import { setFilters } from "@/redux/slices/globalEvent";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 const PropertyTypeSection = () => {
-  const { filters,isVisible } = useSelector((store) => store.globalEvent);
+  const { filters, isVisible } = useSelector((store) => store.globalEvent);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handlePropertyTypeSearch = async (target) => {
     navigate("/property-listing");
     dispatch(setFilters({ type: target }));
   };
-  
+
   return (
-    <section className="width mt-[420px]">
+    <section className="width mt-[360px] sm:mt-[400px]">
       <h1 className="px-3 text-2xl font-semibold">
         Apartments, Villas and more
       </h1>
       <h6 className="px-3 text-sm text-slate-600">in Delhi South West</h6>
       <div className="flex mt-3">
-        <Carousel >
+        <Carousel>
           <CarouselContent>
             {propertyTypeImg.map((prop) => (
               <CarouselItem

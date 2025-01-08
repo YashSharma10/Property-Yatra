@@ -1,104 +1,79 @@
 import React, { useEffect, useRef, useState } from "react";
 import header from "../../assets/header.png";
 import sky from "../../assets/sky.jpg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { setFilters } from "@/redux/slices/globalEvent";
 
 const HeaderSection = () => {
+  const { filters } = useSelector((store) => store.globalEvent);
   const [activeTab, setActiveTab] = useState("Buy");
-  const [underlineStyle, setUnderlineStyle] = useState({});
-  const navRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const handleTabClick = (tab, index) => {
     setActiveTab(tab);
-    console.log(activeTab);
-    updateUnderlinePosition(index);
+    
   };
 
-  const handleSearch = async () =>{
-    navigate("/property-listing")
-    // try {
-    //   await axios.get(`${BACKEND_URL}/api/properties/list`)
-    // } catch (error) {
-      
-    // }
-  }
-  const updateUnderlinePosition = (index) => {
-    if (navRef.current) {
-      const buttons = navRef.current.querySelectorAll("button");
-      const activeButton = buttons[index];
-      const buttonRect = activeButton.getBoundingClientRect();
-      const parentRect = navRef.current.getBoundingClientRect();
-      const offsetLeft = buttonRect.left - parentRect.left;
-
-      setUnderlineStyle({
-        width: `${buttonRect.width}px`,
-        transform: `translateX(${offsetLeft}px)`,
-      });
-    }
+  const handleSearch =  (e) => {
+    // navigate("/property-listing");
+    dispatch(setFilters({ propertyType: activeTab.toLowerCase(), searchLocation: e.target.value }));
+    console.log(filters);
   };
 
-  useEffect(() => {
-    updateUnderlinePosition(0); 
-  }, []);
-
-  const tabs = [
-    "Buy",
-    "Rent",
-    "New Launch",
-    "PG / Co-living",
-    "Commercial",
-    "Plots / Land",
-  ];
+  const tabs = ["Buy", "Rent", "PG", "Commercial", "Plots"];
 
   const { isVisible } = useSelector((store) => store.globalEvent);
 
   return (
     <section
-      className={`absolute top-10 right-0 left-0 transition-opacity duration-500 w-screen  ${
-        !isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+      className={`absolute top-10 right-0 left-0 transition-opacity duration-500 w-screen z-10 ${
+        isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
       <img src={sky} alt="header" className="w-full max-h-96" />
 
       {/* SearchBox */}
-     
-      <Card className="flex justify-center -mt-28 flex-col items-center max-w-md mx-auto p-4 shadow-md rounded-2xl bg-white">
-        {/* Navigation Tabs */}
-        <div ref={navRef} className="relative bg-white flex gap-6 text-sm sm:text-base">
-          {tabs.map((tab, index) => (
+      <div className="relative -mt-20 z-50 ">
+        <Card className="flex flex-col items-center max-w-md mx-auto p-4 shadow-md rounded-3xl bg-white">
+          {/* Navigation Tabs */}
+          <div className="flex gap-4 w-full justify-center mb-4">
+            {tabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => handleTabClick(tab)}
+                className={`pb-2 text-sm font-medium ${
+                  activeTab === tab
+                    ? "text-brand border-b-2 border-brand"
+                    : "text-gray-600"
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          {/* Search Input */}
+          <div className="flex items-center w-full border overflow-hidden rounded-xl">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={filters.searchLocation}
+              onChange={handleSearch}
+              className="w-full px-3 py-2 outline-none text-sm"
+            />
             <button
-              key={tab}
-              onClick={() => handleTabClick(tab, index)}
-              className={`relative pb-1 ${
-                activeTab === tab ? "text-brand font-semibold bg-white" : "text-gray-700"
-              }`}
+              type="submit"
+              onClick={handleSearch}
+              className="p-2 bg-brand text-white"
             >
-              {tab}
+              <Search />
             </button>
-          ))}
-          {/* Common Underline */}
-          <div
-            className="absolute bottom-0 h-[2px] bg-brand transition-transform duration-300 ease-in-out"
-            style={underlineStyle}
-          ></div>
-        </div>
-        {/* Divider */}
-        <hr className="bg-brand h-0.5 w-full mt-2" />
-        {/* Search Input */}
-        <div className="flex w-full">
-          <input
-            className="w-full outline-none px-3"
-            type="text"
-            placeholder="Enter Locality / Project / Society / Landmark"
-          />
-          <button type="submit" className="p-1" onClick={handleSearch}>
-            <Search className="text-brand" />
-          </button>
-        </div>
-      </Card>
+          </div>
+        </Card>
+      </div>
     </section>
   );
 };

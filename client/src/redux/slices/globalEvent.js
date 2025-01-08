@@ -12,6 +12,8 @@ const globalEventSlice = createSlice({
       bedrooms: "",
       ownership: "",
       builtYear: "",
+      searchLocation: "",
+      propertyType: "",
     },
     roadmapVisible: true,
     propertyDetails: {
@@ -31,9 +33,13 @@ const globalEventSlice = createSlice({
     },
     setPropertyDetails: (state, action) => {
       state.propertyDetails = { ...state.propertyDetails, ...action.payload };
-    } 
+    },
   },
 });
-export const { setIsVisible, setFilters, setRoadmapVisible,setPropertyDetails } =
-  globalEventSlice.actions;
+export const {
+  setIsVisible,
+  setFilters,
+  setRoadmapVisible,
+  setPropertyDetails,
+} = globalEventSlice.actions;
 export default globalEventSlice.reducer;
