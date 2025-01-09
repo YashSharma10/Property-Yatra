@@ -14,7 +14,7 @@ const HeaderSection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleTabClick = (tab) => {
-    if (tab === "Rent" || tab === "Buy") {
+    if (tab === "Rent" || tab === "Sell") {
       dispatch(setFilters({ listingType: tab.toLowerCase() }));
     } else {
       dispatch(setFilters({ propertyType: tab.toLowerCase() }));
@@ -27,7 +27,7 @@ const HeaderSection = () => {
     navigate("/property-listing");
   };
 
-  const tabs = ["Sell", "Rent", "PG", "Commercial", "Plots"];
+  const tabs = ["Sell", "Rent", "PG", "Commercial", "Plot"];
 
   const { isVisible } = useSelector((store) => store.globalEvent);
 

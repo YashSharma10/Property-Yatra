@@ -70,8 +70,6 @@ export const listProperties = async (req, res) => {
       limit = 5,
     } = req.query;
 
-    console.log("Query Parameters:", req.query);
-
     const orFilters = [];
 
     if (propertyType) {
@@ -97,20 +95,23 @@ export const listProperties = async (req, res) => {
 
     if (searchLocation) {
       orFilters.push({
-        searchLocation: { $regex: searchLocation, $options: "i" },
+        "address.city": { $regex: searchLocation, $options: "i" },
       });
     }
 
     if (features) {
-      const featureArray = features.split(",").map((f) => f.trim());
-      featureArray.forEach((feature) => {
-        orFilters.push({ [`features.${feature}`]: true });
-      });
+      Object.entries(JSON.parse(features)).forEach(
+        ([featureKey, featureValue]) => {
+
+          if (featureValue === true) {
+            orFilters.push({ [`features.${featureKey}`]: true });
+          }
+        }
+      );
     }
 
-    const filters = orFilters.length > 0 ? { $or: orFilters } : {};
+    const filters = orFilters.length > 0 ? { $and: orFilters } : {};
 
-    console.log("Filters Object:", JSON.stringify(filters, null, 2));
 
     const skip = (Number(page) - 1) * Number(limit);
 
@@ -126,7 +127,6 @@ export const listProperties = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch properties", error });
   }
 };
-
 
 export const getPropertyById = async (req, res) => {
   try {

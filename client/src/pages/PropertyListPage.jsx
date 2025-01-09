@@ -24,7 +24,7 @@ const PropertyListingPage = () => {
 
     const queryParams = new URLSearchParams({
       ...filters,
-      // features: filters.features.join(","),
+      features: JSON.stringify(filters.features),
       page,
     });
 

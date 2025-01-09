@@ -118,7 +118,7 @@ const PropertyForm = () => {
     const { name, value } = e.target;
     setPropertyFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: value.toLowerCase(),
     }));
   };
 

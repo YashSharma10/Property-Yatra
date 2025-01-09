@@ -57,8 +57,8 @@ const Roadmap = () => {
   const handleSubmit = () => {
     dispatch(
       setPropertyDetails({
-        listingType: selectListingType.v || "Sell",
-        propertyType: selectPropertyType.v || "Residential",
+        listingType: selectListingType.v || "sell",
+        propertyType: selectPropertyType.v || "residential",
       })
     );
     dispatch(setRoadmapVisible(false));
@@ -106,11 +106,11 @@ const Roadmap = () => {
             </DialogHeader>
             <div>
               <p className="mb-2 font-medium text-sm">You're looking to ..</p>
-              {["Sell", "Rent"].map((item, index) => (
+              {["sell", "rent"].map((item, index) => (
                 <Badge
                   key={item}
                   variant="outline"
-                  className={`rounded-full mx-1 font-thin ${
+                  className={`rounded-full mx-1 font-thin capitalize ${
                     selectListingType.i === index
                       ? "border-black font-bold duration-200 transition-all"
                       : ""
