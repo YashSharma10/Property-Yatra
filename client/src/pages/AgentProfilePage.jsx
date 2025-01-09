@@ -20,10 +20,10 @@ import { toast } from "sonner";
 export default function AgentDashboard() {
   const { loading } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);  // Default to null, to avoid errors in rendering
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [properties, setProperties] = useState("");
+  const [properties, setProperties] = useState([]); // Set properties as an empty array
 
   const handleLogout = async () => {
     dispatch(setLoading(true));
@@ -36,6 +36,10 @@ export default function AgentDashboard() {
     } finally {
       dispatch(setLoading(false));
     }
+  };
+
+  const handlePropertyClick = (id) => {
+    navigate(`/property/${id}`);
   };
 
   useEffect(() => {
@@ -51,7 +55,7 @@ export default function AgentDashboard() {
       if (properties) {
         setUser(properties.data.user);
         setLoadingProperties(false);
-        setProperties(properties.data.user.postedProperties);
+        setProperties(properties.data.user.postedProperties); // Ensure it's an array
       }
     } catch (error) {
       console.log(error);
@@ -107,15 +111,13 @@ export default function AgentDashboard() {
         <Card className="p-4">
           <CardTitle>Total Properties</CardTitle>
           <CardDescription>
-            {Array.isArray(properties) ? properties.length : 0}
+            {properties.length}
           </CardDescription>
         </Card>
         <Card className="p-4">
           <CardTitle>Active Listings</CardTitle>
           <CardDescription>
-            {Array.isArray(properties)
-              ? properties.filter((p) => p.status === "active").length
-              : 0}
+            {properties.filter((p) => p.status === "active").length}
           </CardDescription>
         </Card>
         <Card className="p-4">
@@ -137,15 +139,19 @@ export default function AgentDashboard() {
             {properties.length > 0 ? (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {properties.map((property) => (
-                  <PropertyCard property={property} key={property.id}>
+                  <PropertyCard property={property} key={property._id}>
+                    <div
+                      className="flex-grow p-4"
+                      onClick={() => handlePropertyClick(property._id)}
+                    ></div>
                     <div className="flex justify-between mt-4">
-                      <Button onClick={() => navigate(`/edit/${property.id}`)}>
+                      <Button onClick={() => navigate(`/edit/${property._id}`)}>
                         Edit
                       </Button>
                       <Button
                         variant="destructive"
                         onClick={() =>
-                          console.log("Delete property", property.id)
+                          console.log("Delete property", property._id)
                         }
                       >
                         Delete
