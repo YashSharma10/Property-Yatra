@@ -49,7 +49,6 @@ const PropertyForm = () => {
       ac: false,
       wifi: false,
       boundaryWall: false,
-      electricity: false,
       gym: false,
     },
   });

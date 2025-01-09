@@ -13,6 +13,7 @@ import AboutPage from "./pages/AboutUsPage";
 import NotFound from "./components/ui/common/NotFound";
 import Dashboard from "./pages/Agent/Dashboard";
 import FacilitiesPage from "./pages/FacilitiesPage";
+import AgentProfilePage from "./pages/AgentProfilePage";
 
 const App = () => {
   return (
@@ -27,6 +28,14 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/agent-profile"
+            element={
+              <ProtectedRoute>
+                <AgentProfilePage />
               </ProtectedRoute>
             }
           />

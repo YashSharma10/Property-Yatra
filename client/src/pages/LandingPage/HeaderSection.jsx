@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { setFilters } from "@/redux/slices/globalEvent";
+import banner from "../../assets/banner.jpg";
 
 const HeaderSection = () => {
   const { filters } = useSelector((store) => store.globalEvent);
@@ -33,7 +34,7 @@ const HeaderSection = () => {
         isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      <img src={sky} alt="header" className="w-full max-h-96" />
+      <img src={banner} alt="header" className="w-full max-h-96" />
 
       {/* SearchBox */}
       <div className="relative -mt-20 z-50 ">
