@@ -102,7 +102,6 @@ export const listProperties = async (req, res) => {
     if (features) {
       Object.entries(JSON.parse(features)).forEach(
         ([featureKey, featureValue]) => {
-
           if (featureValue === true) {
             orFilters.push({ [`features.${featureKey}`]: true });
           }
@@ -111,7 +110,6 @@ export const listProperties = async (req, res) => {
     }
 
     const filters = orFilters.length > 0 ? { $and: orFilters } : {};
-
 
     const skip = (Number(page) - 1) * Number(limit);
 
@@ -219,6 +217,36 @@ export const createProperty = async (req, res) => {
       .json({ message: "Property created successfully", data: property });
   } catch (error) {
     console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+
+export const addView = async (req, res) => {
+  try {
+    const { id } = req.params; 
+    const userId = req.user; 
+
+    if (!id || !userId) {
+      return res.status(400).json({ message: "Missing property ID or user info" });
+    }
+
+    const property = await Property.findByIdAndUpdate(
+      id,
+      {
+        $push: { views: userId },
+      },
+      { new: true } 
+    );
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    return res.status(200).json({ message: "Viewed successfully", property });
+  } catch (error) {
+    console.error("Error adding view:", error);
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });

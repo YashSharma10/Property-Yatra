@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema({
   name: { type: String, required: true },
-  sellPrice: { type: Number},
+  sellPrice: { type: Number },
   rentPrice: { type: Number },
   description: { type: String },
   propertyAge: { type: Number },
@@ -37,7 +37,12 @@ const propertySchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  views: { type: Number, default: 0 },
+  views: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+    },
+  ],
 });
 
 const Property = mongoose.model("Property", propertySchema);

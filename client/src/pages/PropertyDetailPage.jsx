@@ -5,6 +5,7 @@ import {
   CardHeader,
 } from "@/components/ui/card";
 import { BACKEND_URL } from "@/constants";
+import axios from "axios";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -12,7 +13,16 @@ const PropertyDetails = () => {
   const { id } = useParams();
   const [property, setProperty] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
+  const addView = async (id) => {
+    try {
+      const data = await axios.post(
+        `${BACKEND_URL}/api/properties/view/${id}`,
+        {},
+        { withCredentials: true }
+      );
+      console.log(data);
+    } catch (error) {}
+  };
   useEffect(() => {
     const fetchPropertyDetails = async () => {
       setIsLoading(true);
@@ -22,6 +32,7 @@ const PropertyDetails = () => {
           throw new Error("Property not found");
         }
         const data = await response.json();
+        addView(id);
         setProperty(data);
       } catch (error) {
         console.error("Failed to fetch property details:", error);

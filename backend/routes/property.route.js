@@ -1,6 +1,7 @@
 import express from "express";
 import {
   addProperty,
+  addView,
   createProperty,
   getPropertyById,
   getUserProfileAndProperties,
@@ -17,6 +18,7 @@ router.post("/new", uploadFiles,authCheck, createProperty);
 router.get("/latest", latestProperties);
 router.get("/list", listProperties);
 router.get("/profile", authCheck, getUserProfileAndProperties);
+router.post("/view/:id",authCheck, addView);
 router.get("/:id", getPropertyById);
 
 export default router;

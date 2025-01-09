@@ -41,6 +41,7 @@ const PropertyListingPage = () => {
       setIsLoading(false);
     }
   };
+  
 
   const handleCheckboxChange = (e, category) => {
     const { name, checked } = e.target;

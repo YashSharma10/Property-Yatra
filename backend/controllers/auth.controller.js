@@ -105,6 +105,8 @@ export const addlikedProperty = async (req, res) => {
       },
       { new: true, runValidators: true }
     );
+    console.log("ID",id);
+    
     return res.status(200).json({ likedPropertiesData });
   } catch (error) {
     console.error("Add Liked Property Error:", error.message);
