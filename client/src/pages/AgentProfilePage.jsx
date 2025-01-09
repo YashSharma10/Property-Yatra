@@ -20,7 +20,7 @@ import { toast } from "sonner";
 export default function AgentDashboard() {
   const { loading } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
-  const [user, setUser] = useState(null);  // Default to null, to avoid errors in rendering
+  const [user, setUser] = useState(null); // Default to null, to avoid errors in rendering
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [properties, setProperties] = useState([]); // Set properties as an empty array
@@ -40,6 +40,7 @@ export default function AgentDashboard() {
 
   const handlePropertyClick = (id) => {
     navigate(`/property/${id}`);
+    console.log("PropertyId", id);
   };
 
   useEffect(() => {
@@ -97,8 +98,11 @@ export default function AgentDashboard() {
                     "Logout"
                   )}
                 </Button>
-                <Button onClick={() => navigate("/add-property")}>
+                <Button onClick={() => navigate("/add")}>
                   Add New Property
+                </Button>
+                <Button onClick={() => navigate("/subscription")}>
+                  Change your plan
                 </Button>
               </div>
             </CardContent>
@@ -110,9 +114,7 @@ export default function AgentDashboard() {
       <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         <Card className="p-4">
           <CardTitle>Total Properties</CardTitle>
-          <CardDescription>
-            {properties.length}
-          </CardDescription>
+          <CardDescription>{properties.length}</CardDescription>
         </Card>
         <Card className="p-4">
           <CardTitle>Active Listings</CardTitle>
@@ -139,14 +141,16 @@ export default function AgentDashboard() {
             {properties.length > 0 ? (
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {properties.map((property) => (
-                  <PropertyCard property={property} key={property._id}>
-                    <div
-                      className="flex-grow p-4"
-                      onClick={() => handlePropertyClick(property._id)}
-                    ></div>
+                  <div>
+                    <PropertyCard property={property} key={property._id}>
+                      <div
+                        className="flex-grow p-4 bg-red-700"
+                        onClick={() => handlePropertyClick(property._id)}
+                      ></div>
+                    </PropertyCard>
                     <div className="flex justify-between mt-4">
-                      <Button onClick={() => navigate(`/edit/${property._id}`)}>
-                        Edit
+                      <Button onClick={() => navigate(`/dashboard`)}>
+                        Analytics
                       </Button>
                       <Button
                         variant="destructive"
@@ -157,7 +161,7 @@ export default function AgentDashboard() {
                         Delete
                       </Button>
                     </div>
-                  </PropertyCard>
+                  </div>
                 ))}
               </div>
             ) : (

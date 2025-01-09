@@ -14,6 +14,7 @@ import NotFound from "./components/ui/common/NotFound";
 import Dashboard from "./pages/Agent/Dashboard";
 import FacilitiesPage from "./pages/FacilitiesPage";
 import AgentProfilePage from "./pages/AgentProfilePage";
+import SubscriptionPlans from "./pages/Agent/SubscriptionPlans";
 
 const App = () => {
   return (
@@ -51,6 +52,7 @@ const App = () => {
           <Route path="/property/:id" element={<PropertyDetailPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/subscription" element={<SubscriptionPlans />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route

@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema({
   name: { type: String, required: true },
-  sellPrice: { type: Number, required: true },
+  sellPrice: { type: Number},
   rentPrice: { type: Number },
   description: { type: String },
   propertyAge: { type: Number },
   area: { type: Number },
-  listingType: { type: String, required: true },
-  propertyType: { type: String, required: true },
+  listingType: { type: String, required: true }, //sell or rent
+  propertyType: { type: String, required: true }, // residential pg commercial etc
   address: {
     house: { type: String },
     city: { type: String },

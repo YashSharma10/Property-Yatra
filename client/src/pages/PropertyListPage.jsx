@@ -17,14 +17,14 @@ const PropertyListingPage = () => {
   const [page, setPage] = useState(1);
   const [totalProperties, setTotalProperties] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-console.log(filters);
+  console.log(filters);
 
   const fetchProperties = async () => {
     setIsLoading(true);
 
     const queryParams = new URLSearchParams({
       ...filters,
-      features: filters.features.join(","),
+      // features: filters.features.join(","),
       page,
     });
 
@@ -44,26 +44,39 @@ console.log(filters);
 
   const handleCheckboxChange = (e, category) => {
     const { name, checked } = e.target;
-    const updatedCategory = checked
-      ? [...filters[category], name]
-      : filters[category].filter((item) => item !== name);
-
-    dispatch(setFilters({ [category]: updatedCategory }));
+    if (category === "features") {
+      const updatedFeatures = {
+        ...filters.features,
+        [name]: checked,
+      };
+      dispatch(
+        setFilters({
+          ...filters,
+          features: updatedFeatures,
+        })
+      );
+    } else {
+      console.error(
+        "Checkbox changes are only supported for 'features' category."
+      );
+    }
   };
 
   const handleRadioChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(setFilters({ [name]: value }));
+    const { value } = e.target;
+    dispatch(setFilters({ listingType: value }));
   };
 
-  const handleRangeChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(setFilters({ [name]: Number(value) }));
+  const handleInputChange = (e) => {
+    const { value } = e.target;
+    const price = filters.listingType === "sell" ? "sellPrice" : "rentPrice";
+    dispatch(setFilters({ [price]: Number(value) }));
+    dispatch(setFilters({ price: Number(value) }));
   };
 
   const handleDropdownChange = (e) => {
-    const { name, value } = e.target;
-    dispatch(setFilters({ [name]: value }));
+    const { value } = e.target;
+    dispatch(setFilters({ propertyType: value }));
   };
 
   const handlePageChange = (newPage) => {
@@ -77,10 +90,14 @@ console.log(filters);
   const handleLikedProperty = async (id) => {
     console.log(id);
     try {
-      const response = await axios.post(`${BACKEND_URL}/api/liked/${id}`, {}, {
-        withCredentials: true,
-      });
-      console.log(response);
+      const response = await axios.post(
+        `${BACKEND_URL}/api/liked/${id}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("Response", response);
     } catch (error) {
       console.log(error);
     }
@@ -100,30 +117,22 @@ console.log(filters);
           <select
             name="type"
             onChange={handleDropdownChange}
-            className="w-full mt-2 border rounded p-2"
+            className="w-full mt-2 border rounded p-2 capitalize"
           >
-            <option value="">All</option>
-            <option value="Apartment">Apartment</option>
-            <option value="Villa">Villa</option>
-            <option value="Independent House">Independent House</option>
-            <option value="Penthouse">Penthouse</option>
+            {["All", "residential", "commercial", "pg", "plot"].map((item) => (
+              <option value={item}>{item}</option>
+            ))}
           </select>
         </div>
 
         {/* Price Range */}
         <div className="mb-6">
           <label className="block text-sm font-medium">Price Range</label>
-          <div className="flex justify-between text-sm mt-2">
-            <span>₹{filters.price}</span>
-          </div>
+          <div className="flex justify-between text-sm mt-2"></div>
           <input
-            type="range"
-            name="price"
-            min="0"
-            max="10000000"
-            step="100000"
+            type="text"
             value={filters.price}
-            onChange={handleRangeChange}
+            onChange={handleInputChange}
             className="w-full mt-2"
           />
         </div>
@@ -131,38 +140,29 @@ console.log(filters);
         {/* Features */}
         <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Features</h3>
-          {[
-            "parking",
-            "lift",
-            "swimming pool",
-            "water",
-            "electricity",
-            "gas",
-          ].map((feature) => (
+          {Object.keys(filters.features).map((feature) => (
             <label key={feature} className="block">
               <input
                 type="checkbox"
                 name={feature}
-                checked={filters.features.includes(feature)}
+                checked={filters.features[feature]}
                 onChange={(e) => handleCheckboxChange(e, "features")}
-                className="mr-2"
               />
-              {feature.charAt(0).toUpperCase() + feature.slice(1)}
+              {feature}
             </label>
           ))}
         </div>
 
-        {/* Furnished (Radio Buttons) */}
+        {/* Rent // Sell*/}
         <div className="mb-6">
           <h3 className="text-sm font-medium mb-2">Furnished</h3>
           <div className="flex gap-4">
-            {["Yes", "No"].map((option) => (
+            {["rent", "sell"].map((option) => (
               <label key={option} className="block">
                 <input
                   type="radio"
-                  name="furnished"
                   value={option}
-                  checked={filters.furnished === option}
+                  checked={filters.listingType === option}
                   onChange={handleRadioChange}
                   className="mr-2"
                 />
@@ -172,36 +172,6 @@ console.log(filters);
           </div>
         </div>
 
-        {/* Room Number*/}
-        <div className="mb-6">
-          <label className="block text-sm font-medium">Bedrooms</label>
-          <select
-            name="bedrooms"
-            onChange={handleDropdownChange}
-            className="w-full mt-2 border rounded p-2"
-          >
-            <option value="">All</option>
-            {[1, 2, 3, 4, 5].map((num) => (
-              <option key={num} value={num}>
-                {num}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* OwnerShip type */}
-        <div className="mb-6">
-          <label className="block text-sm font-medium">Ownership</label>
-          <select
-            name="ownership"
-            onChange={handleDropdownChange}
-            className="w-full mt-2 border rounded p-2"
-          >
-            <option value="">All</option>
-            <option value="Lease">Lease</option>
-            <option value="Freehold">Freehold</option>
-          </select>
-        </div>
 
         {/* Year Built */}
         <div>

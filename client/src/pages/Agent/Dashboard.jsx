@@ -42,9 +42,9 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex  bg-gray-50">
       {/* Left Sidebar */}
-      <aside className="w-64 bg-gray-900 text-gray-200 p-4">
+      {/* <aside className="w-64 bg-gray-900 text-gray-200 p-4">
         <h2 className="text-lg font-semibold mb-6">Dashboard Menu</h2>
         <nav className="space-y-3">
           <Button variant="ghost" className="w-full justify-start">
@@ -63,16 +63,18 @@ const Dashboard = () => {
             Post New Property
           </Button>
         </nav>
-      </aside>
+      </aside> */}
 
       {/* Main Content */}
-      <main className="flex-grow p-6">
+      <div className="flex-grow p-6">
         {/* Header */}
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">Posted Properties</h1>
           <Button variant="primary">Add New Property</Button>
         </div>
 
+        {/* <SubscriptionPlans/> */}
+        <PropertyAnalyticsDashboard/>
         {/* Properties Table */}
         <Card className="p-4 bg-white shadow-sm rounded-md">
           <Table>
@@ -112,9 +114,7 @@ const Dashboard = () => {
             </TableBody>
           </Table>
         </Card>
-        <SubscriptionPlans/>
-        <PropertyAnalyticsDashboard/>
-      </main>
+      </div>
     </div>
   );
 };

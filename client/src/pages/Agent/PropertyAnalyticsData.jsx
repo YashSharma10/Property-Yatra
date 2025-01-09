@@ -21,20 +21,20 @@ const propertyAnalyticsData = [
       { date: "2024-01-15", price: 12700000 },
     ],
   },
-  {
-    name: "Parkview Residences",
-    totalViews: 900,
-    leadsGenerated: 70,
-    status: "Sold",
-    price: 9500000,
-    datePosted: "2024-01-05",
-    category: "Villa",
-    priceTrend: [
-      { date: "2024-01-05", price: 9500000 },
-      { date: "2024-01-12", price: 9600000 },
-      { date: "2024-01-18", price: 9500000 },
-    ],
-  },
+  // {
+  //   name: "Parkview Residences",
+  //   totalViews: 900,
+  //   leadsGenerated: 70,
+  //   status: "Sold",
+  //   price: 9500000,
+  //   datePosted: "2024-01-05",
+  //   category: "Villa",
+  //   priceTrend: [
+  //     { date: "2024-01-05", price: 9500000 },
+  //     { date: "2024-01-12", price: 9600000 },
+  //     { date: "2024-01-18", price: 9500000 },
+  //   ],
+  // },
   // More data here
 ];
 
@@ -43,27 +43,7 @@ const PropertyAnalyticsDashboard = () => {
     <div className="max-w-7xl mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-6 text-center">Property Analytics Dashboard</h1>
       
-      {/* Property Analytics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-        {propertyAnalyticsData.map((property) => (
-          <Card key={property.name} className="shadow-lg">
-            <CardHeader>
-              <CardTitle className="text-lg font-semibold">{property.name}</CardTitle>
-              <Badge variant={property.status === "Active" ? "success" : "destructive"} className="ml-2">
-                {property.status}
-              </Badge>
-            </CardHeader>
-            <CardContent>
-              <div className="mb-4">
-                <p className="text-sm text-gray-600">Total Views: {property.totalViews}</p>
-                <p className="text-sm text-gray-600">Leads Generated: {property.leadsGenerated}</p>
-                <p className="text-sm text-gray-600">Price: ₹{property.price.toLocaleString()}</p>
-              </div>
-              <Button size="sm" className="w-full">View Details</Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+
 
       {/* Price Trend Chart */}
       <div className="mb-8">

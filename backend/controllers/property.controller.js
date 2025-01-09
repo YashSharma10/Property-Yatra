@@ -58,32 +58,59 @@ export const addProperty = async (req, res) => {
 export const listProperties = async (req, res) => {
   try {
     const {
-      name,
-      type,
-      price,
-      propertyType,
       area,
-      transactionType,
       features,
-      utilities,
+      listingType,
+      sellPrice,
+      propertyAge,
+      rentPrice,
+      propertyType,
+      searchLocation,
       page = 1,
       limit = 5,
     } = req.query;
 
+    console.log("Query Parameters:", req.query);
+
     const orFilters = [];
 
-    if (name) orFilters.push({ name: { $regex: name, $options: "i" } });
-    if (type) orFilters.push({ type });
-    if (price) orFilters.push({ price: { $gte: Number(price) } });
-    if (propertyType) orFilters.push({ propertyType });
+    if (propertyType) {
+      orFilters.push({ propertyType: { $regex: propertyType, $options: "i" } });
+    }
+    if (listingType) {
+      orFilters.push({ listingType: { $regex: listingType, $options: "i" } });
+    }
+
+    if (rentPrice) {
+      orFilters.push({ rentPrice: { $gte: Number(rentPrice) } });
+    }
+    if (sellPrice) {
+      orFilters.push({ sellPrice: { $gte: Number(sellPrice) } });
+    }
+
+    if (propertyAge) {
+      orFilters.push({ propertyAge: { $regex: propertyAge, $options: "i" } });
+    }
+    if (area) {
+      orFilters.push({ area: { $regex: area, $options: "i" } });
+    }
+
+    if (searchLocation) {
+      orFilters.push({
+        searchLocation: { $regex: searchLocation, $options: "i" },
+      });
+    }
 
     if (features) {
-      const featureArray = features.split(",");
-      orFilters.push({ features: { $in: featureArray } });
+      const featureArray = features.split(",").map((f) => f.trim());
+      featureArray.forEach((feature) => {
+        orFilters.push({ [`features.${feature}`]: true });
+      });
     }
 
     const filters = orFilters.length > 0 ? { $or: orFilters } : {};
-    console.log(filters);
+
+    console.log("Filters Object:", JSON.stringify(filters, null, 2));
 
     const skip = (Number(page) - 1) * Number(limit);
 
@@ -95,9 +122,11 @@ export const listProperties = async (req, res) => {
 
     res.status(200).json({ properties, total });
   } catch (error) {
+    console.error("Error fetching properties:", error);
     res.status(500).json({ message: "Failed to fetch properties", error });
   }
 };
+
 
 export const getPropertyById = async (req, res) => {
   try {
@@ -184,7 +213,7 @@ export const createProperty = async (req, res) => {
       },
       { new: true, runValidators: true }
     );
-    
+
     return res
       .status(201)
       .json({ message: "Property created successfully", data: property });

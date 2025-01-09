@@ -10,23 +10,28 @@ import banner from "../../assets/banner.jpg";
 
 const HeaderSection = () => {
   const { filters } = useSelector((store) => store.globalEvent);
-  const [activeTab, setActiveTab] = useState("Buy");
+  const [activeTab, setActiveTab] = useState("Sell");
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const handleTabClick = (tab, index) => {
+  const handleTabClick = (tab) => {
+    if (tab === "Rent" || tab === "Buy") {
+      dispatch(setFilters({ listingType: tab.toLowerCase() }));
+    } else {
+      dispatch(setFilters({ propertyType: tab.toLowerCase() }));
+    }
+
     setActiveTab(tab);
-    
   };
 
-  const handleSearch =  (e) => {
+  const handleSearch = () => {
     navigate("/property-listing");
-    // dispatch(setFilters({ propertyType: activeTab.toLowerCase(), searchLocation: e.target.value }));
-    console.log(filters);
   };
 
-  const tabs = ["Buy", "Rent", "PG", "Commercial", "Plots"];
+  const tabs = ["Sell", "Rent", "PG", "Commercial", "Plots"];
 
   const { isVisible } = useSelector((store) => store.globalEvent);
+
+  console.log(filters);
 
   return (
     <section
@@ -62,7 +67,13 @@ const HeaderSection = () => {
               type="text"
               placeholder="Search..."
               value={filters.searchLocation}
-              onChange={handleSearch}
+              onChange={(e) =>
+                dispatch(
+                  setFilters({
+                    searchLocation: e.target.value,
+                  })
+                )
+              }
               className="w-full px-3 py-2 outline-none text-sm"
             />
             <button
