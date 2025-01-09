@@ -3,7 +3,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -12,13 +11,13 @@ import { useEffect, useState } from "react";
 
 import PropertyCard from "@/components/ui/common/PropertyCard";
 import { BACKEND_URL } from "@/constants";
-import { setLoading, setUser } from "@/redux/slices/auth";
+import { setLoading } from "@/redux/slices/auth";
 import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
-export default function UserProfile() {
+export default function AgentDashboard() {
   const { loading } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
   const [user, setUser] = useState();
@@ -53,7 +52,6 @@ export default function UserProfile() {
         setUser(properties.data.user);
         setLoadingProperties(false);
         setProperties(properties.data.user.postedProperties);
-        console.log(properties.data.user);
       }
     } catch (error) {
       console.log(error);
@@ -61,90 +59,109 @@ export default function UserProfile() {
   };
 
   return (
-    <div className="width">
-      <div className="space-y-8">
-        <section>
-          <Card className="flex items-center p-3">
-            <img
-              src="https://via.placeholder.com/120"
-              alt="Profile"
-              className="w-32 h-32 rounded-full object-cover"
-            />
-            <div className="ml-4">
-              <CardHeader>
-                <CardTitle>{user?.name}</CardTitle>
-                <CardDescription className="break-words max-w-full">
-                  {user?.email}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-500 text-xs mt-2 mb-1">
-                  Joined Since: {user?.createdAt.split("T")[0]}
-                </p>
-                <div>
-                  <Button
-                    variant="destructive"
-                    onClick={handleLogout}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <Loader2 className="animate-spin">Please wait</Loader2>
-                    ) : (
-                      "Logout"
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            </div>
-          </Card>
-        </section>
-
-        {/* Properties Section */}
-        <section>
-          <Card className="p-6">
+    <div className="p-8">
+      {/* Dashboard Header */}
+      <section className="mb-8">
+        <Card className="flex items-center p-6 bg-blue-100">
+          <img
+            src="https://via.placeholder.com/150"
+            alt="Agent Banner"
+            className="w-40 h-40 rounded-full object-cover"
+          />
+          <div className="ml-6">
             <CardHeader>
-              <CardTitle>Properties Posted by {user?.name}</CardTitle>
-              <CardDescription className="break-words max-w-full">
-                Manage your property listings below.
+              <CardTitle className="text-2xl font-bold">
+                Welcome, {user?.name}
+              </CardTitle>
+              <CardDescription className="text-lg">
+                Email: {user?.email}
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              {properties.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {properties.map((property) => (
-                    <PropertyCard property={property} key={property.id} />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-gray-600">No properties available</p>
-              )}
+            <CardContent className="mt-4">
+              <p className="text-gray-600 text-sm">
+                Member Since: {user?.createdAt.split("T")[0]}
+              </p>
+              <div className="flex space-x-4 mt-4">
+                <Button
+                  variant="destructive"
+                  onClick={handleLogout}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <Loader2 className="animate-spin">Please wait</Loader2>
+                  ) : (
+                    "Logout"
+                  )}
+                </Button>
+                <Button onClick={() => navigate("/add-property")}>
+                  Add New Property
+                </Button>
+              </div>
             </CardContent>
-          </Card>
-        </section>
+          </div>
+        </Card>
+      </section>
 
-        {/* Liked properties */}
-        <section>
-          <Card className="p-6">
-            <CardHeader>
-              <CardTitle>Properties Liked by {user?.name}</CardTitle>
-              <CardDescription className="break-words max-w-full">
-                Manage your liked properties below.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              {properties.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {properties.map((property) => (
-                    <PropertyCard property={property} key={property.id} />
-                  ))}
-                </div>
-              ) : (
-                <p className="text-center text-gray-600">No properties available</p>
-              )}
-            </CardContent>
-          </Card>
-        </section>
-      </div>
+      {/* Analytics Section */}
+      <section className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <Card className="p-4">
+          <CardTitle>Total Properties</CardTitle>
+          <CardDescription>
+            {Array.isArray(properties) ? properties.length : 0}
+          </CardDescription>
+        </Card>
+        <Card className="p-4">
+          <CardTitle>Active Listings</CardTitle>
+          <CardDescription>
+            {Array.isArray(properties)
+              ? properties.filter((p) => p.status === "active").length
+              : 0}
+          </CardDescription>
+        </Card>
+        <Card className="p-4">
+          <CardTitle>Total Inquiries</CardTitle>
+          <CardDescription>42</CardDescription> {/* Placeholder */}
+        </Card>
+      </section>
+
+      {/* Properties Section */}
+      <section>
+        <Card className="p-6 mb-6">
+          <CardHeader>
+            <CardTitle>Your Properties</CardTitle>
+            <CardDescription>
+              Manage your property listings below.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {properties.length > 0 ? (
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                {properties.map((property) => (
+                  <PropertyCard property={property} key={property.id}>
+                    <div className="flex justify-between mt-4">
+                      <Button onClick={() => navigate(`/edit/${property.id}`)}>
+                        Edit
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        onClick={() =>
+                          console.log("Delete property", property.id)
+                        }
+                      >
+                        Delete
+                      </Button>
+                    </div>
+                  </PropertyCard>
+                ))}
+              </div>
+            ) : (
+              <p className="text-center text-gray-600">
+                No properties available
+              </p>
+            )}
+          </CardContent>
+        </Card>
+      </section>
     </div>
   );
 }
