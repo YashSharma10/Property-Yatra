@@ -35,7 +35,7 @@ const StatisticsSection = () => {
   ];
 
   return (
-    <section className="bg-gray-50 py-12 px-6 my-7 rounded-md max-w-6xl mx-auto">
+    <section className="width mt-5">
       <div className="text-center mb-8">
         <h2 className="text-3xl font-semibold mb-4">Platform Statistics</h2>
         <p className="text-lg text-gray-600">

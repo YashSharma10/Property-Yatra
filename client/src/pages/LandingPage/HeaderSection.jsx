@@ -18,8 +18,8 @@ const HeaderSection = () => {
   };
 
   const handleSearch =  (e) => {
-    // navigate("/property-listing");
-    dispatch(setFilters({ propertyType: activeTab.toLowerCase(), searchLocation: e.target.value }));
+    navigate("/property-listing");
+    // dispatch(setFilters({ propertyType: activeTab.toLowerCase(), searchLocation: e.target.value }));
     console.log(filters);
   };
 
@@ -37,7 +37,7 @@ const HeaderSection = () => {
 
       {/* SearchBox */}
       <div className="relative -mt-20 z-50 ">
-        <Card className="flex flex-col items-center max-w-md mx-auto p-4 shadow-md rounded-3xl bg-white">
+        <Card className="flex flex-col items-center max-w-xs sm:max-w-md mx-auto p-4 shadow-md rounded-3xl bg-white">
           {/* Navigation Tabs */}
           <div className="flex gap-4 w-full justify-center mb-4">
             {tabs.map((tab) => (

@@ -11,6 +11,8 @@ import AddProperty from "./pages/AddProperty";
 import ContactPage from "./pages/ContactPage";
 import AboutPage from "./pages/AboutUsPage";
 import NotFound from "./components/ui/common/NotFound";
+import Dashboard from "./pages/Agent/Dashboard";
+import FacilitiesPage from "./pages/FacilitiesPage";
 
 const App = () => {
   return (
@@ -41,6 +43,12 @@ const App = () => {
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route
+            path="/facilities
+          "
+            element={<FacilitiesPage />}
+          />
         </Routes>
       </main>
       <Footer />

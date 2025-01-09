@@ -8,6 +8,12 @@
   .width {
     @apply max-w-7xl px-2 py-6 mx-auto;
   }
+  .heading {
+    @apply text-lg sm:text-2xl font-semibold;
+  }
+  .subHeading {
+    @apply text-xs sm:text-sm text-slate-600;
+  }
   :root {
     --background: 0 0% 100%;
 
