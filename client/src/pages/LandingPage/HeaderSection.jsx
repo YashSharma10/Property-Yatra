@@ -39,7 +39,7 @@ const HeaderSection = () => {
         isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      <img src={banner} alt="header" className="w-full max-h-96" />
+      <img src={banner} alt="header" className="w-full h-80 object-cover" />
 
       {/* SearchBox */}
       <div className="relative -mt-20 z-50 ">

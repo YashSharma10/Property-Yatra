@@ -102,7 +102,6 @@ const PropertyListingPage = () => {
   };
 
   const handleLikedProperty = async (id) => {
-    console.log(id);
     try {
       const response = await axios.post(
         `${BACKEND_URL}/api/liked/${id}`,
@@ -120,7 +119,7 @@ const PropertyListingPage = () => {
   useEffect(() => {
     fetchProperties();
     fetchLikedPropertiesOfUser();
-  }, [filters, page]);
+  }, [filters, page, ]);
 
   return (
     <div className="flex mt-14 max-w-5xl mx-auto gap-10 relative">
@@ -244,10 +243,10 @@ const PropertyListingPage = () => {
                       fill="red"
                     />
                   )}
-                   <Heart
-                      className="absolute top-2 right-2 text-red-500"
-                      onClick={() => handleLikedProperty(property._id)}
-                    />
+                  <Heart
+                    className="absolute top-2 right-2 text-red-500"
+                    onClick={() => handleLikedProperty(property._id)}
+                  />
                 </div>
 
                 {/* Property Details */}
