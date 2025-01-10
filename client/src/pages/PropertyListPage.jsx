@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { BACKEND_URL } from "@/constants";
 import { setFilters } from "@/redux/slices/globalEvent";
 import axios from "axios";
-import { Heart, Phone } from "lucide-react";
+import { Heart, Info, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -122,7 +122,7 @@ const PropertyListingPage = () => {
   }, [filters, page, ]);
 
   return (
-    <div className="flex mt-14 max-w-5xl mx-auto gap-10 relative">
+    <div className="flex mt-14 max-w-5xl mx-auto gap-3 sm:gap-8 relative">
       {/* Filter Section */}
       <div className="p-3 my-10 h-fit sticky top-16 bg-white rounded-md shadow-lg border-r-2">
         {/* Select Property Type */}
@@ -142,12 +142,12 @@ const PropertyListingPage = () => {
         {/* Price Range */}
         <div className="mb-6">
           <label className="block text-sm font-medium">Price Range</label>
-          <div className="flex justify-between text-sm mt-2"></div>
+        
           <input
             type="text"
             value={filters.price}
             onChange={handleInputChange}
-            className="w-full mt-2"
+            className="w-full mt-2 border rounded-md p-1"
           />
         </div>
 
@@ -169,7 +169,7 @@ const PropertyListingPage = () => {
 
         {/* Rent // Sell*/}
         <div className="mb-6">
-          <h3 className="text-sm font-medium mb-2">Furnished</h3>
+          <h3 className="text-sm font-medium mb-2">Type</h3>
           <div className="flex gap-4">
             {["rent", "sell"].map((option) => (
               <label key={option} className="block">
@@ -224,18 +224,18 @@ const PropertyListingPage = () => {
             ))}
           </div>
         ) : properties.length > 0 ? (
-          <div className="grid grid-cols-1 gap-4 min-h-[75vh]">
+          <div className="grid grid-cols-1 gap-4 min-h-[75vh] mr-2">
             {properties.map((property) => (
               <div
                 key={property._id}
-                className="flex rounded-lg shadow-sm cursor-pointer border transition hover:shadow-lg"
+                className="flex rounded-lg shadow-sm cursor-pointer flex-col sm:flex-row border transition hover:shadow-lg "
               >
                 {/* Property Image and Heart Icon */}
                 <div className="relative flex-shrink-0">
                   <img
                     src={property.images[0]}
                     alt={property.name}
-                    className="h-72 w-96 object-cover rounded-tl-lg rounded-bl-lg"
+                    className="h-72 w-96 object-cover rounded-tl-lg sm:rounded-bl-lg rounded-tr-lg sm:rounded-tr-none"
                   />
                   {liked.length > 0 && liked.includes(property._id) && (
                     <Heart
@@ -273,10 +273,9 @@ const PropertyListingPage = () => {
 
                   {/* Action Buttons */}
                   <div className="mt-24 flex items-center gap-3">
-                    <Button variant="outline">View Number</Button>
-                    <Button>
-                      <Phone />
-                      Contact
+                    <Button className="w-full">
+                      <Info />
+                      Details
                     </Button>
                   </div>
                 </div>

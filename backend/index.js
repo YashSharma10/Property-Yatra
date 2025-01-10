@@ -23,8 +23,10 @@ connectDb();
 // Routes
 import authRoutes from "./routes/auth.route.js";
 import propertyRoutes from "./routes/property.route.js";
+import inquiryRoutes from "./routes/inquiry.model.js";
 app.use("/api", authRoutes);
 app.use("/api/properties", propertyRoutes);
+app.use("/api/inquiry", inquiryRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
