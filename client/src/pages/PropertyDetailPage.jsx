@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,6 +8,7 @@ import {
 import ShareButton from "@/components/ui/common/ShareButton";
 import { BACKEND_URL } from "@/constants";
 import axios from "axios";
+import { Contact, Phone } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
@@ -148,10 +150,14 @@ const PropertyDetails = () => {
               <p>{description}</p>
             </div>
           </CardContent>
-          <CardFooter>
+          <CardFooter className="flex flex-col">
             <p className="text-sm text-center">
               For more information, contact us!
             </p>
+            <Button >
+              <Phone />
+              Inquire / Call back
+            </Button>
           </CardFooter>
         </Card>
       </div>
