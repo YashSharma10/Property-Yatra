@@ -143,3 +143,25 @@ export const getAllLikedProperty = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+export const getPropertyByIdWithPostedData = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user;
+    console.log("PropertyId", id);
+
+    const property = await User.findById({
+      _id: userId,
+      "postedProperties._id": id,
+    })
+      .populate({ path: "postedProperties" })
+      .select("postedProperties");
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+    res.json(property);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", error });
+  }
+};

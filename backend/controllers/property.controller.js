@@ -160,7 +160,7 @@ export const getUserProfileAndProperties = async (req, res) => {
     console.log("UserId", userID);
     const postedProperties = await User.findById(userID)
       .select("-password")
-      .populate([{ path: "postedProperties" }, { path: "likedProperties" }])
+      .populate([{ path: "postedProperties" }, { path: "likedProperties" }]);
 
     res.status(200).json(postedProperties);
   } catch (error) {
@@ -266,3 +266,4 @@ export const addView = async (req, res) => {
       .json({ message: "Server error", error: error.message });
   }
 };
+

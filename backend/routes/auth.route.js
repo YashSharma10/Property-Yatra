@@ -2,6 +2,7 @@ import express from "express";
 import {
   addlikedProperty,
   getAllPostedProperties,
+  getPropertyByIdWithPostedData,
   login,
   logout,
   signup,
@@ -15,7 +16,10 @@ router.post("/login", login);
 router.get("/logout", logout);
 router.post("/liked/:id", authCheck, addlikedProperty);
 router.get("/auth/profile", authCheck, getAllPostedProperties);
-
+router.get("/property/analytics/:id",
+  authCheck,
+  getPropertyByIdWithPostedData
+);
 // Just for checking auth in frontend
 router.get("/auth/check", authCheck, (req, res) => {
   res.json({ message: "Allowed" });

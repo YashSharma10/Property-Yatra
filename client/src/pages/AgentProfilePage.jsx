@@ -16,14 +16,22 @@ import { Loader2 } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 export default function AgentDashboard() {
   const { loading } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
-  const [user, setUser] = useState(null); // Default to null, to avoid errors in rendering
+  const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [properties, setProperties] = useState([]); // Set properties as an empty array
+  const [properties, setProperties] = useState([]);
 
   const handleLogout = async () => {
     dispatch(setLoading(true));
@@ -39,7 +47,7 @@ export default function AgentDashboard() {
   };
 
   const handlePropertyClick = (id) => {
-    navigate(`/property/${id}`);
+    navigate(`/property/analytics/${id}`);
     console.log("PropertyId", id);
   };
 
@@ -56,10 +64,9 @@ export default function AgentDashboard() {
       if (properties) {
         setUser(properties.data.user);
         setLoadingProperties(false);
-        setProperties(properties.data.user.postedProperties); 
+        setProperties(properties.data.user.postedProperties);
       }
-      console.log(properties);
-      
+      console.log("Properties", properties.data.user.postedProperties);
     } catch (error) {
       console.log(error);
     }
@@ -69,13 +76,13 @@ export default function AgentDashboard() {
     <div className="p-8">
       {/* Dashboard Header */}
       <section className="mb-8">
-        <Card className="flex items-center p-6 bg-blue-100">
-          <img
+        <Card className="flex flex-col p-2  bg-blue-100">
+          {/* <img
             src="https://via.placeholder.com/150"
             alt="Agent Banner"
-            className="w-40 h-40 rounded-full object-cover"
-          />
-          <div className="ml-6">
+            className="w-40 h-40 rounded-full object-cover "
+          /> */}
+          <div c>
             <CardHeader>
               <CardTitle className="text-2xl font-bold">
                 Welcome, {user?.name}
@@ -88,7 +95,7 @@ export default function AgentDashboard() {
               <p className="text-gray-600 text-sm">
                 Member Since: {user?.createdAt.split("T")[0]}
               </p>
-              <div className="flex space-x-4 mt-4">
+              <div className="flex mt-4 gap-3 flex-col sm:flex-row">
                 <Button
                   variant="destructive"
                   onClick={handleLogout}
@@ -141,32 +148,72 @@ export default function AgentDashboard() {
           </CardHeader>
           <CardContent>
             {properties.length > 0 ? (
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                {properties.map((property) => (
-                  <div>
-                    <PropertyCard property={property} key={property._id}>
-                      <div
-                        className="flex-grow p-4 bg-red-700"
+              <div className="overflow-hidden bg-white shadow-md rounded-lg">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableCell>Property Name</TableCell>
+                      <TableCell>Total Views</TableCell>
+                      <TableCell>Status</TableCell>
+                      <TableCell>Date Posted</TableCell>
+                      <TableCell>Category</TableCell>
+                      <TableCell>Inquiries</TableCell>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {properties.map((property) => (
+                      <TableRow
+                        key={property.name}
                         onClick={() => handlePropertyClick(property._id)}
-                      ></div>
-                    </PropertyCard>
-                    <div className="flex justify-between mt-4">
-                      <Button onClick={() => navigate(`/dashboard`)}>
-                        Analytics
-                      </Button>
-                      <Button
-                        variant="destructive"
-                        onClick={() =>
-                          console.log("Delete property", property._id)
-                        }
+
                       >
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
-                ))}
+                        <TableCell>{property.name}</TableCell>
+                        <TableCell>{property?.views?.length}</TableCell>
+                        <TableCell>
+                          <Badge
+                            variant={
+                              property.status === "active"
+                                ? "success"
+                                : "destructive"
+                            }
+                          >
+                            {property.status}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>
+                          {property?.createdAt?.split("T")[0]}
+                        </TableCell>
+                        <TableCell className="capitalize">
+                          {property.propertyType}
+                        </TableCell>
+                        <TableCell>{property.inquiries}</TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
               </div>
             ) : (
+              // <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              //   {properties.map((property) => (
+              //     <div key={property._id}>
+              //       <PropertyCard property={property}>
+              //       </PropertyCard>
+              //       <div className="flex justify-between mt-4">
+              //         <Button onClick={() => navigate(`/dashboard`)}>
+              //           Analytics
+              //         </Button>
+              //         <Button
+              //           variant="destructive"
+              //           onClick={() =>
+              //             console.log("Delete property", property._id)
+              //           }
+              //         >
+              //           Delete
+              //         </Button>
+              //       </div>
+              //     </div>
+              //   ))}
+              // </div>
               <p className="text-center text-gray-600">
                 No properties available
               </p>

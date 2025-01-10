@@ -15,6 +15,7 @@ import Dashboard from "./pages/Agent/Dashboard";
 import FacilitiesPage from "./pages/FacilitiesPage";
 import AgentProfilePage from "./pages/AgentProfilePage";
 import SubscriptionPlans from "./pages/Agent/SubscriptionPlans";
+import PropertyAnalyticsDashboard from "./pages/Agent/PropertyAnalyticsData";
 
 const App = () => {
   return (
@@ -54,7 +55,7 @@ const App = () => {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/subscription" element={<SubscriptionPlans />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/property/analytics/:id" element={<PropertyAnalyticsDashboard />} />
           <Route
             path="/facilities
           "
