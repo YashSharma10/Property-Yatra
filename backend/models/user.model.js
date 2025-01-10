@@ -34,10 +34,10 @@ const userSchema = new mongoose.Schema(
         ref: "Property",
       },
     ],
-    likedProperties: [
+    likedProperties:  [
       {
         type: mongoose.Schema.Types.ObjectId,
-        red: "Property",
+        ref: "Property",
       },
     ],
   },

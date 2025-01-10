@@ -101,12 +101,12 @@ export const addlikedProperty = async (req, res) => {
     const likedPropertiesData = await User.findByIdAndUpdate(
       req.user,
       {
-        $addToSet: { likedProperties: id }, // Prevent duplicates
+        $push: { likedProperties: id },
       },
-      { new: true, runValidators: true }
+      { new: true }
     );
-    console.log("ID",id);
-    
+    console.log("ID", id);
+
     return res.status(200).json({ likedPropertiesData });
   } catch (error) {
     console.error("Add Liked Property Error:", error.message);
@@ -118,8 +118,8 @@ export const addlikedProperty = async (req, res) => {
 export const getAllPostedProperties = async (req, res) => {
   try {
     const user = await User.findById(req.user)
-      .populate("postedProperties")
-      .populate("likedProperties");
+      .select("-password")
+      .populate([{ path: "postedProperties" }, { path: "likedProperties" }]);
 
     res.status(200).json({ user });
   } catch (error) {

@@ -12,7 +12,7 @@ const PropertyListingPage = () => {
   const { filters } = useSelector((store) => store.globalEvent);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+  const [liked, setLiked] = useState([]);
   const [properties, setProperties] = useState([]);
   const [page, setPage] = useState(1);
   const [totalProperties, setTotalProperties] = useState(0);
@@ -41,7 +41,20 @@ const PropertyListingPage = () => {
       setIsLoading(false);
     }
   };
-  
+
+  const fetchLikedPropertiesOfUser = async () => {
+    try {
+      const properties = await axios.get(`${BACKEND_URL}/api/auth/profile`, {
+        withCredentials: true,
+      });
+
+      properties.data.user.likedProperties.map((liked) =>
+        setLiked((p) => [...p, liked._id])
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleCheckboxChange = (e, category) => {
     const { name, checked } = e.target;
@@ -106,6 +119,7 @@ const PropertyListingPage = () => {
 
   useEffect(() => {
     fetchProperties();
+    fetchLikedPropertiesOfUser();
   }, [filters, page]);
 
   return (
@@ -173,7 +187,6 @@ const PropertyListingPage = () => {
           </div>
         </div>
 
-
         {/* Year Built */}
         <div>
           <label className="block text-sm font-medium">Built Year</label>
@@ -225,10 +238,16 @@ const PropertyListingPage = () => {
                     alt={property.name}
                     className="h-72 w-96 object-cover rounded-tl-lg rounded-bl-lg"
                   />
-                  <Heart
-                    className="absolute top-2 right-2 text-red-500"
-                    onClick={() => handleLikedProperty(property._id)}
-                  />
+                  {liked.length > 0 && liked.includes(property._id) && (
+                    <Heart
+                      className="absolute top-2 right-2 text-red-500  "
+                      fill="red"
+                    />
+                  )}
+                   <Heart
+                      className="absolute top-2 right-2 text-red-500"
+                      onClick={() => handleLikedProperty(property._id)}
+                    />
                 </div>
 
                 {/* Property Details */}

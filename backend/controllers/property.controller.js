@@ -160,7 +160,7 @@ export const getUserProfileAndProperties = async (req, res) => {
     console.log("UserId", userID);
     const postedProperties = await User.findById(userID)
       .select("-password")
-      .populate({ path: "postedProperties" });
+      .populate([{ path: "postedProperties" }, { path: "likedProperties" }])
 
     res.status(200).json(postedProperties);
   } catch (error) {
@@ -182,7 +182,6 @@ export const createProperty = async (req, res) => {
       address,
       features,
     } = req.body;
-    console.log("Name", req.body);
 
     const imageUrls = req.files?.map((file) => file.path) || [];
     const userID = req.user;
@@ -239,7 +238,6 @@ export const addView = async (req, res) => {
         path: "views",
       })
       .select("views");
-    // console.log("User details:", userInArrayOfProperty.views[0]._id);
 
     if (
       !userInArrayOfProperty.views.some(

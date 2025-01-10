@@ -56,8 +56,10 @@ export default function AgentDashboard() {
       if (properties) {
         setUser(properties.data.user);
         setLoadingProperties(false);
-        setProperties(properties.data.user.postedProperties); // Ensure it's an array
+        setProperties(properties.data.user.postedProperties); 
       }
+      console.log(properties);
+      
     } catch (error) {
       console.log(error);
     }
