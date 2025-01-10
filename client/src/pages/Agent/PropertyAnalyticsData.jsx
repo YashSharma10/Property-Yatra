@@ -27,23 +27,15 @@ const PropertyAnalyticsDashboard = () => {
 
   useEffect(() => {
     const fetchPropertyDetails = async () => {
-      setLoading(true);
       try {
+        setLoading(true);
         const response = await axios.get(
           `${BACKEND_URL}/api/property/analytics/:${id}`,
           { withCredentials: true }
         );
-        // const response = await axios.get(`${BACKEND_URL}/api/property/analytics`, {
-        //   withCredentials: true,
-        // });
-  
-        // if (!response.ok) {
-        //   throw new Error("Property not found");
-        // }
-        // const data = await response.json();
-        // addView(id);
-        // setProperty(data);
-        console.log(response);
+        console.log(response.data.postedProperties);
+        
+        console.log(response.data.postedProperties.find((pId) => pId._id === id));
       } catch (error) {
         console.error("Failed to fetch property details:", error);
       } finally {
