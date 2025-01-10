@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
+import mongoose from "mongoose";
 
 // ✅ SIGNUP
 export const signup = async (req, res) => {
@@ -150,15 +151,16 @@ export const getPropertyByIdWithPostedData = async (req, res) => {
     const userId = req.user;
     console.log("PropertyId", id);
 
-    const property = await User.findById({
-      _id: userId,
-      "postedProperties._id": id,
+    const property = await User.findOne({
+      _id: userId, // Match the user's ID
+      // "postedProperties._id": { $in: [id] },
     })
-      .populate({ path: "postedProperties" })
+
+      .populate({ path: "postedProperties", populate: { path: "views" } })
       .select("postedProperties");
-    if (!property) {
-      return res.status(404).json({ message: "Property not found" });
-    }
+
+    console.log("Properties Data", property);
+
     res.json(property);
   } catch (error) {
     console.error(error);

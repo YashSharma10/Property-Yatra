@@ -21,7 +21,7 @@ const PropertyTypeSection = () => {
   };
 
   return (
-    <section className="width mt-[250px] sm:mt-[300px]">
+    <section className="width mt-[340px]">
       {/* Section Title */}
       <h1 className="heading">Apartments, Villas and more</h1>
       <h6 className="subHeading">in Delhi South West</h6>
