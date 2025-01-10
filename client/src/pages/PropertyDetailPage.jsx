@@ -4,6 +4,7 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import ShareButton from "@/components/ui/common/ShareButton";
 import { BACKEND_URL } from "@/constants";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
@@ -20,8 +21,11 @@ const PropertyDetails = () => {
         {},
         { withCredentials: true }
       );
-      console.log(data);
-    } catch (error) {}
+    } catch (error) {
+      if (error.status === 401) {
+        console.log("aunt");
+      }
+    }
   };
   useEffect(() => {
     const fetchPropertyDetails = async () => {
@@ -84,8 +88,13 @@ const PropertyDetails = () => {
           />
         </div>
         <Card className="bg-white shadow-lg">
-          <CardHeader>
-            <h2 className="text-xl font-semibold">Property Details</h2>
+          <CardHeader className="flex flex-row justify-between items-center ">
+            <div>
+              <h2 className="text-xl font-semibold">Property Details</h2>
+            </div>
+            <div>
+              <ShareButton />
+            </div>
           </CardHeader>
           <CardContent>
             <p className="text-xl font-semibold">Type: {type}</p>

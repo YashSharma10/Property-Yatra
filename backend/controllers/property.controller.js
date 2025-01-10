@@ -225,26 +225,42 @@ export const createProperty = async (req, res) => {
 
 export const addView = async (req, res) => {
   try {
-    const { id } = req.params; 
-    const userId = req.user; 
+    const { id } = req.params;
+    const userId = req.user;
 
     if (!id || !userId) {
-      return res.status(400).json({ message: "Missing property ID or user info" });
+      return res
+        .status(400)
+        .json({ message: "Missing property ID or user info" });
     }
 
-    const property = await Property.findByIdAndUpdate(
-      id,
-      {
-        $push: { views: userId },
-      },
-      { new: true } 
-    );
+    const userInArrayOfProperty = await Property.findById(id)
+      .populate({
+        path: "views",
+      })
+      .select("views");
+    // console.log("User details:", userInArrayOfProperty.views[0]._id);
 
-    if (!property) {
-      return res.status(404).json({ message: "Property not found" });
+    if (
+      !userInArrayOfProperty.views.some(
+        (item) => item._id.toString() === userId.toString()
+      )
+    ) {
+      console.log("Includes true");
+      const property = await Property.findByIdAndUpdate(
+        id,
+        {
+          $push: { views: userId },
+        },
+        { new: true }
+      );
+
+      if (!property) {
+        return res.status(404).json({ message: "Property not found" });
+      }
     }
 
-    return res.status(200).json({ message: "Viewed successfully", property });
+    return res.status(200).json({ message: "Viewed successfully" });
   } catch (error) {
     console.error("Error adding view:", error);
     return res
