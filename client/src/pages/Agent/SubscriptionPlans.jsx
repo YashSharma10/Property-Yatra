@@ -1,9 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
 const SubscriptionPlans = () => {
+  const [planId, setPlanId] = useState("professional");
+
+  const handlePlanSelect =  (planId) => {
+    setPlanId(planId);
+  };
+  const handlePayment = async () => {
+    console.log("Pament");
+    
+  }
   const plans = [
     {
       id: "basic",
@@ -26,7 +35,7 @@ const SubscriptionPlans = () => {
         "Priority customer support",
         "Promoted property listings",
       ],
-      isPopular: true, // Highlight this as the most popular plan
+      isPopular: true,
     },
     {
       id: "advanced",
@@ -48,7 +57,8 @@ const SubscriptionPlans = () => {
         Choose Your Subscription Plan
       </h1>
       <p className="text-gray-600 text-center mb-10">
-        Select a plan that suits your property management needs and grow your real estate business.
+        Select a plan that suits your property management needs and grow your
+        real estate business.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -56,8 +66,9 @@ const SubscriptionPlans = () => {
           <Card
             key={plan.id}
             className={`p-6 shadow-md rounded-lg ${
-              plan.isPopular ? "border-2 border-green-500" : "border"
+              planId===plan.id ? "border-2 border-green-500" : "border"
             }`}
+            onClick={() => handlePlanSelect(plan.id)}
           >
             <CardHeader className="text-center">
               {plan.isPopular && (
@@ -83,7 +94,7 @@ const SubscriptionPlans = () => {
             </CardContent>
 
             <div className="text-center">
-              <Button variant="primary" size="lg">
+              <Button onClick={handlePayment} size="lg">
                 Choose {plan.title}
               </Button>
             </div>
