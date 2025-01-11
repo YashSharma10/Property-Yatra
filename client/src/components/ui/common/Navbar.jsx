@@ -28,7 +28,7 @@ const Navbar = () => {
       navigate("/profile"); // Redirect to regular user profile page
     }
   };
-  console.log(user.role)
+  // console.log(user.role)
 
   return (
     <header className="sticky top-0 w-full z-50 shadow-lg py-2 flex justify-around bg-white">
