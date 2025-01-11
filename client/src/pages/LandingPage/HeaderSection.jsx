@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
-import header from "../../assets/header.png";
-import sky from "../../assets/sky.jpg";
+// import header from "../../assets/header.png";
+// import sky from "../../assets/sky.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
