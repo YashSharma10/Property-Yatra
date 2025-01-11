@@ -15,7 +15,6 @@ const ProtectedRoute = ({ children }) => {
           withCredentials: true,
         });
         console.log(data.data);
-        
       } catch (error) {
         if (error.response.status === 401) {
           navigate("/auth");
