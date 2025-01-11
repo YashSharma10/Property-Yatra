@@ -15,9 +15,8 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.get("/logout", logout);
 router.post("/liked/:id", authCheck, addlikedProperty);
-router.get("/auth/profile", authCheck, getAllPostedProperties);
+router.get("/auth/profile", getAllPostedProperties);
 router.get("/property/analytics/:id",
-  authCheck,
   getPropertyByIdWithPostedData
 );
 // Just for checking auth in frontend
