@@ -31,7 +31,7 @@ const App = () => {
             element={
               // <ProtectedRoute>
                 <ProfilePage />
-              {/* </ProtectedRoute> */}
+              // {/* </ProtectedRoute> */}
             }
           />
           <Route
