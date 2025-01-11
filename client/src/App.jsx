@@ -29,17 +29,17 @@ const App = () => {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <ProfilePage />
-              </ProtectedRoute>
+              {/* </ProtectedRoute> */}
             }
           />
           <Route
             path="/agent-profile"
             element={
-              <ProtectedRoute>
+              // <ProtectedRoute>
                 <AgentProfilePage />
-              </ProtectedRoute>
+              // </ProtectedRoute>
             }
           />
           <Route
