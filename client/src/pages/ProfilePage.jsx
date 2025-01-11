@@ -21,7 +21,7 @@ import { toast } from "sonner";
 export default function UserProfile() {
   const { loading } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
-  const [user, setUser] = useState();
+  // const [user, setUser] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [properties, setProperties] = useState({});
@@ -31,6 +31,7 @@ export default function UserProfile() {
     try {
       await axios.get(`${BACKEND_URL}/api/logout`, { withCredentials: true });
       navigate("/");
+      dispatch(setUser(null));
       toast.success("Successfully logged out!");
     } catch (error) {
       toast.error("Logout failed. Please try again.");
