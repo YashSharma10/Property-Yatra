@@ -82,7 +82,7 @@ const PropertyDetails = () => {
   }, [id]);
 
   if (isLoading) {
-    return <div className="text-center text-xl">Loading...</div>;
+    return <div className="text-center text-xl text-gray-500">Loading...</div>;
   }
 
   if (!property) {
@@ -119,93 +119,124 @@ const PropertyDetails = () => {
   } - ${address.pincode || "N/A"}`;
 
   return (
-    <div className="container mx-auto p-6 mt-10">
-      <h1 className="text-3xl font-bold text-center mb-6">{name}</h1>
-      <div className="grid gap-6">
-        <div className="flex justify-center">
-          {images.length > 0 ? (
-            images.map((img, idx) => (
+    <div className="container mx-auto px-6 py-10 bg-gray-50">
+      {/* Property Name with Custom Font */}
+      <h1 className="text-5xl font-semibold text-center text-gray-900 tracking-wide leading-tight mt-4 mb-8 font-poppins">
+        {name}
+      </h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 mt-10">
+        {/* Left Section - Image Gallery */}
+        <div className="lg:col-span-1 space-y-4">
+          <div className="bg-gray-200 rounded-lg shadow-lg">
+            {images.length > 0 ? (
               <img
-                key={idx}
-                src={img}
-                alt={`${name} - ${idx + 1}`}
-                className="w-full rounded-lg shadow-lg mb-4"
+                src={images[0]}
+                alt="Main Property"
+                className="w-full h-60 object-cover rounded-lg shadow-md"
               />
-            ))
-          ) : (
-            <img
-              src="/default-image.jpg"
-              alt="Default"
-              className="w-full rounded-lg shadow-lg"
-            />
+            ) : (
+              <img
+                src="/default-image.jpg"
+                alt="Default"
+                className="w-full h-60 object-cover rounded-lg shadow-md"
+              />
+            )}
+          </div>
+          {images.length > 1 && (
+            <div className="grid grid-cols-3 gap-2 mt-4">
+              {images.slice(1).map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`Property Thumbnail ${idx + 1}`}
+                  className="h-24 object-cover rounded-lg shadow-md"
+                />
+              ))}
+            </div>
           )}
         </div>
-        <Card className="bg-white shadow-lg">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <div>
-              <h2 className="text-xl font-semibold">Property Details</h2>
-            </div>
-            <div>
+
+        {/* Right Section - Property Details */}
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="bg-white shadow-2xl rounded-xl">
+            <CardHeader className="flex justify-between items-center p-6 bg-gradient-to-r from-teal-100 to-blue-100 rounded-t-xl">
+              <h2 className="text-2xl font-semibold text-teal-800">Property Details</h2>
               <ShareButton />
-            </div>
-          </CardHeader>
-          <CardContent>
-            <p className="text-xl font-semibold">Listing Type: {listingType}</p>
-            <p className="text-xl font-semibold mt-2">Price: {price}</p>
-            <p className="text-xl font-semibold mt-2">Area: {area} sq. ft.</p>
-            <p className="mt-2">
-              <strong>Property Type:</strong> {propertyType}
-            </p>
-            <p className="mt-2">
-              <strong>Property Age:</strong> {propertyAge} years
-            </p>
+            </CardHeader>
+            <CardContent className="p-6 space-y-6">
+              <p className="text-lg text-gray-800">
+                <strong className="font-medium">Listing Type:</strong> {listingType}
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong className="font-medium">Price:</strong> {price}
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong className="font-medium">Area:</strong> {area} sq. ft.
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong className="font-medium">Property Type:</strong> {propertyType}
+              </p>
+              <p className="text-lg text-gray-800">
+                <strong className="font-medium">Property Age:</strong> {propertyAge} years
+              </p>
 
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Features:</h3>
-              <ul className="list-disc pl-6">
-                {Object.entries(features)
-                  .filter(([_, value]) => value)
-                  .map(([key]) => (
-                    <li key={key}>{key.replace(/([A-Z])/g, " $1")}</li>
-                  ))}
-              </ul>
-            </div>
+              {/* Features */}
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Features:</h3>
+                <ul className="list-disc pl-6 text-gray-700 space-y-1">
+                  {Object.entries(features)
+                    .filter(([_, value]) => value)
+                    .map(([key]) => (
+                      <li key={key} className="text-lg">{key.replace(/([A-Z])/g, " $1")}</li>
+                    ))}
+                </ul>
+              </div>
 
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Address:</h3>
-              <p>{addressString}</p>
-            </div>
+              {/* Address */}
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Address:</h3>
+                <p className="text-lg text-gray-700">{addressString}</p>
+              </div>
 
-            <div className="mt-4">
-              <h3 className="text-lg font-semibold">Description:</h3>
-              <p>{description}</p>
-            </div>
-          </CardContent>
-          <CardFooter className="flex flex-col">
-            <Dialog>
-              <DialogTrigger>
-                <Button className="w-full mt-2 sm:w-fit">
-                  <Phone />
-                  Inquire / Call back
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Confirm Your Request</DialogTitle>
-                  <DialogDescription>
-                    Are you sure you’d like to request a callback? Our team will
-                    contact you shortly to assist with your inquiry.
-                  </DialogDescription>
-                </DialogHeader>
-                <DialogClose>
-                  <Button onClick={handleInquiry} className="w-full">
-                    Yes
+              {/* Description */}
+              <div>
+                <h3 className="text-xl font-semibold text-gray-800">Description:</h3>
+                <p className="text-lg text-gray-700">{description}</p>
+              </div>
+            </CardContent>
+
+            {/* Call to Action */}
+            <CardFooter className="p-6 bg-gray-100 rounded-b-xl">
+              <Dialog>
+                <DialogTrigger>
+                  <Button className="w-full bg-teal-600 text-white hover:bg-teal-700 py-3 rounded-lg shadow-md flex justify-center items-center">
+                    <Phone className="mr-3" />
+                    Inquire / Call Back
                   </Button>
-                </DialogClose>
-              </DialogContent>
-            </Dialog>
-          </CardFooter>
-        </Card>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle className="text-xl font-semibold text-gray-800">Confirm Your Request</DialogTitle>
+                    <DialogDescription>
+                      Are you sure you’d like to request a callback? Our team
+                      will contact you shortly to assist with your inquiry.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose>
+                      <Button
+                        onClick={handleInquiry}
+                        className="w-full bg-green-500 text-white hover:bg-green-600 py-3 rounded-lg shadow-md"
+                      >
+                        Yes, Confirm
+                      </Button>
+                    </DialogClose>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
     </div>
   );

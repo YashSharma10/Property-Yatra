@@ -11,15 +11,17 @@ import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 
+const allowedFormats = ["jpg", "jpeg", "png", "gif"];
+
 const PropertyForm = () => {
   const navigate = useNavigate();
   const { propertyDetails, roadmapVisible } = useSelector(
     (store) => store.globalEvent
   );
   const { token } = useSelector((store) => store.auth);
-  console.log("Token", token);
   const [activeTab, setActiveTab] = useState("tab1");
   const [loading, setLoading] = useState(false);
+  const [imageError, setImageError] = useState("");
   const [propertyFormData, setPropertyFormData] = useState({
     name: "",
     sellPrice: 0,
@@ -105,6 +107,37 @@ const PropertyForm = () => {
     return facilities;
   };
 
+  const isFileValid = (file) => {
+    const fileExtension = file.name.split(".").pop().toLowerCase();
+    return allowedFormats.includes(fileExtension);
+  };
+
+  const handleFileChange = (e) => {
+    const { files } = e.target;
+    let validFiles = [];
+    let error = "";
+
+    // Validate files before setting them
+    Array.from(files).forEach((file) => {
+      if (isFileValid(file)) {
+        validFiles.push(file);
+      } else {
+        error = "Only JPG, JPEG, PNG, and GIF files are allowed.";
+      }
+    });
+
+    if (error) {
+      setImageError(error); // Show the error message
+    } else {
+      setImageError(""); // Clear the error if files are valid
+    }
+
+    setPropertyFormData((prev) => ({
+      ...prev,
+      images: validFiles,
+    }));
+  };
+
   const handleCheckboxChange = (e) => {
     const { name, checked } = e.target;
     setPropertyFormData((prev) => ({
@@ -120,7 +153,7 @@ const PropertyForm = () => {
     const { name, value } = e.target;
     setPropertyFormData((prev) => ({
       ...prev,
-      [name]: value.toLowerCase(),
+      [name]: value,
     }));
   };
 
@@ -131,14 +164,6 @@ const PropertyForm = () => {
         ...prev.address,
         [field]: value,
       },
-    }));
-  };
-
-  const handleFileChange = (e) => {
-    const { files } = e.target;
-    setPropertyFormData((prev) => ({
-      ...prev,
-      images: Array.from(files),
     }));
   };
 
@@ -171,7 +196,6 @@ const PropertyForm = () => {
       }
     });
 
-    console.log(propertyFormData);
     try {
       setLoading(true);
       const response = await axios.post(
@@ -210,7 +234,7 @@ const PropertyForm = () => {
 
   return (
     <section
-      className={` ${
+      className={`${
         roadmapVisible ? "hidden" : ""
       } width bg-white max-w-md my-3 rounded-md`}
     >
@@ -241,7 +265,6 @@ const PropertyForm = () => {
             <Input
               placeholder="Property area in sqf"
               name="area"
-              // value={propertyFormData.area}
               onChange={handleInputChange}
               className="w-full"
               type="number"
@@ -251,7 +274,6 @@ const PropertyForm = () => {
               placeholder="Property age"
               name="propertyAge"
               type="number"
-              // value={propertyFormData.propertyAge}
               onChange={handleInputChange}
               className="w-full"
             />
@@ -312,37 +334,39 @@ const PropertyForm = () => {
               placeholder="House Number"
               name="house"
               value={propertyFormData.address.house}
-              onChange={(e) => addAddressDetails("house", e.target.value)}
+              onChange={(e) =>
+                addAddressDetails(e.target.name, e.target.value)
+              }
               className="w-full"
             />
+
             <Input
               placeholder="City"
               name="city"
               value={propertyFormData.address.city}
-              onChange={(e) => addAddressDetails("city", e.target.value)}
+              onChange={(e) =>
+                addAddressDetails(e.target.name, e.target.value)
+              }
               className="w-full"
             />
-            <Input
-              placeholder="State"
-              name="state"
-              value={propertyFormData.address.state}
-              onChange={(e) => addAddressDetails("state", e.target.value)}
-              className="w-full"
-            />
+
             <Input
               placeholder="Pincode"
               name="pincode"
               value={propertyFormData.address.pincode}
-              onChange={(e) => addAddressDetails("pincode", e.target.value)}
+              onChange={(e) =>
+                addAddressDetails(e.target.name, e.target.value)
+              }
               className="w-full"
             />
 
-            <Textarea
-              placeholder="Additional Property Details"
-              name="additionalDetails"
-              value={propertyFormData.additionalDetails || ""}
-              onChange={handleInputChange}
-              rows={4}
+            <Input
+              placeholder="State"
+              name="state"
+              value={propertyFormData.address.state}
+              onChange={(e) =>
+                addAddressDetails(e.target.name, e.target.value)
+              }
               className="w-full"
             />
           </div>
@@ -359,25 +383,39 @@ const PropertyForm = () => {
               onChange={handleFileChange}
               className="w-full"
             />
+            {imageError && (
+              <p className="text-red-500 text-sm">{imageError}</p>
+            )}
           </div>
         </TabsContent>
       </Tabs>
 
-      <div className="flex justify-between mt-6 pb-6">
+      {/* Navigation Buttons */}
+      <div className="mt-4 space-x-4">
         <Button
+          variant="secondary"
           onClick={handlePrevious}
           disabled={activeTab === "tab1"}
-          className="mr-2"
         >
           Previous
         </Button>
-        {activeTab !== "tab3" ? (
-          <Button onClick={handleNext}>Next</Button>
-        ) : (
-          <Button onClick={handleSubmit} disabled={loading ? true : false}>
-            {loading ? <Loader2 className="animate-spin" /> : "Submit"}
-          </Button>
-        )}
+        <Button
+          onClick={handleNext}
+          disabled={activeTab === "tab3"}
+        >
+          Next
+        </Button>
+      </div>
+
+      {/* Submit Button */}
+      <div className="mt-6">
+        <Button
+          onClick={handleSubmit}
+          className="w-full"
+          disabled={loading}
+        >
+          {loading ? <Loader2 className="animate-spin" /> : "Submit"}
+        </Button>
       </div>
     </section>
   );

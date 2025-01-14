@@ -1,19 +1,18 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button"; // Shadcn Button
-import { Sheet } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BACKEND_URL } from "@/constants";
-import { setFilters } from "@/redux/slices/globalEvent";
+import { FilterIcon, Heart, Info } from "lucide-react";
 import axios from "axios";
-import { ArrowBigDown, FilterIcon, Heart, Info, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { setFilters } from "@/redux/slices/globalEvent";
+import { BACKEND_URL } from "@/constants";
 
 const PropertyListingPage = () => {
   const { filters } = useSelector((store) => store.globalEvent);
-  const { token, user } = useSelector((store) => store.auth);
+  const { token } = useSelector((store) => store.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [liked, setLiked] = useState([]);
@@ -21,11 +20,10 @@ const PropertyListingPage = () => {
   const [page, setPage] = useState(1);
   const [totalProperties, setTotalProperties] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  // console.log(filters);
+  const [filterVisible, setFilterVisible] = useState(false);
 
   const fetchProperties = async () => {
     setIsLoading(true);
-
     const queryParams = new URLSearchParams({
       ...filters,
       features: JSON.stringify(filters.features),
@@ -48,17 +46,17 @@ const PropertyListingPage = () => {
 
   const fetchLikedPropertiesOfUser = async () => {
     try {
-      const properties = await axios.get(`${BACKEND_URL}/api/auth/profile`, {
+      const response = await axios.get(`${BACKEND_URL}/api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      properties.data.user.likedProperties.map((liked) =>
-        setLiked((p) => [...p, liked._id])
+      const likedProperties = response.data.user.likedProperties.map(
+        (liked) => liked._id
       );
+      setLiked(likedProperties);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -69,16 +67,7 @@ const PropertyListingPage = () => {
         ...filters.features,
         [name]: checked,
       };
-      dispatch(
-        setFilters({
-          ...filters,
-          features: updatedFeatures,
-        })
-      );
-    } else {
-      console.error(
-        "Checkbox changes are only supported for 'features' category."
-      );
+      dispatch(setFilters({ ...filters, features: updatedFeatures }));
     }
   };
 
@@ -90,8 +79,7 @@ const PropertyListingPage = () => {
   const handleInputChange = (e) => {
     const { value } = e.target;
     const price = filters.listingType === "sell" ? "sellPrice" : "rentPrice";
-    dispatch(setFilters({ [price]: Number(value) }));
-    dispatch(setFilters({ price: Number(value) }));
+    dispatch(setFilters({ [price]: Number(value), price: Number(value) }));
   };
 
   const handleDropdownChange = (e) => {
@@ -108,10 +96,8 @@ const PropertyListingPage = () => {
   };
 
   const handleLikedProperty = async (id) => {
-    console.log(token);
-
     try {
-      const response = await axios.post(
+      await axios.post(
         `${BACKEND_URL}/api/liked/${id}`,
         {},
         {
@@ -134,11 +120,10 @@ const PropertyListingPage = () => {
     }
   };
 
-  const [filterVisible, setFilterVisible] = useState(false);
   const handleFilterVisible = () => {
-    setFilterVisible((r) => !r);
-    console.log(filterVisible);
+    setFilterVisible((prev) => !prev);
   };
+
   useEffect(() => {
     fetchProperties();
     fetchLikedPropertiesOfUser();
@@ -148,64 +133,66 @@ const PropertyListingPage = () => {
     <div className="width flex gap-3 sm:gap-8 justify-center">
       {/* Filter Section */}
       <div
-        className={`p-3 my-10 h-fit sticky top-16 bg-white rounded-md shadow-lg border-r-2  sm:block w-full sm:w-fit ${
+        className={`p-6 my-10 h-fit sticky top-16 bg-white rounded-lg shadow-md border sm:block w-full sm:w-[300px] ${
           filterVisible ? "block" : "hidden"
         }`}
       >
-        {/* Select Property Type */}
         <div className="mb-6">
-          <label className="block text-sm font-medium">Property Type</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Property Type
+          </label>
           <select
             name="type"
             onChange={handleDropdownChange}
-            className="w-full mt-2 border rounded p-2 capitalize"
+            className="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           >
             {["All", "residential", "commercial", "pg", "plot"].map((item) => (
-              <option value={item}>{item}</option>
+              <option value={item} key={item} className="capitalize">
+                {item}
+              </option>
             ))}
           </select>
         </div>
 
-        {/* Price Range */}
         <div className="mb-6">
-          <label className="block text-sm font-medium">Price Range</label>
-
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Price Range
+          </label>
           <input
             type="text"
             value={filters.price}
             onChange={handleInputChange}
-            className="w-full mt-2 border rounded-md p-1"
+            className="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
-        {/* Features */}
         <div className="mb-6">
-          <h3 className="text-sm font-medium mb-2">Features</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-2">Features</h3>
           {Object.keys(filters.features).map((feature) => (
-            <label key={feature} className="block">
+            <label key={feature} className="block text-sm text-gray-600 mb-1">
               <input
                 type="checkbox"
                 name={feature}
                 checked={filters.features[feature]}
                 onChange={(e) => handleCheckboxChange(e, "features")}
+                className="mr-2 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
               />
               {feature}
             </label>
           ))}
         </div>
 
-        {/* Rent // Sell*/}
         <div className="mb-6">
-          <h3 className="text-sm font-medium mb-2">Type</h3>
+          <h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3>
           <div className="flex gap-4">
             {["rent", "sell"].map((option) => (
-              <label key={option} className="block">
+              <label key={option} className="block text-sm text-gray-600">
                 <input
                   type="radio"
                   value={option}
                   checked={filters.listingType === option}
                   onChange={handleRadioChange}
-                  className="mr-2"
+                  className="mr-2 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
                 />
                 {option}
               </label>
@@ -213,13 +200,14 @@ const PropertyListingPage = () => {
           </div>
         </div>
 
-        {/* Year Built */}
         <div>
-          <label className="block text-sm font-medium">Built Year</label>
+          <label className="block text-sm font-medium text-gray-700 mb-2">
+            Built Year
+          </label>
           <select
             name="builtYear"
             onChange={handleDropdownChange}
-            className="w-full mt-2 border rounded p-2"
+            className="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">All</option>
             {Array.from({ length: 50 }, (_, i) => 2023 - i).map((year) => (
@@ -232,17 +220,15 @@ const PropertyListingPage = () => {
       </div>
 
       {/* Property Listings */}
-      <div className="">
-        <div className="sm:hidden">
-          <FilterIcon onClick={handleFilterVisible} />
-          <button>Sort </button>
+      <div className="w-full">
+        <div className="sm:hidden mb-4">
+          <FilterIcon onClick={handleFilterVisible} className="cursor-pointer" />
         </div>
         <h2 className="text-lg font-semibold mb-4">
           {totalProperties} results |
         </h2>
         {isLoading ? (
           <div className="flex flex-col justify-center items-center mt-20 gap-12">
-            {/* Loader */}
             {[1, 2, 3].map((item) => (
               <div className="flex flex-col space-y-3" key={item}>
                 <Skeleton className="h-[125px] w-[250px] rounded-xl" />
@@ -260,7 +246,6 @@ const PropertyListingPage = () => {
                 key={property._id}
                 className="flex rounded-lg shadow-sm w-full h-fit flex-col sm:flex-row border transition hover:shadow-lg"
               >
-                {/* Property Image and Heart Icon */}
                 <div className="relative flex-shrink-0">
                   <img
                     src={property.images[0]}
@@ -278,8 +263,6 @@ const PropertyListingPage = () => {
                     onClick={() => handleLikedProperty(property._id)}
                   />
                 </div>
-
-                {/* Property Details */}
                 <div className="flex-grow p-4">
                   <div className="text-xl font-semibold flex justify-between items-center">
                     <span>{property.name}</span>
@@ -287,10 +270,10 @@ const PropertyListingPage = () => {
                       {property.listingType}
                     </span>
                   </div>
-                  <p className="text-gray-600 text-sm  overflow-hidden w-full max-h-10">
+                  <p className="text-gray-600 text-sm overflow-hidden w-full max-h-10">
                     {property.description}
                   </p>
-                  <div className="flex gap-3 text-sm  py-1">
+                  <div className="flex gap-3 text-sm py-1">
                     <p className="after:content-['|'] after:ml-0.5 after:text-gray-400 block">
                       ₹{property.sellPrice || property.rentPrice}
                     </p>
@@ -303,17 +286,13 @@ const PropertyListingPage = () => {
                     <div>
                       <span className="block">Highlights:</span>
                       <div className="flex gap-2 mt-1 flex-wrap overflow-hidden">
-                        {property?.features ? (
-                          <Badge>Nothing</Badge>
-                        ) : (
-                          property?.features &&
+                        {property.features &&
                           Object.keys(property.features).map((feature) => (
                             <Badge key={feature}>{feature}</Badge>
-                          ))
-                        )}
+                          ))}
                       </div>
                     </div>
-                    <div className="mt-2 ">
+                    <div className="mt-2">
                       <Button
                         className="w-full"
                         onClick={() => handlePropertyClick(property._id)}
@@ -323,8 +302,6 @@ const PropertyListingPage = () => {
                       </Button>
                     </div>
                   </div>
-
-                  {/* Action Buttons */}
                 </div>
               </div>
             ))}
@@ -333,22 +310,22 @@ const PropertyListingPage = () => {
           <p className="text-center text-gray-500">No properties found.</p>
         )}
 
-        {/* Pagination */}
         {properties.length > 0 && (
           <div className="flex justify-between mt-4">
             <Button
               onClick={() => handlePageChange(page - 1)}
               disabled={page === 1}
-              variant="outline"
+              className="disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </Button>
+            <span className="text-gray-600">Page {page}</span>
             <Button
               onClick={() => handlePageChange(page + 1)}
-              disabled={page * 5 >= totalProperties}
-              variant="outline"
+              disabled={page >= Math.ceil(totalProperties / 10)}
+              className="disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Load More
+              Next
             </Button>
           </div>
         )}
