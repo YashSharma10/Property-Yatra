@@ -4,6 +4,6 @@ import { authCheck } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/add", authCheck, addInquiry);
+router.post("/add/:id", authCheck, addInquiry);
 
 export default router;

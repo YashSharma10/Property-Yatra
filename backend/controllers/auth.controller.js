@@ -1,6 +1,5 @@
 import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import mongoose from "mongoose";
 
 // ✅ SIGNUP
 export const signup = async (req, res) => {
@@ -30,14 +29,15 @@ export const signup = async (req, res) => {
 
     res
       .status(201)
-      .cookie("token", token, {
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-        httpOnly: true,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
-      })
+      // .cookie("token", token, {
+      //   maxAge: 24 * 60 * 60 * 1000, // 24 hours
+      //   httpOnly: true,
+      //   sameSite: "strict",
+      //   secure: process.env.NODE_ENV === "production",
+      // })
       .json({
         message: "User created successfully",
+        token,
         newUser,
       });
   } catch (error) {
@@ -71,15 +71,16 @@ export const login = async (req, res) => {
 
     res
       .status(200)
-      .cookie("token", token, {
-        maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true,
-        sameSite: "strict",
-        secure: process.env.NODE_ENV === "production",
-      })
+      // .cookie("token", token, {
+      //   maxAge: 24 * 60 * 60 * 1000,
+      //   httpOnly: true,
+      //   sameSite: "strict",
+      //   secure: process.env.NODE_ENV === "production",
+      // })
       .json({
         message: "Login successful",
-        newUser,
+        token,
+        newUser
       });
   } catch (error) {
     console.error("Login Error:", error.message);

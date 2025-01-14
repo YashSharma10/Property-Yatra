@@ -40,6 +40,12 @@ const userSchema = new mongoose.Schema(
         ref: "Property",
       },
     ],
+    contactProperties:  [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Property",
+      },
+    ],
   },
   { timestamps: true }
 );

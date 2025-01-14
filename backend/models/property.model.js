@@ -2,6 +2,10 @@ import mongoose from "mongoose";
 
 const propertySchema = new mongoose.Schema(
   {
+    status: {
+      type: String,
+      default: "Active",
+    },
     name: { type: String, required: true },
     sellPrice: { type: Number },
     rentPrice: { type: Number },

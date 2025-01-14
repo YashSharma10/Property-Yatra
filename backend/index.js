@@ -7,17 +7,23 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: "https://property-6wvg.onrender.com",
+    methods: ["GET", "POST", "DELETE", "PUT"],
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+      "Cache-Control",
+      "Expires",
+      "Pragma",
+    ],
     credentials: true,
   })
 );
-app.use(express.json());
-app.use(cors({ origin: true, credentials: true }));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 connectDb();
 
 // Routes
