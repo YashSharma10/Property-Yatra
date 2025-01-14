@@ -15,6 +15,7 @@ import FacilitiesPage from "./pages/FacilitiesPage";
 import AgentProfilePage from "./pages/AgentProfilePage";
 import SubscriptionPlans from "./pages/Agent/SubscriptionPlans";
 import PropertyAnalyticsDashboard from "./pages/Agent/PropertyAnalyticsData";
+import FacilityPage from "./pages/FacilityManagement";
 
 const App = () => {
   return (
