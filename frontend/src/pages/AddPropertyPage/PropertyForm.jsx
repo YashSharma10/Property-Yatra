@@ -17,6 +17,7 @@ const PropertyForm = () => {
     (store) => store.globalEvent
   );
   const { token } = useSelector((store) => store.auth);
+  console.log("Token", token);
   const [activeTab, setActiveTab] = useState("tab1");
   const [loading, setLoading] = useState(false);
   const [propertyFormData, setPropertyFormData] = useState({
@@ -177,8 +178,10 @@ const PropertyForm = () => {
         `${BACKEND_URL}/api/properties/new`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
-          Authorization: `Bearer ${token}`,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
 

@@ -22,10 +22,9 @@ export default function UserProfile() {
   const { loading,user,token } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
   // const [user, setUser] = useState();
-  // const [user, setUser] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [properties, setProperties] = useState({});
+  const [properties, setProperties] = useState("");
 
   const handleLogout = async () => {
     dispatch(setLoading(true));
@@ -124,8 +123,8 @@ export default function UserProfile() {
             </CardHeader>
             <CardContent>
               {properties.length > 0 ? (
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2"> 
-                  {properties?.map((property) => (
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  {properties.map((property) => (
                     <PropertyCard property={property} key={property.id} />
                   ))}
                 </div>

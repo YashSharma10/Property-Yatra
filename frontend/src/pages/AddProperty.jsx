@@ -6,7 +6,6 @@ const AddProperty = () => {
     <div className='max-w-5xl mx-auto ' >
       <Roadmap/>
       <PropertyForm/>
-      {/* <PgSection/> */}
 
     </div>
   )

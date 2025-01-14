@@ -11,8 +11,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(
+  // cors({
   cors({
-    origin: "https://propertyyatra.vercel.app",
+    origin: "https://property-6wvg.onrender.com",
+    // origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

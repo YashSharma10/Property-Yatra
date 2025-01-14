@@ -224,8 +224,10 @@ export const createProperty = async (req, res) => {
 
 export const addView = async (req, res) => {
   try {
+    
     const { id } = req.params;
     const userId = req.user;
+    console.log("Id",id,"user",userId);
 
     if (!id || !userId) {
       return res
