@@ -13,7 +13,7 @@ app.use(cookieParser());
 app.use(
   // cors({
   cors({
-    origin: "https://property-6wvg.onrender.com",
+    origin: "https://propertyyatra.vercel.app",
     // origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
