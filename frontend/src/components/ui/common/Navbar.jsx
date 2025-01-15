@@ -51,13 +51,13 @@ const Navbar = () => {
             <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded-md">
               <button
                 className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                onClick={() => navigate("/emi-calculator")}
+                onClick={() => navigate("/comingsoon")}
               >
                 EMI Calculator
               </button>
               <button
                 className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                onClick={() => navigate("/rent-agreement")}
+                onClick={() => navigate("/comingsoon")}
               >
                 Rent Agreement
               </button>
@@ -69,7 +69,7 @@ const Navbar = () => {
         <Button
           variant="outline"
           className="text-brand border-brand"
-          onClick={() => navigate("/home-loan")}
+          onClick={() => navigate("/comingsoon")}
         >
           Home Loan
         </Button>
@@ -78,7 +78,7 @@ const Navbar = () => {
         <Button
           variant="outline"
           className="text-brand border-brand"
-          onClick={() => navigate("/services")}
+          onClick={() => navigate("/comingsoon")}
         >
           Services
         </Button>

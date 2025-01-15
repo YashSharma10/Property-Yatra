@@ -15,6 +15,7 @@ import FacilitiesPage from "./pages/FacilitiesPage";
 import AgentProfilePage from "./pages/AgentProfilePage";
 import SubscriptionPlans from "./pages/Agent/SubscriptionPlans";
 import PropertyAnalyticsDashboard from "./pages/Agent/PropertyAnalyticsData";
+import ComingSoon from "./pages/ComingSoon";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/agent-profile" element={<AgentProfilePage />} />
+          <Route path="/comingsoon" element={<ComingSoon />} />
 
           <Route
             path="/add"
