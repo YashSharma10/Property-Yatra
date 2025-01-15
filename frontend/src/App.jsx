@@ -15,7 +15,7 @@ import FacilitiesPage from "./pages/FacilitiesPage";
 import AgentProfilePage from "./pages/AgentProfilePage";
 import SubscriptionPlans from "./pages/Agent/SubscriptionPlans";
 import PropertyAnalyticsDashboard from "./pages/Agent/PropertyAnalyticsData";
-import ComingSoon from "./pages/ComingSoon";
+import ComingSoon from "./pages/comingsoon";
 
 const App = () => {
   return (
