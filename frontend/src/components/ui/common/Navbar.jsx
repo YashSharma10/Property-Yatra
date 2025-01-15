@@ -1,15 +1,16 @@
 // import { brandName } from "@/constants";
 import logo from "@/assets/logo.png";
-import { CircleUserRound } from "lucide-react";
+import { CircleUserRound, ChevronDown } from "lucide-react";
 import { Button } from "../button";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import useAuthCheck from "@/hooks/useAuthCheck";
+import { useState } from "react";
 
 const Navbar = () => {
   const { isVisible } = useSelector((store) => store.globalEvent);
   const { user } = useSelector((store) => store.auth);
   const navigate = useNavigate();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const token = JSON.parse(sessionStorage.getItem("token"));
 
   const handleProfileNavigation = () => {
@@ -19,8 +20,10 @@ const Navbar = () => {
       navigate("/profile");
     }
   };
-  console.log("user",JSON.parse(sessionStorage.getItem("user")));
-  
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
     <header className="sticky top-0 w-full z-50 shadow-lg py-2 px-4 flex justify-between bg-white">
@@ -33,17 +36,51 @@ const Navbar = () => {
         {/* <img src={logo} alt="logo" className="h-11 " /> */}
       </button>
 
-      {/* <div className="w-full lg:max-w-md max-w-xs">
-        {isVisible && <InputSearch />}
-      </div> */}
+      <div className="flex items-center gap-4">
+        {/* Tools Dropdown */}
+        <div className="relative">
+          <Button
+            variant="outline"
+            className="text-brand border-brand flex items-center"
+            onClick={toggleDropdown}
+          >
+            Tools
+            <ChevronDown size={16} className="ml-2" />
+          </Button>
+          {isDropdownOpen && (
+            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded-md">
+              <button
+                className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => navigate("/emi-calculator")}
+              >
+                EMI Calculator
+              </button>
+              <button
+                className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                onClick={() => navigate("/rent-agreement")}
+              >
+                Rent Agreement
+              </button>
+            </div>
+          )}
+        </div>
 
-      <div className="flex items-center gap-2">
-        {/* Post Property button */}
-        <Button onClick={() => navigate("/add")} className="hidden sm:block">
-          Post property
-          <span className="bg-green-500 text-white text-sm px-2 ml-2 rounded-md">
-            Free
-          </span>
+        {/* Home Loan Button */}
+        <Button
+          variant="outline"
+          className="text-brand border-brand"
+          onClick={() => navigate("/home-loan")}
+        >
+          Home Loan
+        </Button>
+
+        {/* Services Button */}
+        <Button
+          variant="outline"
+          className="text-brand border-brand"
+          onClick={() => navigate("/services")}
+        >
+          Services
         </Button>
 
         {!token ? (
@@ -61,7 +98,6 @@ const Navbar = () => {
             className="cursor-pointer"
           />
         )}
-        {/* <MenuSheet /> */}
       </div>
     </header>
   );
