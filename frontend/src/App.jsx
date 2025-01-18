@@ -17,6 +17,7 @@ import ComingSoon from "./pages/comingsoon";
 import ContactPage from "./pages/ContactPage";
 import FacilitiesPage from "./pages/FacilitiesPage";
 import Emicalculator from "./pages/Tools/EmiCalculator";
+import RentAgreement from "./pages/Tools/RentAgreement";
 
 const App = () => {
   return (
@@ -25,27 +26,33 @@ const App = () => {
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<LandingPage />} />
+
+          {/* User and Agent Routes */}
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/agent-profile" element={<AgentProfilePage />} />
-          <Route path="/comingsoon" element={<ComingSoon />} />
-          <Route path="/emicalculator" element={<Emicalculator />} />
-
-          <Route path="/add" element={<AddProperty />} />
-          <Route path="/property-listing" element={<PropertyListingPage />} />
-          <Route path="/property/:id" element={<PropertyDetailPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/subscription" element={<SubscriptionPlans />} />
-          <Route path="*" element={<NotFound />} />
           <Route
             path="/property/analytics/:id"
             element={<PropertyAnalyticsDashboard />}
           />
-          <Route
-            path="/facilities
-          "
-            element={<FacilitiesPage />}
+
+          {/* Tools Routes */}
+          <Route path="/comingsoon" element={<ComingSoon />} />
+          <Route path="/emicalculator" element={<Emicalculator />} />
+          <Route path="/rent-agreement" element={<RentAgreement />} />
+
+          <Route path="/add" element={<AddProperty />} />
+          <Route path="/property-listing" element={<PropertyListingPage />} />
+          <Route path="/property/:id" element={<PropertyDetailPage />} />
+
+          {/* Basic Site Pages */}
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/subscription" element={<SubscriptionPlans />} />
+          <Route path="*" element={<NotFound />} />
+
+          {/* Facilites Routes */}
+          <Route path="/facilities" element={<FacilitiesPage />}
           />
         </Routes>
       </main>
