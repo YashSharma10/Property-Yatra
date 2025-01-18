@@ -67,8 +67,8 @@ const Roadmap = () => {
     setOpen(!open);
     dispatch(
       setPropertyDetails({
-        listingType: selectListingType.v || "sell",
-        propertyType: selectPropertyType.v || "residential",
+        listingType: selectListingType.v.toLowerCase() || "sell",
+        propertyType: selectPropertyType.v.toLowerCase() || "residential",
       })
     );
     dispatch(setRoadmapVisible(false));
@@ -217,7 +217,7 @@ const Roadmap = () => {
               )} */}
             </div>
             <DialogFooter>
-              <DialogClose>
+              <DialogClose asChild>
                 <Button className="w-full" type="submit" onClick={handleSubmit}>
                   Start now
                 </Button>

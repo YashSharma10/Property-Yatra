@@ -19,6 +19,8 @@ const PropertyForm = () => {
     (store) => store.globalEvent
   );
   const { token } = useSelector((store) => store.auth);
+  console.log(propertyDetails);
+
   const [activeTab, setActiveTab] = useState("tab1");
   const [loading, setLoading] = useState(false);
   const [imageError, setImageError] = useState("");
@@ -56,6 +58,8 @@ const PropertyForm = () => {
       gym: false,
     },
   });
+
+  console.log(propertyFormData);
 
   const facilitiesList = () => {
     let facilities = [
@@ -111,11 +115,17 @@ const PropertyForm = () => {
     const fileExtension = file.name.split(".").pop().toLowerCase();
     return allowedFormats.includes(fileExtension);
   };
-
+  const [images, setImages] = useState([]);
+  const [previews, setPreviews] = useState([]);
   const handleFileChange = (e) => {
     const { files } = e.target;
     let validFiles = [];
     let error = "";
+    const file = Array.from(e.target.files);
+    setImages(files);
+
+    const filePreviews = file.map((file) => URL.createObjectURL(file));
+    setPreviews(filePreviews);
 
     // Validate files before setting them
     Array.from(files).forEach((file) => {
@@ -168,57 +178,61 @@ const PropertyForm = () => {
   };
 
   const handleSubmit = async () => {
-    setPropertyFormData({
-      ...propertyFormData,
-      listingType: propertyDetails.listingType,
-      propertyType: propertyDetails.propertyType,
-    });
-    const formData = new FormData();
-    Object.entries(propertyFormData).forEach(([key, value]) => {
-      if (key === "address") {
-        formData.append(key, JSON.stringify(value));
-      } else if (key === "images") {
-        value.forEach((file) => formData.append("images", file));
-      } else {
-        if (key === "features") {
-          const featuresInclude = {};
-
-          Object.entries(value).forEach(([featureKey, featureValue]) => {
-            if (featureValue === true) {
-              featuresInclude[featureKey] = true;
-            }
-          });
-
-          formData.append("features", JSON.stringify(featuresInclude));
+    if (!token) {
+      toast.error("Authentication required");
+    } else {
+      setPropertyFormData({
+        ...propertyFormData,
+        listingType: propertyDetails.listingType,
+        propertyType: propertyDetails.propertyType,
+      });
+      const formData = new FormData();
+      Object.entries(propertyFormData).forEach(([key, value]) => {
+        if (key === "address") {
+          formData.append(key, JSON.stringify(value));
+        } else if (key === "images") {
+          value.forEach((file) => formData.append("images", file));
         } else {
-          formData.append(key, value);
-        }
-      }
-    });
+          if (key === "features") {
+            const featuresInclude = {};
 
-    try {
-      setLoading(true);
-      const response = await axios.post(
-        `${BACKEND_URL}/api/properties/new`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+            Object.entries(value).forEach(([featureKey, featureValue]) => {
+              if (featureValue === true) {
+                featuresInclude[featureKey] = true;
+              }
+            });
 
-      if (response.status === 201) {
-        setPropertyFormData({});
-        setLoading(false);
-        toast.success(response.data.message);
-        navigate("/");
-      } else {
-        toast.success(response.data.message);
+            formData.append("features", JSON.stringify(featuresInclude));
+          } else {
+            formData.append(key, value);
+          }
+        }
+      });
+
+      try {
+        setLoading(true);
+        const response = await axios.post(
+          `${BACKEND_URL}/api/properties/new`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        if (response.status === 201) {
+          setPropertyFormData({});
+          setLoading(false);
+          toast.success(response.data.message);
+          navigate("/");
+        } else {
+          toast.success(response.data.message);
+        }
+      } catch (error) {
+        console.error("Error submitting form", error);
       }
-    } catch (error) {
-      console.error("Error submitting form", error);
     }
   };
 
@@ -234,11 +248,11 @@ const PropertyForm = () => {
 
   return (
     <section
-      className={`${
+      className={`${ 
         roadmapVisible ? "hidden" : ""
-      } width bg-white max-w-md my-3 rounded-md`}
+      } width relative bg-white max-w-md my-3 rounded-md `}
     >
-      <Tabs value={activeTab}>
+      <Tabs value={activeTab} >
         <TabsList className="mb-6 w-full mx-auto">
           <TabsTrigger value="tab1" onClick={() => setActiveTab("tab1")}>
             Basic Details
@@ -252,7 +266,7 @@ const PropertyForm = () => {
         </TabsList>
 
         {/* Tab 1: Basic Details */}
-        <TabsContent value="tab1">
+        <TabsContent value="tab1" >
           <div className="space-y-4">
             <Input
               placeholder="Property Name"
@@ -315,12 +329,12 @@ const PropertyForm = () => {
           <div className="space-y-4">
             <Input
               placeholder={
-                propertyFormData.listingType === "sell"
+                propertyDetails.listingType === "sell"
                   ? "Sell Price"
-                  : "Monthly RentPrice"
+                  : "Monthly Rent Price"
               }
               name={
-                propertyFormData.listingType === "sell"
+                propertyDetails.listingType === "sell"
                   ? "sellPrice"
                   : "rentPrice"
               }
@@ -334,9 +348,7 @@ const PropertyForm = () => {
               placeholder="House Number"
               name="house"
               value={propertyFormData.address.house}
-              onChange={(e) =>
-                addAddressDetails(e.target.name, e.target.value)
-              }
+              onChange={(e) => addAddressDetails(e.target.name, e.target.value)}
               className="w-full"
             />
 
@@ -344,9 +356,7 @@ const PropertyForm = () => {
               placeholder="City"
               name="city"
               value={propertyFormData.address.city}
-              onChange={(e) =>
-                addAddressDetails(e.target.name, e.target.value)
-              }
+              onChange={(e) => addAddressDetails(e.target.name, e.target.value)}
               className="w-full"
             />
 
@@ -354,9 +364,7 @@ const PropertyForm = () => {
               placeholder="Pincode"
               name="pincode"
               value={propertyFormData.address.pincode}
-              onChange={(e) =>
-                addAddressDetails(e.target.name, e.target.value)
-              }
+              onChange={(e) => addAddressDetails(e.target.name, e.target.value)}
               className="w-full"
             />
 
@@ -364,16 +372,14 @@ const PropertyForm = () => {
               placeholder="State"
               name="state"
               value={propertyFormData.address.state}
-              onChange={(e) =>
-                addAddressDetails(e.target.name, e.target.value)
-              }
+              onChange={(e) => addAddressDetails(e.target.name, e.target.value)}
               className="w-full"
             />
           </div>
         </TabsContent>
 
         {/* Tab 3: Media Upload */}
-        <TabsContent value="tab3">
+        <TabsContent value="tab3" className="h-full"> 
           <div className="space-y-4">
             <label className="block font-medium">Upload Images:</label>
             <input
@@ -383,15 +389,32 @@ const PropertyForm = () => {
               onChange={handleFileChange}
               className="w-full"
             />
-            {imageError && (
-              <p className="text-red-500 text-sm">{imageError}</p>
-            )}
+            {imageError && <p className="text-red-500 text-sm">{imageError}</p>}
+          </div>
+          <div>
+            {previews.map((preview, index) => (
+              <img
+                key={index}
+                src={preview}
+                alt="preview"
+                style={{ width: 100 }}
+              />
+            ))}
+          </div>
+          <div className="mt-6">
+            <Button
+              onClick={handleSubmit}
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? <Loader2 className="animate-spin" /> : "Submit"}
+            </Button>
           </div>
         </TabsContent>
       </Tabs>
 
       {/* Navigation Buttons */}
-      <div className="mt-4 space-x-4">
+      <div className="sticky mt-3 bottom-0 flex justify-between w-full">
         <Button
           variant="secondary"
           onClick={handlePrevious}
@@ -399,24 +422,12 @@ const PropertyForm = () => {
         >
           Previous
         </Button>
-        <Button
-          onClick={handleNext}
-          disabled={activeTab === "tab3"}
-        >
+        <Button onClick={handleNext} disabled={activeTab === "tab3"}>
           Next
         </Button>
       </div>
 
       {/* Submit Button */}
-      <div className="mt-6">
-        <Button
-          onClick={handleSubmit}
-          className="w-full"
-          disabled={loading}
-        >
-          {loading ? <Loader2 className="animate-spin" /> : "Submit"}
-        </Button>
-      </div>
     </section>
   );
 };
