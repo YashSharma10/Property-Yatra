@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button"; // Shadcn Button
 import { Skeleton } from "@/components/ui/skeleton";
-import { FilterIcon, Heart, Info } from "lucide-react";
+import { Cross, FilterIcon, Heart, Info, X } from "lucide-react";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -133,10 +133,16 @@ const PropertyListingPage = () => {
     <div className="width flex gap-3 sm:gap-8 justify-center">
       {/* Filter Section */}
       <div
-        className={`p-6 my-10 h-fit sticky top-16 bg-white rounded-lg shadow-md border sm:block w-full sm:w-[300px] ${
+        className={`p-6 h-fit sticky  bg-white rounded-lg shadow-md border sm:block w-full sm:w-[450px] ${
           filterVisible ? "block" : "hidden"
         }`}
       >
+        <span className="flex gap-1 mb-2 w-full justify-end sm:hidden">
+            <X
+              onClick={handleFilterVisible}
+              className="cursor-pointer"
+            />
+          </span>
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Property Type
@@ -220,13 +226,19 @@ const PropertyListingPage = () => {
       </div>
 
       {/* Property Listings */}
-      <div className="w-full">
-        <div className="sm:hidden mb-4">
-          <FilterIcon onClick={handleFilterVisible} className="cursor-pointer" />
+      <div className={`${!filterVisible ? "block" : "hidden"}`}>
+        <div className="sm:hidden mb-4 flex justify-between">
+          <h2 className="text-lg font-semibold mb-4">
+            {totalProperties} results |
+          </h2>
+          <span className="flex gap-1">
+            Filters
+            <FilterIcon
+              onClick={handleFilterVisible}
+              className="cursor-pointer"
+            />
+          </span>
         </div>
-        <h2 className="text-lg font-semibold mb-4">
-          {totalProperties} results |
-        </h2>
         {isLoading ? (
           <div className="flex flex-col justify-center items-center mt-20 gap-12">
             {[1, 2, 3].map((item) => (
