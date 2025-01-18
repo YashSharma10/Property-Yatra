@@ -103,9 +103,9 @@ const Roadmap = () => {
         </div>
 
         {/* PropertySelector Dialog */}
-        <Dialog open={open} onOpenChange={open}>
+        <Dialog >
           <DialogTrigger asChild>
-            <Button className="mt-10" onClick={handleModel}>
+            <Button className="mt-10" >
               Begin to Post your Property
             </Button>
           </DialogTrigger>

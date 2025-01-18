@@ -4,6 +4,7 @@ import { CircleUserRound, ChevronDown } from "lucide-react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { Button } from "../button";
 
 const Navbar = () => {
   const { isVisible } = useSelector((store) => store.globalEvent);
@@ -82,20 +83,20 @@ const Navbar = () => {
         >
           Services
         </button>
-        <button
-          className="cursor-pointer hover:text-brand"
+        <Button
+          className="cursor-pointer b"
           onClick={() => navigate("/add")}
         >
           Post a Property
-        </button>
+        </Button>
 
         {!token ? (
-          <button
-            className="cursor-pointer hover:text-brand"
+          <Button
+            className="cursor-pointer bg-brand"
             onClick={() => navigate("/auth")}
           >
             Login / Register
-          </button>
+          </Button>
         ) : (
           <CircleUserRound
             size={30}
