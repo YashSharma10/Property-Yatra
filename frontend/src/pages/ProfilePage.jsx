@@ -19,12 +19,13 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
 export default function UserProfile() {
-  const { loading,user,token } = useSelector((store) => store.auth);
+  const { loading, user, token } = useSelector((store) => store.auth);
   const [loadingProperties, setLoadingProperties] = useState(true);
   // const [user, setUser] = useState();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [properties, setProperties] = useState("");
+  const [likedproperties, setLikedProperties] = useState("");
 
   const handleLogout = async () => {
     dispatch(setLoading(true));
@@ -50,7 +51,7 @@ export default function UserProfile() {
 
   const handleProperties = async () => {
     try {
-      const properties = await axios.get(`${BACKEND_URL}/api/auth/profile`,  {
+      const properties = await axios.get(`${BACKEND_URL}/api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -60,6 +61,7 @@ export default function UserProfile() {
         setUser(properties.data.user);
         setLoadingProperties(false);
         setProperties(properties.data.user.postedProperties);
+        setLikedProperties(properties.data.user.likedProperties);
         console.log(properties.data.user);
       }
     } catch (error) {
@@ -73,15 +75,14 @@ export default function UserProfile() {
 
   return (
     <div className="width">
-      <div className="space-y-8">
+      <div className="space-y-3">
         <section>
-        <Card className="flex flex-col p-2  bg-blue-100">
-          {/* <img
+          <Card className="flex flex-col bg-blue-100">
+            {/* <img
             src="https://via.placeholder.com/150"
             alt="Agent Banner"
             className="w-40 h-40 rounded-full object-cover "
           /> */}
-          <div c>
             <CardHeader>
               <CardTitle className="text-2xl font-bold">
                 Welcome, {user?.name}
@@ -90,31 +91,28 @@ export default function UserProfile() {
                 Email: {user?.email}
               </CardDescription>
             </CardHeader>
-              <CardContent>
-                {/* <p className="text-gray-500 text-xs mt-2 mb-1">
+            <CardContent>
+              {/* <p className="text-gray-500 text-xs mt-2 mb-1">
                   Joined Since: {user?.createdAt?.split("T")[0]}
                 </p> */}
-                <div>
-                  <Button
-                    variant="destructive"
-                    onClick={handleLogout}
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <Loader2 className="animate-spin">Please wait</Loader2>
-                    ) : (
-                      "Logout"
-                    )}
-                  </Button>
-                </div>
-              </CardContent>
-            </div>
+              <Button
+                variant="destructive"
+                onClick={handleLogout}
+                disabled={loading}
+              >
+                {loading ? (
+                  <Loader2 className="animate-spin">Please wait</Loader2>
+                ) : (
+                  "Logout"
+                )}
+              </Button>
+            </CardContent>
           </Card>
         </section>
 
         {/* Properties Section */}
         <section>
-          <Card className="p-6">
+          <Card >
             <CardHeader>
               <CardTitle>Properties Posted by {user?.name}</CardTitle>
               <CardDescription className="break-words max-w-full">
@@ -122,14 +120,16 @@ export default function UserProfile() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {properties.length > 0 ? (
+              {properties?.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                   {properties.map((property) => (
                     <PropertyCard property={property} key={property.id} />
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-600">No properties available</p>
+                <p className="text-center text-gray-600">
+                  No properties available
+                </p>
               )}
             </CardContent>
           </Card>
@@ -137,7 +137,7 @@ export default function UserProfile() {
 
         {/* Liked properties */}
         <section>
-          <Card className="p-6">
+          <Card>
             <CardHeader>
               <CardTitle>Properties Liked by {user?.name}</CardTitle>
               <CardDescription className="break-words max-w-full">
@@ -145,14 +145,16 @@ export default function UserProfile() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {properties.length > 0 ? (
+              {likedproperties?.length > 0 ? (
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  {properties.map((property) => (
+                  {likedproperties.map((property) => (
                     <PropertyCard property={property} key={property.id} />
                   ))}
                 </div>
               ) : (
-                <p className="text-center text-gray-600">No properties available</p>
+                <p className="text-center text-gray-600">
+                  No properties available
+                </p>
               )}
             </CardContent>
           </Card>

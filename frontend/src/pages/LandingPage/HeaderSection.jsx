@@ -30,7 +30,6 @@ const HeaderSection = () => {
   const { isVisible } = useSelector((store) => store.globalEvent);
 
   return (
-
     //  ${isVisible ? "opacity-0 pointer-events-none" : "opacity-100"
 
     <section
@@ -60,9 +59,10 @@ const HeaderSection = () => {
 
           {/* Search Input */}
           <div className="flex items-center w-full border overflow-hidden rounded-xl">
+            <Search className="ml-2" />
             <input
               type="text"
-              placeholder="Search..."
+              placeholder="Enter city Location..."
               value={filters.searchLocation}
               onChange={(e) =>
                 dispatch(
@@ -78,11 +78,16 @@ const HeaderSection = () => {
               onClick={handleSearch}
               className="p-2 bg-brand text-white"
             >
-              <Search />
+              Search
             </button>
           </div>
           <p className="text-xs my-1">or</p>
-          <Button className="w-full  bg-brand" onClick={()=>navigate("/property-listing")}>View Property</Button>
+          <Button
+            className="w-full  bg-brand"
+            onClick={() => navigate("/property-listing")}
+          >
+            View Property
+          </Button>
         </Card>
       </div>
     </section>

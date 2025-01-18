@@ -55,14 +55,18 @@ const AuthPage = () => {
       /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com)$/;
     return emailRegex.test(email);
   };
+  const validNumber = (number) => {
+    const numberRegix = /^(?:\+91|91)?[789]\d{9}$/;
+    return numberRegix.test(number);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateEmail(userDetails.email)) {
-      setError("Please enter a valid email address.");
+    if (!validateEmail(userDetails.email) && !validNumber(userDetails.number)) {
+      setError("Please enter a valid email/Phone Number address.");
     } else {
       setError("");
-      dispatch(setLoading(true));
+      // dispatch(setLoading(true));
 
       const endpoint = isSignup
         ? `${BACKEND_URL}/api/signup`
@@ -86,7 +90,6 @@ const AuthPage = () => {
         });
         dispatch(setLoading(false));
         if (response.data) {
-          // console.log(response.data);
           dispatch(setUser(response.data.newUser));
           dispatch(setToken(response.data.token));
           sessionStorage.setItem("token", JSON.stringify(response.data.token));
@@ -133,7 +136,7 @@ const AuthPage = () => {
                   <Label htmlFor="number">Phone</Label>
                   <Input
                     id="number"
-                    type="number"
+                    type="text"
                     value={userDetails.number}
                     onChange={handleFormData}
                     placeholder="798765XXXXX"
