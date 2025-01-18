@@ -227,11 +227,11 @@ const PropertyListingPage = () => {
 
       {/* Property Listings */}
       <div className={`${!filterVisible ? "block" : "hidden"}`}>
-        <div className="sm:hidden mb-4 flex justify-between">
+        <div className=" mb-4 flex justify-between">
           <h2 className="text-lg font-semibold mb-4">
             {totalProperties} results |
           </h2>
-          <span className="flex gap-1">
+          <span className="flex gap-1 sm:hidden">
             Filters
             <FilterIcon
               onClick={handleFilterVisible}
@@ -337,7 +337,7 @@ const PropertyListingPage = () => {
               disabled={page >= Math.ceil(totalProperties / 10)}
               className="disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Next
+              Load More
             </Button>
           </div>
         )}

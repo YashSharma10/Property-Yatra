@@ -50,44 +50,54 @@ const AuthPage = () => {
     });
   };
 
+  const validateEmail = (email) => {
+    const emailRegex =
+      /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com)$/;
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    dispatch(setLoading(true));
+    if (!validateEmail(userDetails.email)) {
+      setError("Please enter a valid email address.");
+    } else {
+      setError("");
+      dispatch(setLoading(true));
 
-    const endpoint = isSignup
-      ? `${BACKEND_URL}/api/signup`
-      : `${BACKEND_URL}/api/login`;
-    const payload = isSignup
-      ? {
-          name: userDetails.name,
-          email: userDetails.email,
-          password: userDetails.password,
-          number: userDetails.number,
-          role: userDetails.role, // Include role in signup
+      const endpoint = isSignup
+        ? `${BACKEND_URL}/api/signup`
+        : `${BACKEND_URL}/api/login`;
+      const payload = isSignup
+        ? {
+            name: userDetails.name,
+            email: userDetails.email,
+            password: userDetails.password,
+            number: userDetails.number,
+            role: userDetails.role, // Include role in signup
+          }
+        : {
+            email: userDetails.email,
+            password: userDetails.password,
+          };
+
+      try {
+        const response = await axios.post(endpoint, payload, {
+          withCredentials: true,
+        });
+        dispatch(setLoading(false));
+        if (response.data) {
+          // console.log(response.data);
+          dispatch(setUser(response.data.newUser));
+          dispatch(setToken(response.data.token));
+          sessionStorage.setItem("token", JSON.stringify(response.data.token));
+          sessionStorage.setItem("user", JSON.stringify(response.data.newUser));
+          toast.success(response.data.message);
+          navigate("/");
         }
-      : {
-          email: userDetails.email,
-          password: userDetails.password,
-        };
-
-    try {
-      const response = await axios.post(endpoint, payload, {
-        withCredentials: true,
-      });
-      dispatch(setLoading(false));
-      if (response.data) {
-        // console.log(response.data);
-        dispatch(setUser(response.data.newUser));
-        dispatch(setToken(response.data.token));
-        sessionStorage.setItem("token", JSON.stringify(response.data.token));
-        sessionStorage.setItem("user", JSON.stringify(response.data.newUser));
-        toast.success(response.data.message);
-        navigate("/");
+      } catch (err) {
+        dispatch(setLoading(false));
+        setError(err.response?.data?.message || "An error occurred");
       }
-    } catch (err) {
-      dispatch(setLoading(false));
-      setError(err.response?.data?.message || "An error occurred");
     }
   };
 

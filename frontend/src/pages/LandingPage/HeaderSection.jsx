@@ -40,7 +40,7 @@ const HeaderSection = () => {
 
       {/* SearchBox */}
       <div className="relative -mt-20 z-10 ">
-        <Card className="flex flex-col items-center max-w-xs sm:max-w-md mx-auto p-2 sm:p-4 shadow-md rounded-2xl bg-white">
+        <Card className="flex flex-col items-center max-w-xs sm:max-w-xl mx-auto p-2 sm:p-4 shadow-md rounded-2xl bg-white">
           {/* Navigation Tabs */}
           <div className="flex gap-4 w-full justify-center mb-4">
             {tabs.map((tab) => (
