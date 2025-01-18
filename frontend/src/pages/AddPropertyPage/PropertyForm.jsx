@@ -351,7 +351,7 @@ const PropertyForm = () => {
               onChange={(e) => addAddressDetails(e.target.name, e.target.value)}
               className="w-full"
             />
-
+            <console className="log"></console>
             <Input
               placeholder="City"
               name="city"
