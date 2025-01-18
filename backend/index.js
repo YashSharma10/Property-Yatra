@@ -13,8 +13,8 @@ app.use(cookieParser());
 app.use(
   // cors({
   cors({
-    // origin: "https://propertyyatra.vercel.app",
-    origin: "http://localhost:5173",
+    origin: "https://propertyyatra.vercel.app",
+    // origin: "http://localhost:5173",
     methods: ["GET", "POST", "DELETE", "PUT"],
     allowedHeaders: [
       "Content-Type",

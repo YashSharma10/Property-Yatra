@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Button } from "../button";
+import { Popover, PopoverContent, PopoverTrigger } from "../popover";
 
 const Navbar = () => {
   const { isVisible } = useSelector((store) => store.globalEvent);
@@ -44,52 +45,38 @@ const Navbar = () => {
       {/* Desktop Menu */}
       <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
         {/* Tools Dropdown */}
-        <div className="relative">
-          <button
-            className="flex items-center gap-1 cursor-pointer hover:text-brand"
-            onClick={toggleDropdown}
-          >
-            Tools
-            <ChevronDown size={16} />
-          </button>
-          {isDropdownOpen && (
-            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 shadow-lg rounded-md">
-              <button
-                className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                onClick={() => navigate("/emicalculator")}
-              >
-                EMI Calculator
-              </button>
-              <button
-                className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                onClick={() => navigate("/rent-agreement")}
-              >
-                Rent Agreement
-              </button>
-            </div>
-          )}
-        </div>
 
+        <Popover>
+          <PopoverTrigger>
+            <Button variant="ghost" onClick={toggleDropdown}>
+              Tools
+              <ChevronDown size={16} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-fit flex flex-col">
+            <Button variant="ghost" onClick={() => navigate("/emicalculator")}>
+              EMI Calculator
+            </Button>
+            <Button variant="ghost" onClick={() => navigate("/rent-agreement")}>
+              Rent Agreement
+            </Button>
+          </PopoverContent>
+        </Popover>
         {/* Other Links */}
-        <button
-          className="cursor-pointer hover:text-brand"
-          onClick={() => navigate("/comingsoon")}
-        >
+        <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
           Home Loan
-        </button>
-        <button
-          className="cursor-pointer hover:text-brand"
-          onClick={() => navigate("/comingsoon")}
-        >
+        </Button>
+        <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
           Services
-        </button>
-        <Button
-          className="cursor-pointer b"
-          onClick={() => navigate("/add")}
-        >
-          Post a Property
         </Button>
 
+        <Button variant="ghost">For Buyers</Button>
+        <Button variant="ghost">For Tenants</Button>
+        <Button variant="ghost">For Owners</Button>
+        <Button className="cursor-pointer b" onClick={() => navigate("/add")}>
+          Post a Property{" "}
+          <span className="bg-green-400 rounded-md px-1">Free</span>
+        </Button>
         {!token ? (
           <Button
             className="cursor-pointer bg-brand"
