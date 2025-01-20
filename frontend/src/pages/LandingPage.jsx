@@ -7,6 +7,7 @@ import NewLaunchPropertiesSection from "./LandingPage/NewLaunchPropertiesSection
 import PostPropertySection from "./LandingPage/PostPropertySection";
 import PropertyTypeSection from "./LandingPage/PropertyTypeSection";
 import StatisticsSection from "./LandingPage/StatisticsSection";
+import ServicesAndTools from "./LandingPage/ServicesSection";
 const LandingPage = () => {
   const dispatch = useDispatch();
   // useEffect(() => {
@@ -29,6 +30,7 @@ const LandingPage = () => {
       <PropertyTypeSection />
       <NewLaunchPropertiesSection />
       <ExclusiveSection />
+      <ServicesAndTools />
       <PostPropertySection />
       <StatisticsSection />
     </main>

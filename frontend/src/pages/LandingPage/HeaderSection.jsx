@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { ChevronDown, Search } from "lucide-react";
-import banner from "../../assets/banner.jpg";
+import image from "../../assets/image.png";
 import { Button } from "@/components/ui/button";
 import { setFilters } from "@/redux/slices/globalEvent";
 
@@ -44,7 +44,7 @@ const HeaderSection = () => {
 
   return (
     <section className={`absolute top-10 right-0 left-0 transition-opacity duration-500 w-screen z-10`}>
-      <img src={banner} alt="header" className="w-full h-80 object-fill" />
+      <img src={image} alt="header" className="w-full h-80 object-fill" />
 
       {/* SearchBox */}
       <div className="relative -mt-20 z-10">
