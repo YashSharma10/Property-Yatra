@@ -14,7 +14,7 @@ const AboutPage = () => {
     <section className="">
       <div className="  text-center px-6">
         <h2 className="text-3xl sm:text-4xl font-semibold text-gray-900 mb-6">
-          About Us
+          About Us.
         </h2>
         <p className="text-lg text-gray-600 mb-12">
           We are a dedicated team committed to helping you find the perfect
