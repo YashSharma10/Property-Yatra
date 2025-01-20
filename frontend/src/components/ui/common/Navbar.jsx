@@ -46,7 +46,7 @@ const Navbar = () => {
       <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
         {/* Tools Dropdown */}
 
-        <Popover>
+        {/* <Popover>
           <PopoverTrigger>
             <Button variant="ghost" onClick={toggleDropdown}>
               Tools
@@ -61,18 +61,18 @@ const Navbar = () => {
               Rent Agreement
             </Button>
           </PopoverContent>
-        </Popover>
-        {/* Other Links */}
+        </Popover> */}
+        {/* Other Links
         <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
           Home Loan
         </Button>
         <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
           Services
-        </Button>
+        </Button> */}
 
         <Button variant="ghost">For Buyers</Button>
         <Button variant="ghost">For Tenants</Button>
-        <Button variant="ghost">For Owners</Button>
+        <Button variant="ghost">For Agents/Builders</Button>
         <Button className="cursor-pointer b" onClick={() => navigate("/add")}>
           Post a Property{" "}
           <span className="bg-green-400 rounded-md px-1">Free</span>
