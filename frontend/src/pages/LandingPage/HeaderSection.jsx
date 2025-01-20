@@ -39,7 +39,7 @@ const HeaderSection = () => {
     );
   };
 
-  const tabs = ["Sell", "Rent", "PG", "Commercial", "Plot"];
+  const tabs = ["Sell", "Rent", "PG", "Commercial", "Plot" , "Agriculture" , "Project"];
   const propertyOptions = ["Residential", "Commercial", "Plot", "Pg"];
 
   return (
