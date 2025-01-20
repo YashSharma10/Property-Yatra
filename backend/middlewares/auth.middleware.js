@@ -5,7 +5,6 @@ export const authCheck = async (req, res, next) => {
   // Extract token from Authorization header
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log("Token", token);
   
   if (token) {
     try {

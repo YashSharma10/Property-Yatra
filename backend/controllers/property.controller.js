@@ -170,6 +170,7 @@ export const getUserProfileAndProperties = async (req, res) => {
 
 export const createProperty = async (req, res) => {
   try {
+    
     const {
       name,
       sellPrice,
@@ -198,9 +199,14 @@ export const createProperty = async (req, res) => {
       features: JSON.parse(features),
       images: imageUrls,
       postedBy: userID,
+      views:[userID]
     });
 
+    console.log("New Property",newProperty);
+    
     const property = await newProperty.save();
+    console.log("Property", property);
+    
     const user = await User.findByIdAndUpdate(
       userID,
       {

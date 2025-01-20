@@ -37,18 +37,17 @@ const propertySchema = new mongoose.Schema(
       gym: { type: Boolean },
     },
     images: [String],
+    views: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     postedBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
     },
-    views: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-        unique: true,
-      },
-    ],
   },
   { timestamps: true }
 );

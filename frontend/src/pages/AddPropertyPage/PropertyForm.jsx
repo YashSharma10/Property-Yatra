@@ -405,7 +405,7 @@ const PropertyForm = () => {
             <Button
               onClick={handleSubmit}
               className="w-full"
-              disabled={loading}
+              // disabled={loading}
             >
               {loading ? <Loader2 className="animate-spin" /> : "Submit"}
             </Button>
