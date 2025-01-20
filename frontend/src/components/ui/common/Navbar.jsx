@@ -93,6 +93,12 @@ const Navbar = () => {
         <Button variant="ghost" onClick={() => navigate("/property-listing")}>
           For Agents/Builders
         </Button>
+        <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
+          Invest Now
+        </Button>
+        <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
+          Services
+        </Button>
         <Button className="cursor-pointer b" onClick={() => navigate("/add")}>
           Post a Property{" "}
           <span className="bg-green-400 rounded-md px-1">Free</span>
