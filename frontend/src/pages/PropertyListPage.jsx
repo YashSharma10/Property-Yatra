@@ -138,11 +138,26 @@ const PropertyListingPage = () => {
         }`}
       >
         <span className="flex gap-1 mb-2 w-full justify-end sm:hidden">
-            <X
-              onClick={handleFilterVisible}
-              className="cursor-pointer"
-            />
-          </span>
+          <X onClick={handleFilterVisible} className="cursor-pointer" />
+        </span>
+
+        <div className="mb-6">
+          <h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3>
+          <div className="flex gap-4">
+            {["rent", "sell"].map((option) => (
+              <label key={option} className="block text-sm text-gray-600">
+                <input
+                  type="radio"
+                  value={option}
+                  checked={filters.listingType === option}
+                  onChange={handleRadioChange}
+                  className="mr-2 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                />
+                {option}
+              </label>
+            ))}
+          </div>
+        </div>
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Property Type
@@ -186,24 +201,6 @@ const PropertyListingPage = () => {
               {feature}
             </label>
           ))}
-        </div>
-
-        <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3>
-          <div className="flex gap-4">
-            {["rent", "sell"].map((option) => (
-              <label key={option} className="block text-sm text-gray-600">
-                <input
-                  type="radio"
-                  value={option}
-                  checked={filters.listingType === option}
-                  onChange={handleRadioChange}
-                  className="mr-2 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
-                />
-                {option}
-              </label>
-            ))}
-          </div>
         </div>
 
         <div>

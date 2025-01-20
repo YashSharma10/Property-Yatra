@@ -53,13 +53,27 @@ const Navbar = () => {
               <ChevronDown size={16} />
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-fit flex flex-col">
-            <Button variant="ghost" onClick={() => navigate("/emicalculator")}>
-              EMI Calculator
-            </Button>
-            <Button variant="ghost" onClick={() => navigate("/rent-agreement")}>
-              Rent Agreement
-            </Button>
+          <PopoverContent className="max-w-md flex ">
+          <div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur
+              tempora recusandae voluptatum aspernatur quam, corrupti suscipit
+              sed veniam a voluptas.
+            </div>
+            <div>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/emicalculator")}
+              >
+                EMI Calculator
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/rent-agreement")}
+              >
+                Rent Agreement
+              </Button>
+            </div>
+           
           </PopoverContent>
         </Popover> */}
         {/* Other Links
@@ -70,9 +84,15 @@ const Navbar = () => {
           Services
         </Button> */}
 
-        <Button variant="ghost">For Buyers</Button>
-        <Button variant="ghost">For Tenants</Button>
-        <Button variant="ghost">For Agents/Builders</Button>
+        <Button variant="ghost" onClick={() => navigate("/property-listing")}>
+          For Buyers
+        </Button>
+        <Button variant="ghost" onClick={() => navigate("/property-listing")}>
+          For Tenants
+        </Button>
+        <Button variant="ghost" onClick={() => navigate("/property-listing")}>
+          For Agents/Builders
+        </Button>
         <Button className="cursor-pointer b" onClick={() => navigate("/add")}>
           Post a Property{" "}
           <span className="bg-green-400 rounded-md px-1">Free</span>

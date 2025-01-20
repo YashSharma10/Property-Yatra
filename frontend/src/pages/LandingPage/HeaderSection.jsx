@@ -10,7 +10,7 @@ const HeaderSection = () => {
   const { filters } = useSelector((store) => store.globalEvent);
   const [dropdownMenu, setDropdownMenu] = useState(false);
   const [activeTab, setActiveTab] = useState("Sell");
-  const [selectedProperties, setSelectedProperties] = useState([]);
+  const [selectedProperties, setSelectedProperties] = useState(["Residential", "Commercial", "Plot", "Pg"]);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -40,10 +40,12 @@ const HeaderSection = () => {
   };
 
   const tabs = ["Sell", "Rent", "PG", "Commercial", "Plot"];
-  const propertyOptions = ["Apartment", "Villa", "Independent House", "Studio"];
+  const propertyOptions = ["Residential", "Commercial", "Plot", "Pg"];
 
   return (
-    <section className={`absolute top-10 right-0 left-0 transition-opacity duration-500 w-screen z-10`}>
+    <section
+      className={`absolute top-10 right-0 left-0 transition-opacity duration-500 w-screen z-10`}
+    >
       <img src={image} alt="header" className="w-full h-80 object-fill" />
 
       {/* SearchBox */}
@@ -111,10 +113,10 @@ const HeaderSection = () => {
             dropdownMenu ? "scale-100" : "scale-0"
           } origin-top flex flex-col items-center max-w-md sm:max-w-xl mx-auto overflow-hidden bg-white rounded-b-sm p-4`}
         >
-          <p className="text-sm text-gray-700 mb-2">
+          <p className="text-sm text-gray-700 mb-3 ">
             Select property types to refine your search:
           </p>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-2 gap-2 w-full">
             {propertyOptions.map((property) => (
               <label key={property} className="flex items-center space-x-2">
                 <input

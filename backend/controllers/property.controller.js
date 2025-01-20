@@ -56,6 +56,8 @@ export const addProperty = async (req, res) => {
 };
 
 export const listProperties = async (req, res) => {
+  console.log("Filters", req.query);
+  
   try {
     const {
       area,
@@ -72,7 +74,8 @@ export const listProperties = async (req, res) => {
 
     const orFilters = [];
 
-    if (propertyType) {
+
+    if ((!propertyType === "All") && propertyType) {
       orFilters.push({ propertyType: { $regex: propertyType, $options: "i" } });
     }
     if (listingType) {

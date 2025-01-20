@@ -46,7 +46,8 @@ const NewLaunchPropertiesSection = () => {
           <CarouselContent>
             {properties.map((property) => (
               <CarouselItem
-                className="sm:basis-1/3 relative"
+                onClick={() => navigate(`/property/${property._id}`)}
+                className="sm:basis-1/3 relative cursor-pointer"
                 key={property._id}
               >
                 <div className="bg-white shadow-md rounded-lg overflow-hidden">
