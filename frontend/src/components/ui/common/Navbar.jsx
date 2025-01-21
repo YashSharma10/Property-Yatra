@@ -13,10 +13,10 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const token = JSON.parse(sessionStorage.getItem("token"));
+  const token = JSON.parse(localStorage.getItem("token"));
 
   const handleProfileNavigation = () => {
-    if (JSON.parse(sessionStorage.getItem("user"))?.role === "agent") {
+    if (JSON.parse(localStorage.getItem("user"))?.role === "agent") {
       navigate("/agent-profile");
     } else {
       navigate("/profile");

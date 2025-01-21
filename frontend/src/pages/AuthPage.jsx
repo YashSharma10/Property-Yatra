@@ -92,8 +92,8 @@ const AuthPage = () => {
         if (response.data) {
           dispatch(setUser(response.data.newUser));
           dispatch(setToken(response.data.token));
-          sessionStorage.setItem("token", JSON.stringify(response.data.token));
-          sessionStorage.setItem("user", JSON.stringify(response.data.newUser));
+          localStorage.setItem("token", JSON.stringify(response.data.token));
+          localStorage.setItem("user", JSON.stringify(response.data.newUser));
           toast.success(response.data.message);
           navigate("/");
         }

@@ -32,7 +32,7 @@ export default function UserProfile() {
     try {
       await axios.get(`${BACKEND_URL}/api/logout`);
       navigate("/");
-      sessionStorage.clear();
+      localStorage.clear();
       dispatch(setUser(null));
       toast.success("Successfully logged out!");
     } catch (error) {

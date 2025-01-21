@@ -38,7 +38,7 @@ export default function AgentDashboard() {
     try {
       await axios.get(`${BACKEND_URL}/api/logout`, { withCredentials: true });
       navigate("/");
-      sessionStorage.clear();
+      localStorage.clear();
       dispatch(setUser(null));
       toast.success("Successfully logged out!");
     } catch (error) {
@@ -62,7 +62,7 @@ export default function AgentDashboard() {
 
   const handleProperties = async () => {
     try {
-      const token = JSON.parse(sessionStorage.getItem("token"));
+      const token = JSON.parse(localStorage.getItem("token"));
       const properties = await axios.get(`${BACKEND_URL}/api/auth/profile`, {
         headers: {
           Authorization: `Bearer ${token}`,

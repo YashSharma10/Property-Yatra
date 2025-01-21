@@ -13,7 +13,7 @@ const ProtectedRoute = () => {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const token = JSON.parse(sessionStorage.getItem("token"));
+        const token = JSON.parse(localStorage.getItem("token"));
         const data = await axios.post(
           `${BACKEND_URL}/api/auth/check`,
           {token}

@@ -13,7 +13,7 @@ const useAuthCheck = () => {
   useEffect(() => {
     const authCheck = async () => {
       try {
-        const token = JSON.parse(sessionStorage.getItem("token"));
+        const token = JSON.parse(localStorage.getItem("token"));
         // if (!token) {
         //   throw new Error("No token found");
         // }
