@@ -37,7 +37,7 @@ const ContactPage = () => {
           Contact Us
         </h2>
         <p className="text-lg text-gray-600 mb-8">
-          We would love to hear from you! Feel free to get in touch with any
+          We would love to hear from you Feel free to get in touch with any
           inquiries or feedback.
         </p>
 
