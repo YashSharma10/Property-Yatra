@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const RentAgreement = () => {
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ const RentAgreement = () => {
       <form onSubmit={handlePreview}>
         <div className="space-y-4">
           <div>
-            <Label htmlFor="landlordName">Landlord's Name</Label>
+            <Label htmlFor="landlordName">Landlords Name</Label>
             <Input
               id="landlordName"
               name="landlordName"
@@ -44,7 +44,7 @@ const RentAgreement = () => {
             />
           </div>
           <div>
-            <Label htmlFor="tenantName">Tenant's Name</Label>
+            <Label htmlFor="tenantName">Tenants Name</Label>
             <Input
               id="tenantName"
               name="tenantName"

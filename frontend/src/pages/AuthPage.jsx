@@ -52,7 +52,7 @@ const AuthPage = () => {
 
   const validateEmail = (email) => {
     const emailRegex =
-      /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|icloud\.com)$/;
+      /^[a-zA-Z0-9._%+-]+@(gmail\.com|yahoo\.com|outlook\.com|hotmail\.com|ncuindia\.edu|icloud\.com)$/;
     return emailRegex.test(email);
   };
   const validNumber = (number) => {

@@ -345,7 +345,7 @@ const PropertyForm = () => {
 
             {/* Address Details */}
             <Input
-              placeholder="House Number"
+              placeholder="Address Line 1"
               name="house"
               value={propertyFormData.address.house}
               onChange={(e) => addAddressDetails(e.target.name, e.target.value)}
