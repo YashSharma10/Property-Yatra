@@ -1,3 +1,12 @@
+// import { brandName } from "@/constants";
+import logo from "@/assets/logo.png";
+import { CircleUserRound, ChevronDown } from "lucide-react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Button } from "../button";
+import { Popover, PopoverContent, PopoverTrigger } from "../popover";
+
 const Navbar = () => {
   const { isVisible } = useSelector((store) => store.globalEvent);
   const { user } = useSelector((store) => store.auth);
@@ -35,6 +44,46 @@ const Navbar = () => {
 
       {/* Desktop Menu */}
       <nav className="hidden md:flex items-center gap-6 text-sm text-gray-600">
+        {/* Tools Dropdown */}
+
+        {/* <Popover>
+          <PopoverTrigger>
+            <Button variant="ghost" onClick={toggleDropdown}>
+              Tools
+              <ChevronDown size={16} />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="max-w-md flex ">
+          <div>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tenetur
+              tempora recusandae voluptatum aspernatur quam, corrupti suscipit
+              sed veniam a voluptas.
+            </div>
+            <div>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/emicalculator")}
+              >
+                EMI Calculator
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={() => navigate("/rent-agreement")}
+              >
+                Rent Agreement
+              </Button>
+            </div>
+           
+          </PopoverContent>
+        </Popover> */}
+        {/* Other Links
+        <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
+          Home Loan
+        </Button>
+        <Button variant="ghost" onClick={() => navigate("/comingsoon")}>
+          Services
+        </Button> */}
+
         <Button variant="ghost" onClick={() => navigate("/property-listing")}>
           For Buyers
         </Button>
