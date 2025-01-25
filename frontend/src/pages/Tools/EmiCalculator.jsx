@@ -20,7 +20,7 @@ const EmiCalculator = () => {
     { name: "Total Payment", value: 105499.08 },
   ]);
 
-  const COLORS = ["#8884d8", "#82ca9d", "#ffc658"];
+  const COLORS = ["#4CAF50", "#FFC107", "#2196F3"];
 
   // Function to calculate EMI
   const calculateEMI = () => {
@@ -42,58 +42,61 @@ const EmiCalculator = () => {
   };
 
   return (
-    <div className="width flex gap-3 flex-col sm:flex-row">
-      {/* Calculator Section */}
-      <div className="">
-        <Card className="p-4 space-y-4 shadow-md sm:w-72 h-full">
-          <div>
-            <h1 className="text-xl font-bold">EMI Calculator</h1>
-          </div>
-          <div className="space-y-2">
-            <label className="font-medium">Loan Amount (₹)</label>
-            <Input
-              type="number"
-              value={loanAmount}
-              onChange={(e) => setLoanAmount(Number(e.target.value))}
-              className="w-full"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="font-medium">Annual Interest Rate (%)</label>
-            <Input
-              type="number"
-              value={interestRate}
-              onChange={(e) => setInterestRate(Number(e.target.value))}
-              className="w-full"
-            />
-          </div>
-          <div className="space-y-2">
-            <label className="font-medium">Loan Tenure (months)</label>
-            <Input
-              type="number"
-              value={loanTenure}
-              onChange={(e) => setLoanTenure(Number(e.target.value))}
-              className="w-full"
-            />
-          </div>
-          <CardFooter className="">
-            <Button className="w-full" onClick={calculateEMI}>
-              Calculate EMI
-            </Button>
-          </CardFooter>
-        </Card>
-      </div>
-
-      {/* Charts Section */}
-      {
-        <div className="w-full">
-          <Card className="shadow-md">
+    <div className="flex flex-col gap-8 p-6 md:p-12 bg-gray-50 min-h-screen">
+      <h1 className="text-3xl font-bold text-center text-indigo-700 mb-6">Home Loan EMI Calculator</h1>
+      <div className="flex flex-col sm:flex-row gap-8">
+        {/* Calculator Section */}
+        <div className="flex-1">
+          <Card className="p-6 space-y-6 shadow-xl rounded-lg bg-white">
             <CardHeader>
-              <h2 className="text-lg font-semibold">EMI Details</h2>
-              <p className="text-gray-700 font-semibold">Monthly EMI: ₹{emi}</p>
-              <h2 className="text-lg font-semibold text-center mb-4">
-                EMI Breakdown
-              </h2>
+              <h2 className="text-xl font-semibold text-indigo-600">EMI Calculator</h2>
+            </CardHeader>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <label className="font-medium text-gray-700">Loan Amount (₹)</label>
+                <Input
+                  type="number"
+                  value={loanAmount}
+                  onChange={(e) => setLoanAmount(Number(e.target.value))}
+                  className="w-full p-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="font-medium text-gray-700">Annual Interest Rate (%)</label>
+                <Input
+                  type="number"
+                  value={interestRate}
+                  onChange={(e) => setInterestRate(Number(e.target.value))}
+                  className="w-full p-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="font-medium text-gray-700">Loan Tenure (months)</label>
+                <Input
+                  type="number"
+                  value={loanTenure}
+                  onChange={(e) => setLoanTenure(Number(e.target.value))}
+                  className="w-full p-3 border rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+              </div>
+              <CardFooter>
+                <Button
+                  className="w-full py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition duration-200"
+                  onClick={calculateEMI}
+                >
+                  Calculate EMI
+                </Button>
+              </CardFooter>
+            </div>
+          </Card>
+        </div>
+
+        {/* Charts Section */}
+        <div className="flex-1">
+          <Card className="shadow-xl rounded-lg bg-white p-6">
+            <CardHeader>
+              <h2 className="text-xl font-semibold text-indigo-600">EMI Details</h2>
+              <p className="text-gray-700 font-semibold text-lg mt-4">Monthly EMI: ₹{emi}</p>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={300}>
@@ -102,8 +105,8 @@ const EmiCalculator = () => {
                     data={chartData}
                     cx="50%"
                     cy="50%"
-                    innerRadius={40}
-                    outerRadius={90}
+                    innerRadius={60}
+                    outerRadius={100}
                     fill="#8884d8"
                     dataKey="value"
                     label={({ name, value }) => `${name}: ₹${value.toFixed(2)}`}
@@ -120,6 +123,7 @@ const EmiCalculator = () => {
                     contentStyle={{
                       backgroundColor: "#f5f5f5",
                       borderRadius: "8px",
+                      fontSize: "14px",
                     }}
                   />
                 </PieChart>
@@ -127,7 +131,82 @@ const EmiCalculator = () => {
             </CardContent>
           </Card>
         </div>
-      }
+      </div>
+
+      {/* Additional Details Section */}
+      <div>
+        <Card className="shadow-xl rounded-lg bg-white p-6">
+          <CardHeader>
+            <h2 className="text-xl font-bold text-indigo-600">Home Loan Details</h2>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-3 text-gray-700">
+              <li><strong>Loan Amount:</strong> The total amount you plan to borrow from the lender.</li>
+              <li><strong>Interest Rate:</strong> The annual rate of interest applied on the loan.</li>
+              <li><strong>Loan Tenure:</strong> The period over which the loan is to be repaid in months.</li>
+              <li><strong>Monthly EMI:</strong> Equal monthly installment that you need to pay towards loan repayment.</li>
+              <li><strong>Principal:</strong> The original loan amount borrowed.</li>
+              <li><strong>Total Interest:</strong> The total interest paid over the loan tenure.</li>
+            </ul>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Roadmap and FAQ Sections */}
+      {/* Similar styling applied to Roadmap and FAQ Sections for consistency */}
+
+      <div>
+        <Card className="shadow-xl rounded-lg bg-white p-6">
+          <CardHeader>
+            <h2 className="text-xl font-bold text-indigo-600">Roadmap for Home Loan</h2>
+          </CardHeader>
+          <CardContent>
+            <ol className="list-decimal ml-6 space-y-3 text-gray-700">
+              <li>Determine your eligibility for a home loan.</li>
+              <li>Research and compare loan offers from different banks.</li>
+              <li>Finalize the property you wish to purchase.</li>
+              <li>Prepare the necessary documents, such as income proof, ID proof, and property documents.</li>
+              <li>Submit your loan application to the bank.</li>
+              <li>Await approval and verification by the bank.</li>
+              <li>Sign the loan agreement and disbursement process begins.</li>
+              <li>Start repaying the loan through EMIs.</li>
+            </ol>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* FAQ Section */}
+      <div>
+        <Card className="shadow-xl rounded-lg bg-white p-6">
+          <CardHeader>
+            <h2 className="text-xl font-bold text-indigo-600">Frequently Asked Questions</h2>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4 text-gray-700">
+              <div>
+                <p className="font-semibold">Q: What is a home loan?</p>
+                <p>A: A home loan is a sum of money borrowed from a bank or lender to purchase a house.</p>
+              </div>
+              <div>
+                <p className="font-semibold">Q: How is EMI calculated?</p>
+                <p>A: EMI is calculated based on the loan amount, interest rate, and tenure using a standard formula.</p>
+              </div>
+              <div>
+                <p className="font-semibold">Q: Can I prepay my home loan?</p>
+                <p>A: Yes, most banks allow prepayment, but some may charge a prepayment fee.</p>
+              </div>
+              <div>
+                <p className="font-semibold">Q: What is the maximum tenure for a home loan?</p>
+                <p>A: The maximum tenure varies by bank, typically ranging from 15 to 30 years.</p>
+              </div>
+              <div>
+                <p className="font-semibold">Q: What is the processing fee for a home loan?</p>
+                <p>A: Processing fees vary between banks and are usually a percentage of the loan amount or a fixed amount.</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
