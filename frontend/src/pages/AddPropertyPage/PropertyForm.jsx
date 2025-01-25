@@ -258,7 +258,7 @@ const PropertyForm = () => {
             Basic Details
           </TabsTrigger>
           <TabsTrigger value="tab2" onClick={() => setActiveTab("tab2")}>
-            Rent & Age
+            Price & Age
           </TabsTrigger>
           <TabsTrigger value="tab3" onClick={() => setActiveTab("tab3")}>
             Media Upload
