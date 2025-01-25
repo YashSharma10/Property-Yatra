@@ -28,7 +28,7 @@ const ServicesAndTools = () => {
           onMouseEnter={() => setIsFacilityHovered(true)}
           onMouseLeave={() => setIsFacilityHovered(false)}
         >
-          <div className="w-full h-48 mb-4 overflow-hidden rounded-2xl relative">
+          <div className="w-full h-48 sm:h-56 mb-4 overflow-hidden rounded-2xl relative">
             <img
               src={facilityManagement}
               alt="Facility Management"
@@ -50,7 +50,6 @@ const ServicesAndTools = () => {
                 <li>• Waste Management</li>
                 <li>• Repairs and Renovations</li>
                 <li>• Corporate Facility Solutions</li>
-                {/* <li>• Event Management and Coordination</li> */}
               </ul>
               <Button
                 onClick={() => navigate("/facility-management")}
@@ -71,7 +70,7 @@ const ServicesAndTools = () => {
 
         {/* Legal Services */}
         <div className="bg-white text-gray-900 p-6 rounded-3xl shadow-xl hover:shadow-2xl hover:bg-indigo-50 transition-all duration-300 w-full">
-          <div className="w-full h-48 mb-4 overflow-hidden rounded-2xl relative">
+          <div className="w-full h-48 sm:h-56 mb-4 overflow-hidden rounded-2xl relative">
             <img
               src={legalServices}
               alt="Legal Services"
@@ -96,7 +95,7 @@ const ServicesAndTools = () => {
           onMouseEnter={() => setIsToolsHovered(true)}
           onMouseLeave={() => setIsToolsHovered(false)}
         >
-          <div className="w-full h-48 mb-4 overflow-hidden rounded-2xl relative">
+          <div className="w-full h-48 sm:h-56 mb-4 overflow-hidden rounded-2xl relative">
             <img
               src={tools}
               alt="Tools"
