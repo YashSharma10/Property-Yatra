@@ -85,6 +85,7 @@ const PropertyListingPage = () => {
   const handleDropdownChange = (e) => {
     const { value } = e.target;
     dispatch(setFilters({ propertyType: value }));
+    console.log(value);
   };
 
   const handlePageChange = (newPage) => {
@@ -133,7 +134,7 @@ const PropertyListingPage = () => {
     <div className="width flex gap-3 sm:gap-8 justify-center">
       {/* Filter Section */}
       <div
-        className={`p-6 h-fit sticky  bg-white rounded-lg shadow-md border sm:block w-full sm:w-[450px] ${
+        className={`p-6 h-fit sticky bg-gradient-to-br from-blue-50 to-white rounded-lg shadow-md border sm:block w-full sm:w-[450px] ${
           filterVisible ? "block" : "hidden"
         }`}
       >
@@ -142,7 +143,7 @@ const PropertyListingPage = () => {
         </span>
 
         <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Type</h3>
+          <h3 className="text-sm font-medium text-blue-700 mb-2">Type</h3>
           <div className="flex gap-4">
             {["rent", "sell"].map((option) => (
               <label key={option} className="block text-sm text-gray-600">
@@ -159,13 +160,13 @@ const PropertyListingPage = () => {
           </div>
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-blue-700 mb-2">
             Property Type
           </label>
           <select
             name="type"
             onChange={handleDropdownChange}
-            className="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           >
             {["All", "residential", "commercial", "pg", "plot"].map((item) => (
               <option value={item} key={item} className="capitalize">
@@ -176,41 +177,46 @@ const PropertyListingPage = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-blue-700 mb-2">
             Price Range
           </label>
           <input
             type="text"
             value={filters.price}
             onChange={handleInputChange}
-            className="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
 
         <div className="mb-6">
-          <h3 className="text-sm font-medium text-gray-700 mb-2">Features</h3>
-          {Object.keys(filters.features).map((feature) => (
-            <label key={feature} className="block text-sm text-gray-600 mb-1">
-              <input
-                type="checkbox"
-                name={feature}
-                checked={filters.features[feature]}
-                onChange={(e) => handleCheckboxChange(e, "features")}
-                className="mr-2 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
-              />
-              {feature}
-            </label>
-          ))}
+          <h3 className="text-sm font-medium text-blue-700 mb-2">Features</h3>
+          <div className="grid grid-cols-2 gap-2">
+            {Object.keys(filters.features).map((feature) => (
+              <label
+                key={feature}
+                className="block text-sm text-gray-600 p-2 bg-blue-50 rounded-md shadow-sm hover:bg-blue-100 cursor-pointer"
+              >
+                <input
+                  type="checkbox"
+                  name={feature}
+                  checked={filters.features[feature]}
+                  onChange={(e) => handleCheckboxChange(e, "features")}
+                  className="mr-2 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                />
+                {feature}
+              </label>
+            ))}
+          </div>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-blue-700 mb-2">
             Built Year
           </label>
           <select
             name="builtYear"
             onChange={handleDropdownChange}
-            className="w-full border border-gray-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           >
             <option value="">All</option>
             {Array.from({ length: 50 }, (_, i) => 2023 - i).map((year) => (
