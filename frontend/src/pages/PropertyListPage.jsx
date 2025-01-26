@@ -1,48 +1,52 @@
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button"; // Shadcn Button
-import { Skeleton } from "@/components/ui/skeleton";
-import { Cross, FilterIcon, Heart, Info, X } from "lucide-react";
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
-import { setFilters } from "@/redux/slices/globalEvent";
-import { BACKEND_URL } from "@/constants";
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button" // Shadcn Button
+import { Skeleton } from "@/components/ui/skeleton"
+import { Cross, FilterIcon, Heart, Info, X } from "lucide-react"
+import axios from "axios"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useNavigate } from "react-router-dom"
+import { toast } from "sonner"
+import { setFilters } from "@/redux/slices/globalEvent"
+import { BACKEND_URL } from "@/constants"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 const PropertyListingPage = () => {
-  const { filters } = useSelector((store) => store.globalEvent);
-  const { token } = useSelector((store) => store.auth);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const [liked, setLiked] = useState([]);
-  const [properties, setProperties] = useState([]);
-  const [page, setPage] = useState(1);
-  const [totalProperties, setTotalProperties] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [filterVisible, setFilterVisible] = useState(false);
+  const { filters } = useSelector((store) => store.globalEvent)
+  const { token } = useSelector((store) => store.auth)
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+  const [liked, setLiked] = useState([])
+  const [properties, setProperties] = useState([])
+  const [page, setPage] = useState(1)
+  const [totalProperties, setTotalProperties] = useState(0)
+  const [isLoading, setIsLoading] = useState(false)
+  const [filterVisible, setFilterVisible] = useState(false)
 
   const fetchProperties = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     const queryParams = new URLSearchParams({
       ...filters,
       features: JSON.stringify(filters.features),
       page,
-    });
+      propertyAge: filters.propertyAge,
+      area: filters.area,
+      "address.city": filters.city,
+      "address.state": filters.state,
+    })
 
     try {
-      const response = await fetch(
-        `${BACKEND_URL}/api/properties/list?${queryParams}`
-      );
-      const data = await response.json();
-      setProperties(data.properties);
-      setTotalProperties(data.total);
+      const response = await fetch(`${BACKEND_URL}/api/properties/list?${queryParams}`)
+      const data = await response.json()
+      setProperties(data.properties)
+      setTotalProperties(data.total)
     } catch (error) {
-      console.error("Failed to fetch properties", error);
+      console.error("Failed to fetch properties", error)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   const fetchLikedPropertiesOfUser = async () => {
     try {
@@ -50,51 +54,59 @@ const PropertyListingPage = () => {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      });
-      const likedProperties = response.data.user.likedProperties.map(
-        (liked) => liked._id
-      );
-      setLiked(likedProperties);
+      })
+      const likedProperties = response.data.user.likedProperties.map((liked) => liked._id)
+      setLiked(likedProperties)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   const handleCheckboxChange = (e, category) => {
-    const { name, checked } = e.target;
+    const { name, checked } = e.target
     if (category === "features") {
       const updatedFeatures = {
         ...filters.features,
         [name]: checked,
-      };
-      dispatch(setFilters({ ...filters, features: updatedFeatures }));
+      }
+      dispatch(setFilters({ ...filters, features: updatedFeatures }))
     }
-  };
+  }
 
   const handleRadioChange = (e) => {
-    const { value } = e.target;
-    dispatch(setFilters({ listingType: value }));
-  };
+    const { value } = e.target
+    dispatch(setFilters({ listingType: value }))
+  }
 
   const handleInputChange = (e) => {
-    const { value } = e.target;
-    const price = filters.listingType === "sell" ? "sellPrice" : "rentPrice";
-    dispatch(setFilters({ [price]: Number(value), price: Number(value) }));
-  };
+    const { value } = e.target
+    const price = filters.listingType === "sell" ? "sellPrice" : "rentPrice"
+    dispatch(setFilters({ [price]: Number(value), price: Number(value) }))
+  }
 
   const handleDropdownChange = (e) => {
-    const { value } = e.target;
-    dispatch(setFilters({ propertyType: value }));
-    console.log(value);
-  };
+    const { value } = e.target
+    dispatch(setFilters({ propertyType: value }))
+    console.log(value)
+  }
+
+  const handleNumberInputChange = (e) => {
+    const { name, value } = e.target
+    dispatch(setFilters({ [name]: Number(value) }))
+  }
+
+  const handleTextInputChange = (e) => {
+    const { name, value } = e.target
+    dispatch(setFilters({ [name]: value }))
+  }
 
   const handlePageChange = (newPage) => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handlePropertyClick = (id) => {
-    navigate(`/property/${id}`);
-  };
+    navigate(`/property/${id}`)
+  }
 
   const handleLikedProperty = async (id) => {
     try {
@@ -105,30 +117,27 @@ const PropertyListingPage = () => {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
-      );
-      fetchLikedPropertiesOfUser();
+        },
+      )
+      fetchLikedPropertiesOfUser()
     } catch (error) {
-      if (
-        error.response?.status === 401 ||
-        error.message === "No token found"
-      ) {
-        navigate("/auth");
-        toast.error("Session expired!");
+      if (error.response?.status === 401 || error.message === "No token found") {
+        navigate("/auth")
+        toast.error("Session expired!")
       } else {
-        console.error("Auth check failed:", error);
+        console.error("Auth check failed:", error)
       }
     }
-  };
+  }
 
   const handleFilterVisible = () => {
-    setFilterVisible((prev) => !prev);
-  };
+    setFilterVisible((prev) => !prev)
+  }
 
   useEffect(() => {
-    fetchProperties();
-    fetchLikedPropertiesOfUser();
-  }, [filters, page]);
+    fetchProperties()
+    fetchLikedPropertiesOfUser()
+  }, [filters, page])
 
   return (
     <div className="width flex gap-3 sm:gap-8 justify-center">
@@ -160,11 +169,9 @@ const PropertyListingPage = () => {
           </div>
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-medium text-blue-700 mb-2">
-            Property Type
-          </label>
+          <label className="block text-sm font-medium text-blue-700 mb-2">Property Type</label>
           <select
-            name="type"
+            name="propertyType"
             onChange={handleDropdownChange}
             className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           >
@@ -177,13 +184,12 @@ const PropertyListingPage = () => {
         </div>
 
         <div className="mb-6">
-          <label className="block text-sm font-medium text-blue-700 mb-2">
-            Price Range
-          </label>
+          <label className="block text-sm font-medium text-blue-700 mb-2">Price Range</label>
           <input
-            type="text"
+            type="number"
+            name="price"
             value={filters.price}
-            onChange={handleInputChange}
+            onChange={handleNumberInputChange}
             className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           />
         </div>
@@ -209,10 +215,64 @@ const PropertyListingPage = () => {
           </div>
         </div>
 
+        <div className="mb-6">
+          <Label htmlFor="propertyAge" className="block text-sm font-medium text-blue-700 mb-2">
+            Property Age (years)
+          </Label>
+          <Input
+            type="number"
+            id="propertyAge"
+            name="propertyAge"
+            value={filters.propertyAge}
+            onChange={handleNumberInputChange}
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div className="mb-6">
+          <Label htmlFor="area" className="block text-sm font-medium text-blue-700 mb-2">
+            Area (sq ft)
+          </Label>
+          <Input
+            type="number"
+            id="area"
+            name="area"
+            value={filters.area}
+            onChange={handleNumberInputChange}
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div className="mb-6">
+          <Label htmlFor="city" className="block text-sm font-medium text-blue-700 mb-2">
+            City
+          </Label>
+          <Input
+            type="text"
+            id="city"
+            name="city"
+            value={filters.city}
+            onChange={handleTextInputChange}
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
+        <div className="mb-6">
+          <Label htmlFor="state" className="block text-sm font-medium text-blue-700 mb-2">
+            State
+          </Label>
+          <Input
+            type="text"
+            id="state"
+            name="state"
+            value={filters.state}
+            onChange={handleTextInputChange}
+            className="w-full border border-blue-300 rounded-lg p-2 text-sm text-gray-700 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
+
         <div>
-          <label className="block text-sm font-medium text-blue-700 mb-2">
-            Built Year
-          </label>
+          <label className="block text-sm font-medium text-blue-700 mb-2">Built Year</label>
           <select
             name="builtYear"
             onChange={handleDropdownChange}
@@ -231,15 +291,10 @@ const PropertyListingPage = () => {
       {/* Property Listings */}
       <div className={`${!filterVisible ? "block" : "hidden"}`}>
         <div className=" mb-4 flex justify-between">
-          <h2 className="text-lg font-semibold mb-4">
-            {totalProperties} results |
-          </h2>
+          <h2 className="text-lg font-semibold mb-4">{totalProperties} results |</h2>
           <span className="flex gap-1 sm:hidden">
             Filters
-            <FilterIcon
-              onClick={handleFilterVisible}
-              className="cursor-pointer"
-            />
+            <FilterIcon onClick={handleFilterVisible} className="cursor-pointer" />
           </span>
         </div>
         {isLoading ? (
@@ -263,15 +318,12 @@ const PropertyListingPage = () => {
               >
                 <div className="relative flex-shrink-0">
                   <img
-                    src={property.images[0]}
+                    src={property.images[0] || "/placeholder.svg"}
                     alt={property.name}
                     className="h-72 w-96 object-cover rounded-tl-lg sm:rounded-bl-lg rounded-tr-lg sm:rounded-tr-none"
                   />
                   {liked.length > 0 && liked.includes(property._id) && (
-                    <Heart
-                      className="absolute top-2 right-2 text-red-500 cursor-pointer"
-                      fill="red"
-                    />
+                    <Heart className="absolute top-2 right-2 text-red-500 cursor-pointer" fill="red" />
                   )}
                   <Heart
                     className="absolute top-2 right-2 text-red-500 cursor-pointer"
@@ -281,20 +333,14 @@ const PropertyListingPage = () => {
                 <div className="flex-grow p-4">
                   <div className="text-xl font-semibold flex justify-between items-center">
                     <span>{property.name}</span>
-                    <span className="text-xs bg-green-400 rounded-md px-2 py-1">
-                      {property.listingType}
-                    </span>
+                    <span className="text-xs bg-green-400 rounded-md px-2 py-1">{property.listingType}</span>
                   </div>
-                  <p className="text-gray-600 text-sm overflow-hidden w-full max-h-10">
-                    {property.description}
-                  </p>
+                  <p className="text-gray-600 text-sm overflow-hidden w-full max-h-10">{property.description}</p>
                   <div className="flex gap-3 text-sm py-1">
                     <p className="after:content-['|'] after:ml-0.5 after:text-gray-400 block">
                       ₹{property.sellPrice || property.rentPrice}
                     </p>
-                    <p className="after:content-['|'] after:ml-0.5 after:text-gray-400 block">
-                      {property.area} sqft
-                    </p>
+                    <p className="after:content-['|'] after:ml-0.5 after:text-gray-400 block">{property.area} sqft</p>
                     <p>{property.propertyAge} year old</p>
                   </div>
                   <div className="text-sm text-gray-500 w-full sm:h-44 flex flex-col justify-between">
@@ -302,16 +348,11 @@ const PropertyListingPage = () => {
                       <span className="block">Highlights:</span>
                       <div className="flex gap-2 mt-1 flex-wrap overflow-hidden">
                         {property.features &&
-                          Object.keys(property.features).map((feature) => (
-                            <Badge key={feature}>{feature}</Badge>
-                          ))}
+                          Object.keys(property.features).map((feature) => <Badge key={feature}>{feature}</Badge>)}
                       </div>
                     </div>
                     <div className="mt-2">
-                      <Button
-                        className="w-full"
-                        onClick={() => handlePropertyClick(property._id)}
-                      >
+                      <Button className="w-full" onClick={() => handlePropertyClick(property._id)}>
                         <Info />
                         Details
                       </Button>
@@ -346,7 +387,8 @@ const PropertyListingPage = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PropertyListingPage;
+export default PropertyListingPage
+
