@@ -60,7 +60,7 @@ const Navbar = () => {
             </PopoverTrigger>
             <PopoverContent className="w-56">
               <div className="flex flex-col space-y-1">
-                <Button variant="ghost" className="justify-start" onClick={() => navigate("/facilitiess")}>
+                <Button variant="ghost" className="justify-start" onClick={() => navigate("/facilities")}>
                   Facility Management
                 </Button>
                 <Button variant="ghost" className="justify-start" onClick={() => navigate("/comingsoon")}>
