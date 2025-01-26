@@ -1,137 +1,176 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import facilityManagement from "../../assets/facilty.webp";
-import legalServices from "../../assets/legal.png";
-import tools from "../../assets/tools.jpg";
-import { useNavigate } from "react-router-dom";
+import React from "react"
+import { Building2, Scale, Home, Wrench } from "lucide-react"
+import { Link } from "react-router-dom"
 
-const ServicesAndTools = () => {
-  const navigate = useNavigate();
-  const [isToolsHovered, setIsToolsHovered] = useState(false);
-  const [isFacilityHovered, setIsFacilityHovered] = useState(false);
+const services = [
+  {
+    title: "Facility Management",
+    description: "Comprehensive solutions for managing and maintaining your facilities efficiently.",
+    icon: Building2,
+    action: "Manage Facilities",
+    link: "/facilites",
+    points: ["24/7 maintenance support", "Energy efficiency optimization", "Space planning and utilization"],
+  },
+  {
+    title: "Legal Services",
+    description: "Expert legal advice and representation for all your business needs.",
+    icon: Scale,
+    action: "Get Legal Help",
+    link: "/comingsoon",
+    points: ["Contract review and drafting", "Dispute resolution", "Regulatory compliance"],
+  },
+  {
+    title: "Home Loan",
+    description: "Flexible and competitive home loan options to help you achieve your dream home.",
+    icon: Home,
+    action: "Home Loan",
+    link: "/comingsoon",
+    points: ["Competitive interest rates", "Flexible repayment options", "Quick approval process"],
+  },
+  {
+    title: "Tools",
+    description: "A wide range of professional tools and equipment for rent or purchase.",
+    icon: Wrench,
+    points: ["High-quality power tools", "Specialized equipment rental", "Tool maintenance services"],
+    buttons: [
+      { text: "EMI Calculator", link: "/emicalculator" },
+      { text: "Rent Agreement", link: "/rent-agreement" },
+    ],
+  },
+]
+
+const ServiceCard = ({ service }) => {
+  const isToolsCard = service.title === "Tools"
 
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="mb-12 text-center">
-        <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-          Explore Our Services and Tools
-        </h2>
-        <p className="mt-4 text-lg text-gray-600">
-          Discover a wide range of solutions designed to make your property management simpler and more efficient.
-        </p>
+    <div className={`service-card ${isToolsCard ? "tools-card" : ""}`}>
+      <div className="icon-container">
+        <service.icon className="icon" />
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-items-center">
-        {/* Facility Management */}
-        <div
-          className="bg-white text-gray-900 p-6 rounded-3xl shadow-xl hover:shadow-2xl hover:bg-indigo-50 transition-all duration-300 w-full relative"
-          onMouseEnter={() => setIsFacilityHovered(true)}
-          onMouseLeave={() => setIsFacilityHovered(false)}
-        >
-          <div className="w-full h-48 sm:h-56 mb-4 overflow-hidden rounded-2xl relative">
-            <img
-              src={facilityManagement}
-              alt="Facility Management"
-              className="w-full h-full object-cover rounded-xl transform transition duration-500 hover:scale-105"
-            />
-          </div>
-
-          {isFacilityHovered ? (
-            <div className="absolute inset-0 flex flex-col gap-4 justify-center items-center bg-gray-800 bg-opacity-80 rounded-2xl p-6">
-              <p className="text-white text-center mb-4 text-lg font-semibold leading-tight">
-                We provide comprehensive facility management services, including:
-              </p>
-              <ul className="text-white list-inside pl-6 space-y-2 text-sm text-left">
-                <li>• 24/7 Property Maintenance</li>
-                <li>• Cleaning and Housekeeping</li>
-                <li>• Security Services</li>
-                <li>• Landscaping and Gardening</li>
-                <li>• Utility Management</li>
-                <li>• Waste Management</li>
-                <li>• Repairs and Renovations</li>
-                <li>• Corporate Facility Solutions</li>
-              </ul>
-              <Button
-                onClick={() => navigate("/facility-management")}
-                className="w-3/4 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition duration-300"
-              >
-                Manage Facility
-              </Button>
-            </div>
-          ) : (
-            <>
-              <h3 className="text-xl font-semibold mb-3 text-center">Facility Management</h3>
-              <p className="text-sm text-gray-600 text-center mb-4">
-                Streamline your property management needs with our top-notch facility management services.
-              </p>
-            </>
-          )}
+      <h3>{service.title}</h3>
+      <p>{service.description}</p>
+      <ul className="points">
+        {service.points.map((point, index) => (
+          <li key={index}>{point}</li>
+        ))}
+      </ul>
+      {isToolsCard ? (
+        <div className="tools-buttons">
+          {service.buttons.map((button, index) => (
+            <Link key={index} to={button.link} className="action-button tools-button">
+              {button.text}
+            </Link>
+          ))}
         </div>
+      ) : (
+        <Link to={service.link} className="action-button">
+          {service.action}
+        </Link>
+      )}
+    </div>
+  )
+}
 
-        {/* Legal Services */}
-        <div className="bg-white text-gray-900 p-6 rounded-3xl shadow-xl hover:shadow-2xl hover:bg-indigo-50 transition-all duration-300 w-full">
-          <div className="w-full h-48 sm:h-56 mb-4 overflow-hidden rounded-2xl relative">
-            <img
-              src={legalServices}
-              alt="Legal Services"
-              className="w-full h-full object-cover rounded-xl transform transition duration-500 hover:scale-105"
-            />
-          </div>
-          <h3 className="text-xl font-semibold mb-3 text-center">Legal Services</h3>
-          <p className="text-sm text-gray-600 text-center mb-4">
-            Access expert legal services for rent agreements, property disputes, and more.
-          </p>
-          <Button
-            onClick={() => navigate("/legal-services")}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg transition duration-300"
-          >
-            Get Legal Help
-          </Button>
-        </div>
-
-        {/* Tools Card */}
-        <div
-          className="bg-gray-50 text-gray-900 p-6 rounded-3xl shadow-xl hover:shadow-2xl hover:bg-indigo-50 transition-all duration-300 w-full relative"
-          onMouseEnter={() => setIsToolsHovered(true)}
-          onMouseLeave={() => setIsToolsHovered(false)}
-        >
-          <div className="w-full h-48 sm:h-56 mb-4 overflow-hidden rounded-2xl relative">
-            <img
-              src={tools}
-              alt="Tools"
-              className={`w-full h-full object-cover rounded-xl transition-opacity duration-300 ${
-                isToolsHovered ? "opacity-40" : "opacity-90"
-              }`}
-            />
-          </div>
-
-          {isToolsHovered ? (
-            <div className="absolute inset-0 flex flex-col gap-4 justify-center items-center bg-gray-800 bg-opacity-80 rounded-2xl p-6">
-              <Button
-                onClick={() => navigate("/emicalculator")}
-                className="w-3/4 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition duration-300"
-              >
-                EMI Calculator
-              </Button>
-              <Button
-                onClick={() => navigate("/rent-agreement")}
-                className="w-3/4 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition duration-300"
-              >
-                Rent Agreement
-              </Button>
-            </div>
-          ) : (
-            <>
-              <h3 className="text-xl font-semibold mb-3 text-center">Tools</h3>
-              <p className="text-sm text-gray-600 text-center mb-4">
-                Explore a variety of tools designed to make your property management seamless and efficient.
-              </p>
-            </>
-          )}
-        </div>
+const ServiceCards = () => {
+  return (
+    <div className="service-cards-container">
+      <h2>Our Services</h2>
+      <div className="cards-grid">
+        {services.map((service, index) => (
+          <ServiceCard key={index} service={service} />
+        ))}
       </div>
-    </section>
-  );
-};
+      <style jsx>{`
+        .service-cards-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 2rem;
+        }
+        h2 {
+          text-align: center;
+          font-size: 2rem;
+          margin-bottom: 2rem;
+        }
+        .cards-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 2rem;
+        }
+        .service-card {
+          background-color: #ffffff;
+          border-radius: 8px;
+          padding: 1.5rem;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+          display: flex;
+          flex-direction: column;
+        }
+        .tools-card {
+          background-color: #f8f9fa;
+        }
+        .icon-container {
+          background-color: #e9ecef;
+          border-radius: 50%;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: 1rem;
+        }
+        .icon {
+          width: 30px;
+          height: 30px;
+          color: #495057;
+        }
+        h3 {
+          font-size: 1.25rem;
+          margin-bottom: 0.5rem;
+        }
+        p {
+          font-size: 0.9rem;
+          color: #6c757d;
+          margin-bottom: 1rem;
+        }
+        .points {
+          list-style-type: disc;
+          padding-left: 1.5rem;
+          margin-bottom: 1rem;
+          font-size: 0.9rem;
+          color: #6c757d;
+        }
+        .action-button {
+          background-color: #090909;
+          color: white;
+          border: none;
+          padding: 0.5rem 1rem;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          margin-top: auto;
+          text-decoration: none;
+          text-align: center;
+        }
+        .action-button:hover {
+          background-color: #060606;
+        }
+        .tools-card .tools-buttons {
+          display: flex;
+          gap: 1rem;
+          margin-top: auto;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .tools-card:hover .tools-buttons {
+          opacity: 1;
+        }
+        .tools-button {
+          flex: 1;
+          font-size: 0.9rem;
+        }
+      `}</style>
+    </div>
+  )
+}
 
-export default ServicesAndTools;
+export default ServiceCards
+
