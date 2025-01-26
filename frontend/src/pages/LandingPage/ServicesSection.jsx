@@ -8,7 +8,7 @@ const services = [
     description: "Comprehensive solutions for managing and maintaining your facilities efficiently.",
     icon: Building2,
     action: "Manage Facilities",
-    link: "/facilites",
+    link: "/facilities",
     points: ["24/7 maintenance support", "Energy efficiency optimization", "Space planning and utilization"],
   },
   {
