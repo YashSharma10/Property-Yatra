@@ -57,7 +57,7 @@ export const addProperty = async (req, res) => {
 
 export const listProperties = async (req, res) => {
   console.log("Filters", req.query);
-  
+
   try {
     const {
       area,
@@ -74,8 +74,7 @@ export const listProperties = async (req, res) => {
 
     const orFilters = [];
 
-
-    if ((!propertyType === "All") && propertyType) {
+    if (!propertyType === "All" && propertyType) {
       orFilters.push({ propertyType: { $regex: propertyType, $options: "i" } });
     }
     if (listingType) {
@@ -173,7 +172,6 @@ export const getUserProfileAndProperties = async (req, res) => {
 
 export const createProperty = async (req, res) => {
   try {
-    
     const {
       name,
       sellPrice,
@@ -202,14 +200,14 @@ export const createProperty = async (req, res) => {
       features: JSON.parse(features),
       images: imageUrls,
       postedBy: userID,
-      views:[userID]
+      views: [userID],
     });
 
-    console.log("New Property",newProperty);
-    
+    console.log("New Property", newProperty);
+
     const property = await newProperty.save();
     console.log("Property", property);
-    
+
     const user = await User.findByIdAndUpdate(
       userID,
       {
@@ -233,10 +231,9 @@ export const createProperty = async (req, res) => {
 
 export const addView = async (req, res) => {
   try {
-    
     const { id } = req.params;
     const userId = req.user;
-    console.log("Id",id,"user",userId);
+    console.log("Id", id, "user", userId);
 
     if (!id || !userId) {
       return res
@@ -272,6 +269,88 @@ export const addView = async (req, res) => {
     return res.status(200).json({ message: "Viewed successfully" });
   } catch (error) {
     console.error("Error adding view:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+
+export const editProperty = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      name,
+      sellPrice,
+      rentPrice,
+      description,
+      propertyAge,
+      area,
+      listingType,
+      propertyType,
+      address,
+      features,
+    } = req.body;
+
+    const imageUrls = req.files?.map((file) => file.path) || [];
+
+    const updatedProperty = await Property.findByIdAndUpdate(
+      id,
+      {
+        name,
+        sellPrice,
+        rentPrice,
+        description,
+        propertyAge,
+        area,
+        listingType,
+        propertyType,
+        address: address ? JSON.parse(address) : undefined,
+        features: features ? JSON.parse(features) : undefined,
+        images: imageUrls.length > 0 ? imageUrls : undefined,
+      },
+      { new: true, runValidators: true } // Return the updated document and validate
+    );
+
+    if (!updatedProperty) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    return res
+      .status(200)
+      .json({
+        message: "Property updated successfully",
+        property: updatedProperty,
+      });
+  } catch (error) {
+    console.error("Error updating property:", error);
+    return res
+      .status(500)
+      .json({ message: "Server error", error: error.message });
+  }
+};
+
+export const deleteProperty = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const property = await Property.findByIdAndDelete(id);
+
+    if (!property) {
+      return res.status(404).json({ message: "Property not found" });
+    }
+
+    // Remove the property from the user's posted properties
+    await User.findByIdAndUpdate(
+      property.postedBy,
+      { $pull: { postedProperties: id } },
+      { new: true }
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Property deleted successfully", property });
+  } catch (error) {
+    console.error("Error deleting property:", error);
     return res
       .status(500)
       .json({ message: "Server error", error: error.message });
